@@ -52,7 +52,7 @@
 | **Plataforma principal** | PC (Windows/Mac/Linux), Web (HTML5), Android e iOS |
 | **Edad objetivo** | 4–9 años (núcleo); 6–12 con uso escolar/docente |
 | **Idiomas de lanzamiento** | Inglés, español (+ la API de modding admite cualquier idioma) |
-| **Monetización** | Pago único (itch.io / Steam) + Teacher Edition opcional con suscripción |
+| **Monetización** | Pago único (itch.io / Steam) — pagas una vez, tuyo para siempre |
 
 ### Elevator pitch
 READCRAFTERY es un juego de descubrimiento de palabras que envuelve contenido literario apropiado para cada edad dentro de mecánicas de puzzle divertidas y coloridas. Los jugadores exploran una biblioteca mágica, eligen libros y luego se sumergen en el texto: buscan palabras ocultas, reordenan letras y conectan significado con historia. Cada palabra encontrada se anima, brilla y recompensa al jugador con progreso narrativo, personajes desbloqueables y celebraciones visuales. Los docentes pueden asignar libros específicos y seguir el progreso. Todo el juego —desde los libros hasta los temas visuales— es moddable por la comunidad.
@@ -492,19 +492,6 @@ Accesible por PIN o contraseña definida al primer inicio:
 - precisión en puzzles
 - ajustes de dificultad
 
-### Teacher Edition (web dashboard — Fase 2)
-Aplicación web ligera separada:
-- crear una clase y obtener código de acceso
-- asignar book packs a una clase
-- seguir progreso por estudiante
-- exportar PDF/CSV
-- sin email/contraseña para niños pequeños
-
-### Controles de contenido
-- Las familias pueden restringir qué packs aparecen
-- Los docentes pueden bloquear el juego a un único libro
-- Los adultos pueden limitar pistas o tiempo por sesión
-
 ### Flujo de subida de libros para docentes (sin JSON)
 ```text
 Paso 1 — pegar o escribir el texto
@@ -588,7 +575,6 @@ READCRAFTERY sigue una política estricta de **sin dark patterns, sin anuncios, 
 | Fuente | Descripción | Rango |
 |---|---|---|
 | **Juego base** | Todos los book packs integrados, todos los themes, gameplay completo — un solo pago | $4.99–$7.99 (por definir) |
-| **Teacher Edition** | Dashboard web + gestión de clase + reporting — suscripción para docentes | $9.99/mes o $49/año (Fase 2) |
 | **Book Packs comunitarios** | Contenido de terceros en itch.io — precio libre del creador (READCRAFTERY no cobra comisión) | Variable |
 | **Steam Release (Fase 2)** | Mismo modelo de pago único en Steam con integración Workshop | Por definir |
 
@@ -596,7 +582,6 @@ READCRAFTERY sigue una política estricta de **sin dark patterns, sin anuncios, 
 - Nunca se muestran anuncios a los jugadores.
 - No hay contenido de gameplay detrás de un paywall — el juego está completo al comprarlo.
 - La comunidad puede distribuir y monetizar sus propios packs libremente.
-- Teacher Edition es un producto separado con modelo de ingresos separado — no afecta el precio ni el contenido del juego base.
 - Precio exacto por definir según volumen de contenido al lanzamiento e investigación de mercado.
 
 ---
@@ -612,7 +597,6 @@ READCRAFTERY sigue una política estricta de **sin dark patterns, sin anuncios, 
 ### Fase 2: móvil (meses 9–18)
 - Android y iOS
 - Adaptaciones UX específicas
-- Lanzamiento del panel docente web
 
 ### Fase 3: Steam (meses 18–30)
 - Release en Steam
@@ -717,8 +701,6 @@ READCRAFTERY
 - Datos en `user://saves/profile_01.json`
 - Soporta hasta 4 perfiles
 - Incluye progreso, estrellas, journal, ajustes y theme activo
-- Teacher Edition sincronizaría vía API en una fase posterior
-
 **Schema base del save (M0 desde día 0):**
 ```json
 {
@@ -862,11 +844,8 @@ Estas descripciones funcionan como briefs para artista o generación de imágene
 - [ ] Sistema base de soporte / feedback
 
 ### Milestone 4 — Post-lanzamiento (mes 9–12)
-- [ ] Primer DLC oficial de Book Pack
+- [ ] Primera colección curada de Book Packs comunitarios
 - [ ] Navegador de mods in-game (Phase 2)
-- [ ] **Revisión legal COPPA/GDPR-K** ← prerequisito duro antes de iniciar Teacher Edition. Alcance: política de privacidad actualizada para recolección de datos, IDs de estudiantes anonimizados, política de expiración de códigos de clase (fin de año escolar), flujo de consentimiento parental, sin datos personales de menores de 13. Contratar abogado especializado en productos digitales para niños.
-- [ ] **Decisión de analytics** — si Teacher Edition recoge datos agregados: desplegar Matomo self-hosted (opt-in, sin tracking individual de estudiantes). Sin SDKs de analytics de terceros (Google Analytics, Firebase, etc.) para usuarios menores de 13.
-- [ ] Teacher Edition web dashboard (MVP) ← solo después de que la revisión legal esté aprobada
 - [ ] Primer showcase de mods comunitarios
 
 ---
@@ -883,7 +862,6 @@ Estas descripciones funcionan como briefs para artista o generación de imágene
 | **Baseline de tamaño HTML5** | El build puede crecer demasiado para conexiones escolares | M0 |
 | **Licenciamiento de contenido** | No se puede distribuir públicamente sin derechos claros | Antes de M3 |
 | **Privacy policy base** | Obligatoria para cualquier producto público | Antes de M3 |
-| **Revisión COPPA/GDPR-K** | Obligatoria antes de vender a escuelas o recopilar datos | Antes de M4 |
 
 ### Mejoras de calidad
 
@@ -899,12 +877,12 @@ Estas descripciones funcionan como briefs para artista o generación de imágene
 | Pregunta | Decisión |
 |---|---|
 | ¿Mismas estrellas para puzzles auto y manuales? | **Sí** — el jugador nunca distingue; la paridad es correcta |
-| ¿Cuándo sale el Preview Tool? | **M1 interno, M3 público** — necesario para validar contenido propio antes de distribuirlo a docentes |
-| ¿Analytics para el juego base? | **Ninguno** — sin analytics hasta Teacher Edition; incluso entonces, Matomo self-hosted, solo datos agregados |
-| ¿COPPA para el juego base (sin recolección de datos)? | **Trivial** — cero recolección de datos = cumplimiento COPPA automático; la complejidad solo entra con Teacher Edition |
+| ¿Cuándo sale el Preview Tool? | **M1 interno, M3 público** — necesario para validar contenido propio antes de distribuirlo a modders |
+| ¿Analytics para el juego base? | **Ninguno** — sin analytics. Cero recolección de datos, punto final. |
+| ¿COPPA para el juego base (sin recolección de datos)? | **Trivial** — cero recolección de datos = cumplimiento COPPA automático. No se recopilan datos personales de ningún jugador. |
 | ¿TTS pregrabado o en runtime? | **Híbrido** — audio pregrabado para libros built-in oficiales (calidad); TTS nativo del sistema (OS-native) para libros moddados |
 | ¿Licencias de fuentes? | Solo fuentes OFL: ver Art Guide §7 para candidatas. La selección final es bloqueador de M0. |
-| ¿Modelo de monetización? | **Pago único** — pagas una vez, tuyo para siempre. Sin free-to-play, sin DLC por niveles, sin moneda premium. Teacher Edition es un producto de suscripción separado para Fase 2. Ver §14. |
+| ¿Modelo de monetización? | **Pago único** — pagas una vez, tuyo para siempre. Sin free-to-play, sin DLC por niveles, sin moneda premium, sin suscripción. Modelo Stardew Valley: juego completo al comprar, mods de comunidad gratis. Ver §14. |
 | ¿Estructura de repositorios? | **Cuatro repos bajo la organización [The-Readcraftery-Project](https://github.com/The-Readcraftery-Project) en GitHub.** Ver tabla más abajo. El engine es comercial de código cerrado; el formato de modding es abierto. |
 
 ### Estructura de repositorios
