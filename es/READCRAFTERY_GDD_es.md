@@ -881,7 +881,7 @@ Estas descripciones funcionan como briefs para artista o generación de imágene
 | ¿Analytics para el juego base? | **Ninguno** — sin analytics. Cero recolección de datos, punto final. |
 | ¿COPPA para el juego base (sin recolección de datos)? | **Trivial** — cero recolección de datos = cumplimiento COPPA automático. No se recopilan datos personales de ningún jugador. |
 | ¿TTS pregrabado o en runtime? | **Híbrido** — audio pregrabado para libros built-in oficiales (calidad); TTS nativo del sistema (OS-native) para libros moddados |
-| ¿Licencias de fuentes? | Solo fuentes OFL: ver Art Guide §7 para candidatas. La selección final es bloqueador de M0. |
+| ¿Licencias de fuentes? | **Andika** (SIL OFL) para texto de pasajes · **Nunito** (OFL) para UI. Ambas con licencia OFL. Descargar desde Google Fonts. Commit en `res://fonts/` antes de construir PassageView. |
 | ¿Modelo de monetización? | **Pago único** — pagas una vez, tuyo para siempre. Sin free-to-play, sin DLC por niveles, sin moneda premium, sin suscripción. Modelo Stardew Valley: juego completo al comprar, mods de comunidad gratis. Ver §14. |
 | ¿Estructura de repositorios? | **Cuatro repos bajo la organización [The-Readcraftery-Project](https://github.com/The-Readcraftery-Project) en GitHub.** Ver tabla más abajo. El engine es comercial de código cerrado; el formato de modding es abierto. |
 

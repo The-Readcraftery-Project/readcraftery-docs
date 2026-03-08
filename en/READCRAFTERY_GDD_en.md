@@ -1005,7 +1005,7 @@ This interface makes it trivial to add new puzzle types without modifying core s
 | Analytics for base game? | **None** — no analytics. Zero data collection, full stop. |
 | COPPA for base game (no data collection)? | **Trivial** — zero data collection means COPPA compliance is automatic. No personal data is ever collected from players. |
 | Should TTS be pre-recorded or runtime? | **Hybrid** — pre-recorded audio for official built-in books (quality); runtime TTS (OS-native) for modded books |
-| Font licensing? | OFL-licensed fonts only. Specific selections are an open M0 blocker — see Art Guide §7 for candidates and §11 for status. |
+| Font licensing? | **Andika** (SIL OFL) for passage text · **Nunito** (OFL) for UI. Both OFL-licensed. Download from Google Fonts. Commit to `res://fonts/` before building PassageView. |
 | Monetization model? | **One-time purchase** — pay once, own forever. No free-to-play, no DLC tiers, no in-game currency, no subscription. Stardew Valley model: complete game at purchase, community mods are free. See §14. |
 | Repository structure? | **Four repos under the [The-Readcraftery-Project](https://github.com/The-Readcraftery-Project) GitHub organization.** See table below. Engine is commercial closed-source; modding format is open. |
 

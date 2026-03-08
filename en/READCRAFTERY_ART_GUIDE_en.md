@@ -769,22 +769,23 @@ Source de lectura (pasajes de texto):
   Function:         Maximum readability for children learning to read
   Style:            Clear serif with unambiguous letterforms
                     (b/d/p/q clearly distinct — critical for early readers)
-  OFL candidates:   Andika (SIL) — designed specifically for literacy
-                    Lexie Readable — alta legibilidad, formas no ambiguas
-                    OpenDyslexic — para el modo dyslexia_font del settings
+  ✅ SELECTED:      Andika (SIL) — OFL — designed specifically for literacy
+                    letterforms engineered to minimize b/d/p/q confusion
+  Fallback:         OpenDyslexic — for the dyslexia_font mode in settings
   Sizes:            small=18px, medium=22px, large=28px, xl=34px
   NUNCA menos de 18px para texto de pasaje
 
 UI font (labels, titles, buttons):
-  Estilo:           Levemente display, legible desde 14px
-                    Evoca lettering de libro ilustrado sin ser cursiva
-  Candidatas OFL:   Nunito (redondeada, amigable), Patrick Hand (handwritten limpio)
+  Estilo:           Rounded, readable from 14px, evokes illustrated book lettering
+  ✅ SELECTED:      Nunito (Google Fonts) — OFL — rounded, friendly, legible at small sizes
   NUNCA cursiva para texto funcional. NUNCA menos de 14px.
 
 Rules comunes:
-  - Licencia OFL obligatoria
+  - Licencia OFL obligatoria ✅ (Andika: SIL OFL · Nunito: OFL)
   - Guardadas en res://fonts/ como .ttf
   - Subsetted si > 500KB (usar pyftsubset — instrucciones en Build Guide)
+  - Download: https://fonts.google.com/specimen/Andika
+              https://fonts.google.com/specimen/Nunito
 ```
 
 ### Presupuesto de memoria GPU y build size HTML5
@@ -1216,15 +1217,15 @@ Before considering a milestone visually complete, all checks must pass. These ar
 | **Estilo: pixel art, Estrategia B** | ✅ Cerrado | — | — |
 | **Colorblindness palettes** | ✅ Closed in architectural decision | Palettes in M1, integration M2 | Test with Color Oracle before M1 |
 | **Validador contraste Preview Tool** | ✅ Cerrado — M1 | M1 | — |
-| **Specific fonts** | ⚠️ Open — candidates in §7 | Decide before M0 | Pedagogical blocker |
+| **Specific fonts** | ✅ Closed — Andika (passage) + Nunito (UI) | M0 | Download and commit to `res://fonts/` before building PassageView |
+| **Display typography for titles** | ✅ Closed — Nunito (same as UI font) | M0 | Consistent with UI font decision |
 | **Istari Owl accessories** | ⚠️ Open — categories defined | M2 | Does not block M0/M1 |
 | **Design Celebration Scene completo** | ⚠️ Abierto — stub en M0 | M1 | Stub suficiente para M0 |
 | **Libro como objeto con perspectiva** | ⚠️ Abierto | M2+ | Puede ser sprite 2D plano en M0/M1 |
-| **Display typography for titles** | ⚠️ Open | Decide with fonts | Affects all UI |
 | **RTL layout visual** | 🔴 Bloqueado — Architecture Contract §7.2 | Post-M3 | No producir assets RTL |
 | **Visual validation with mock** | ⚠️ Pending | Before end of M0 | 1 Library, 1 PassageView, 1 owl sheet, 1 UI set |
 
 ---
 
-*Documento: READCRAFTERY Art Style Guide v1.2*  
-*Next revision: font selection (before M0), visual validation mock (before end of M0), colorblindness palettes tested (M1).*
+*Documento: READCRAFTERY Art Style Guide v1.3*  
+*Next revision: visual validation mock (before end of M0), colorblindness palettes tested (M1).*
