@@ -80,6 +80,34 @@ READCRAFTERY is a word discovery game that wraps age-appropriate literary conten
 - **Ages 4–6 (Pre-Readers / Early Phonics):** Focus on letter recognition, simple 2–3 letter words, picture-aided vocabulary. Needs heavy visual support, large fonts, audio read-aloud of all text.
 - **Ages 6–9 (Early Readers):** Can handle 4–6 letter words, basic sentences, short passages. Benefit from context clues and comprehension questions.
 
+### Reader profiles — internal segmentation
+
+The 4–9 age range covers very different stages of reading development.
+The game recognizes three internal profiles:
+
+**Profile A — Pre-reader (ages 4–5)**
+Not yet decoding. Recognizes letters and their own name.
+The game offers exposure to written language and phonological awareness.
+Book packs marked `early_emergent` are designed for this profile.
+WordGlow in simplified mode (TTS reads each word on touch,
+no expectation of independent reading).
+
+**Profile B — Emergent reader (ages 6–7)**
+Learning to decode. Reads syllable by syllable.
+Needs phonetically regular words, repetition, and feedback without frustration.
+This is Readcraftery's primary design profile.
+
+**Profile C — Developing reader with difficulties (ages 7–9)**
+Can read with effort. May have dyslexia, ADHD, or less prior exposure.
+Needs controlled vocabulary texts, appropriate fonts, and a pace
+that does not expose them negatively in front of peers.
+The `dyslexia_font` and `reduce_motion` modes are designed
+primarily for this profile.
+
+> **Design note:** Profile B is the center of gravity of the game.
+> Design decisions that conflict between profiles
+> are resolved in favor of Profile B.
+
 ### Secondary: Educators & Parents
 - Primary school teachers looking for literacy tools
 - Parents seeking screen time with learning value
@@ -320,6 +348,45 @@ The player's owl companion (named by the player at start) grows and changes as p
 - Earns accessories: hats, scarves, glasses, wings
 - Reacts emotionally to player performance — celebrates, looks curious, cheers
 - Can be renamed and reskinned via unlockable themes
+
+### Owl feedback protocol — ✅ CLOSED
+
+The Owl is the most important pedagogical element of the game.
+Its behavior in response to errors determines whether the child
+keeps trying or develops a negative identity as a reader.
+
+**Core rule: the Owl never evaluates — it models.**
+
+#### When the child does not interact for more than 8 seconds:
+- The Owl enters `thinking` state
+- After 5 additional seconds: the Owl reads the target word aloud
+  and syllabifies it slowly (TTS with pause between syllables)
+- The hint is offered without the child having to ask for it
+- Not recorded as "hint used" if triggered automatically by inactivity
+
+#### When the child selects an incorrect word:
+- No red X. No error sound.
+- The Owl reads the selected word aloud (TTS)
+- 1 second pause
+- The Owl reads the target word aloud
+- The incorrect tile returns to its position with no failure animation
+- The attempt counter is not visible to the child
+
+#### When the child finds a correct word:
+- Immediate positive feedback — the Owl enters `happy`
+- The word is highlighted in the passage
+- TTS reads the word and uses it in a short sentence (M1)
+
+#### What the Owl never does:
+- Show an error counter
+- Express impatience or frustration
+- Interrupt the child while they are attempting
+- Celebrate in a way that exposes the child in front of others
+
+#### Automatic vs manual hints:
+- **Automatic** (inactivity > 13 seconds): does not deduct from `hint_count`
+- **Manual** (child presses hint button): deducts from `hint_count`
+- `hint_count` minimum: 3 per puzzle, regardless of difficulty
 
 ### Sticker Collection
 Each book completed adds stickers to the player's "Reading Journal" — an in-game scrapbook. Stickers are themed around the book's content (animals, objects, characters).

@@ -81,6 +81,32 @@ READCRAFTERY es un juego de descubrimiento de palabras que envuelve contenido li
 - **4–6 años (prelectores / fonética inicial):** foco en reconocimiento de letras, palabras simples de 2–3 letras y vocabulario con apoyo visual. Necesitan mucho soporte visual, tipografías grandes y lectura en voz alta de todo el texto.
 - **6–9 años (lectores iniciales):** pueden manejar palabras de 4–6 letras, oraciones básicas y pasajes cortos. Se benefician de pistas contextuales y preguntas de comprensión.
 
+### Perfiles de lector — segmentación interna
+
+El rango 4–9 cubre etapas de desarrollo lector muy distintas.
+El juego reconoce tres perfiles internos:
+
+**Perfil A — Prelector (4–5 años)**
+No decodifica todavía. Reconoce letras y su nombre.
+El juego ofrece exposición al lenguaje escrito y conciencia fonológica.
+Los book packs marcados `early_emergent` están diseñados para este perfil.
+WordGlow en modo simplificado (TTS lee cada palabra al tocarla, sin expectativa de lectura autónoma).
+
+**Perfil B — Lector emergente (6–7 años)**
+Está aprendiendo a decodificar. Lee sílaba por sílaba.
+Necesita palabras fonéticamente regulares, repetición, y feedback sin frustración.
+Es el perfil primario de diseño de Readcraftery.
+
+**Perfil C — Lector en desarrollo con dificultades (7–9 años)**
+Puede leer con esfuerzo. Puede tener dislexia, TDAH, o menor exposición previa.
+Necesita textos con vocabulario controlado, fuentes apropiadas, y ritmo sin exposición negativa.
+El modo `dyslexia_font` y `reduce_motion` están diseñados principalmente para este perfil.
+
+> **Nota de diseño:** El Perfil B es el centro de gravedad del juego.
+> Las decisiones de diseño que entren en conflicto entre perfiles
+> se resuelven a favor del Perfil B.
+
+
 ### Secundario: educadores y familias
 - Docentes de primaria que buscan herramientas de alfabetización
 - Padres y madres que buscan tiempo de pantalla con valor de aprendizaje
@@ -312,6 +338,45 @@ El compañero del jugador (nombrado al inicio) crece y cambia con el progreso:
 - Gana accesorios: sombreros, bufandas, gafas, alas, etc.
 - Reacciona emocionalmente al rendimiento
 - Puede renombrarse y cambiar de aspecto mediante themes desbloqueables
+
+### Protocolo de feedback del Owl — ✅ CERRADO
+
+El Owl es la pieza pedagógica más importante del juego.
+Su comportamiento ante el error determina si el niño sigue intentando
+o desarrolla una identidad negativa como lector.
+
+**Regla fundamental: el Owl nunca evalúa — modela.**
+
+#### Cuando el niño no interactúa por más de 8 segundos:
+- El Owl entra en estado `thinking`
+- Después de 5 segundos adicionales: el Owl lee la palabra target en voz alta
+  y la silabea lentamente (TTS con pausa entre sílabas)
+- El hint se ofrece sin que el niño tenga que pedirlo
+- No se registra como "hint usado" si fue automático por inactividad
+
+#### Cuando el niño selecciona una palabra incorrecta:
+- Sin X roja. Sin sonido de error.
+- El Owl dice la palabra seleccionada en voz alta (TTS)
+- Pausa de 1 segundo
+- El Owl dice la palabra target en voz alta
+- El tile incorrecto regresa a su posición sin animación de fracaso
+- El contador de intentos no es visible para el niño
+
+#### Cuando el niño encuentra una palabra correcta:
+- Feedback positivo inmediato — el Owl entra en `happy`
+- La palabra se destaca en el pasaje
+- TTS lee la palabra y la usa en una oración corta (M1)
+
+#### Lo que el Owl nunca hace:
+- Mostrar un contador de errores
+- Expresar impaciencia o frustración
+- Interrumpir al niño mientras está intentando
+- Celebrar de forma que exponga al niño frente a otros
+
+#### Hints automáticos vs manuales:
+- **Automático** (inactividad > 13 segundos): no se descuenta de `hint_count`
+- **Manual** (niño presiona botón hint): se descuenta de `hint_count`
+- `hint_count` mínimo: 3 por puzzle, independiente de la dificultad
 
 ### Colección de stickers
 Cada libro completado añade stickers al “Reading Journal”, un scrapbook persistente del jugador.

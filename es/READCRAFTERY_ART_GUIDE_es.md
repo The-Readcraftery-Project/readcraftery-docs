@@ -273,6 +273,22 @@ Cada estado es una animación en loop o una animación de un disparo. El sistema
 | `sleepy` | Loop | Cabeceos lentos. Ojos semicerrados. Para pantallas de descanso o inactividad. | Timeout de inactividad |
 | `wave` | One-shot | Levanta una ala en saludo. Para onboarding y regreso del jugador. | Primera vez, regreso a sesión |
 
+
+#### Mapping animación → protocolo de feedback
+
+| Evento pedagógico | Animación | Duración |
+|---|---|---|
+| Inactividad > 8s | `thinking` | Loop hasta interacción |
+| Inactividad > 13s + TTS automático | `hint` | One-shot |
+| Palabra correcta | `happy` | One-shot → vuelve a `idle` |
+| Palabra incorrecta | `idle` | Sin cambio — no expresar fracaso |
+| Puzzle completado | `celebrate` (M1) / `happy` (M0) | One-shot |
+| TTS leyendo pasaje | `reading` (M1) / `idle` (M0) | Mientras dura TTS |
+
+> **Regla de oro:** el Owl nunca expresa frustración, impaciencia,
+> ni decepción. Si una animación podría leerse como negativa,
+> no se usa en respuesta a errores del niño.
+
 ### Accesorios desbloqueables (M2)
 
 Los accesorios son overlays sobre el sprite base. No requieren redibujar el personaje completo — se superponen en el layer de accesorios.

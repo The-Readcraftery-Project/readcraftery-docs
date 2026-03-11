@@ -278,6 +278,21 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 | `sleepy` | Loop | Cabeceos lentos. Ojos semicerrados. Para pantallas de descanso o inactividad. | Timeout de inactividad |
 | `wave` | One-shot | Raises one wing in greeting. For onboarding and player return. | First time, returning to session |
 
+#### Animation → feedback protocol mapping
+
+| Pedagogical event | Animation | Duration |
+|---|---|---|
+| Inactivity > 8s | `thinking` | Loop until interaction |
+| Inactivity > 13s + automatic TTS | `hint` | One-shot |
+| Correct word | `happy` | One-shot → returns to `idle` |
+| Incorrect word | `idle` | No change — do not express failure |
+| Puzzle completed | `celebrate` (M1) / `happy` (M0) | One-shot |
+| TTS reading passage | `reading` (M1) / `idle` (M0) | While TTS plays |
+
+> **Golden rule:** the Owl never expresses frustration, impatience,
+> or disappointment. If an animation could be read as negative,
+> it is not used in response to the child's errors.
+
 ### Accesorios desbloqueables (M2)
 
 Los accesorios son overlays sobre el sprite base. No requieren redibujar el personaje completo — se superponen en el layer de accesorios.
