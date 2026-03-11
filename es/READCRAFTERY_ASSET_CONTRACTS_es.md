@@ -87,6 +87,26 @@ func _ready() -> void:
     btn_hint.add_child(placeholder)
 ```
 
+
+### Tipografía — decisión cerrada
+
+✅ **CERRADO**
+
+| Contexto | Tipo | Responsable |
+|---|---|---|
+| Texto del pasaje (el niño lee) | Fuente pedagógica `.ttf`/`.otf` | No es asset de arte |
+| Tiles interactivos del puzzle (Scramble, WordHunt, word bank) | Pixel art letters — sprite | Artista |
+
+**Texto del pasaje:** se usa una fuente del sistema de tipografía pedagógica
+(Andika / Lexie Readable / OpenDyslexic — decisión pendiente en Art Guide §7).
+El texto vive en resolución nativa 1080p, no escala con los sprites.
+No hay asset de arte para este contexto.
+
+**Pixel art letters:** dibujadas como sprites `16×16 px` → `64×64 px` en pantalla.
+Van en el atlas de UI. El artista entrega A–Z mayúsculas y minúsculas + 0–9 mínimo.
+Mismo pipeline que cualquier otro sprite: fondo transparente, paleta master, 1px outline.
+
+
 ---
 
 ## 2. Assets compartidos — UI global
