@@ -108,6 +108,14 @@ primarily for this profile.
 > Design decisions that conflict between profiles
 > are resolved in favor of Profile B.
 
+
+#### Golden Path — Profile B (Emerging Reader, age ~6)
+
+M0/M1 validation criterion: if WordGlow does not work well for a 6-year-old who is still sounding out syllables, the engine is not validated.
+The core gameplay loop is designed and tested first for Profile B — a child who recognizes letters, is learning to decode words, and benefits from visual + auditory scaffolding. This is the product's center of gravity.
+ProfileDescriptionMilestone priorityA — Pre-reader (age 4–5)Cannot decode yet. Needs heavy visual/audio support.Adjacent, exploratory. Not M0 validation criteria.B — Emerging reader (age 5–7)Decoding syllables. Golden Path. Core product fit.M0/M1 — primary target.C — Reader with difficulties (age 6–9)Dyslexia, ADHD, visual stress. Needs accessibility adaptations.M2 — accessibility presets, theme support, TTS pacing.
+Profile A and C are real audiences, but the game is validated against Profile B first. Features specific to A or C that don't serve B are deferred to their respective milestones.
+
 ### Secondary: Educators & Parents
 - Primary school teachers looking for literacy tools
 - Parents seeking screen time with learning value
@@ -134,9 +142,9 @@ primarily for this profile.
 ┌─────────────────────────────────────────────────────────────┐
 │                    THE READCRAFTERY LOOP                    │
 │                                                             │
-│  [LIBRARY]  →  [CHOOSE BOOK]  →  [READ PASSAGE]            │
+│  [LIBRARY]  →  [CHOOSE BOOK]  →  [READ PASSAGE]             │
 │                                          ↓                  │
-│  [CELEBRATE] ←  [FIND WORDS]  ←  [PUZZLE CHALLENGE]        │
+│  [CELEBRATE] ←  [FIND WORDS]  ←  [PUZZLE CHALLENGE]         │
 │       ↓                                                     │
 │  [UNLOCK: next passage / sticker / theme / character]       │
 │       ↓                                                     │
@@ -160,11 +168,36 @@ primarily for this profile.
 
 7. **Unlock & Progress** — New passage unlocks, or bonus content is revealed (sticker, theme element, mini-story). Player returns to library or continues.
 
+
+**UI State Separation (Anti Pattern-Matching Design)**
+
+To prevent children from solving puzzles through visual pattern recognition
+instead of reading, the interface separates the reading phase from the search phase.
+
+**READING_STATE**
+The story sentence is visible.
+The Owl may narrate the sentence using TTS.
+Puzzle grid is hidden.
+
+The player presses a button to start the puzzle.
+
+**SEARCH_STATE**
+The story text disappears or collapses.
+The puzzle grid becomes visible.
+
+The player must recall the words from working memory.
+
+Optional Hint Button
+A hint temporarily reveals the sentence again,
+but interrupts puzzle solving for a moment.
+
+This design encourages phonological decoding rather than geometric scanning.
+
 ---
 
 ## 5. Puzzle Mechanics
 
-### Puzzle Type 1: Word Glow (Ages 4–6, Difficulty ★☆☆)
+### Puzzle Type 1: Word Glow (Ages 5–7, Difficulty ★☆☆)
 **Core Mechanic:** The full passage is displayed. A target word appears in the word bank at the bottom. The player must tap/click the same word when they spot it in the passage.
 
 - Words in the passage highlight faintly when hovered.
@@ -225,7 +258,7 @@ primarily for this profile.
 
 | Player Age Profile | Default Puzzle Types | Word Length | Time Limit | Hint Uses |
 |---|---|---|---|---|
-| 4–5 years | Word Glow, Rhyme Finder | 2–4 letters | None | Unlimited |
+| 4–5 years | Rhyme Finder | 2–4 letters | None | Unlimited |
 | 5–6 years | Word Glow, Letter Scramble | 3–5 letters | None | 3 per puzzle |
 | 6–7 years | Scramble, Word Hunt | 3–6 letters | Optional | 2 per puzzle |
 | 7–9 years | Word Hunt, Fill Passage | 4–8 letters | Optional | 1 per puzzle |
@@ -442,6 +475,24 @@ To prevent repetition fatigue, celebrate effects are drawn from a randomized poo
 - 4 confetti patterns
 - Effects escalate in intensity for streaks (3 in a row correct = bigger burst)
 
+
+> ** Design note: Pedagogical Failure Handling **
+> 
+> Pedagogical Failure Handling
+> 
+> Comprehension errors should never be treated as punishment.
+> 
+> If the player selects an incorrect answer:
+> 
+> The Owl responds with encouragement, for example:
+> "Let's read it again to find the answer."
+> 
+> The story is replayed or briefly shown again,
+> allowing the learner to re-engage with the text.
+> 
+> This approach reinforces comprehension through repetition
+> instead of negative feedback.
+
 ---
 
 ## 9. UI/UX Design
@@ -494,6 +545,21 @@ The UI is skinned via **Theme Packs** — JSON + asset bundles that override:
 | Space Station | Dark blue, neon, star particles. |
 | Classroom Chalk | Simple, high-contrast, teacher-friendly. |
 
+
+Motor Precision Tolerance
+
+Children aged 6–7 often have limited fine motor precision,
+especially on touch screens.
+
+To avoid penalizing reading ability due to imprecise tapping:
+
+• Interactive areas should extend beyond the exact text bounds.
+• Word hitboxes may expand ~30% around the word.
+• Overlapping hitboxes should prioritize the intended puzzle word.
+• Selection should require a deliberate release action.
+
+The system evaluates reading, not pointing accuracy.
+
 ---
 
 ## 10. Audio Design
@@ -509,7 +575,7 @@ The UI is skinned via **Theme Packs** — JSON + asset bundles that override:
 |---|---|
 | Word found | Soft chime + sparkle whoosh |
 | Letter placed correctly | Gentle pop |
-| Wrong attempt | Quiet "bwoop" — non-harsh |
+| Scaffolding cue | Soft ambient tone — signals Owl is about to help. Not associated with error. |
 | Owl hint | Soft hoot |
 | Book unlock | Page turn + brief fanfare |
 | Sticker earned | Satisfying sticky-paper sound |
@@ -578,6 +644,22 @@ Step 7 — "Save Pack" → downloads pack.zip → teacher drops into /mods folde
 ```
 
 This flow is powered entirely by `targets: "auto"` under the hood. The resulting `pack.zip` is a valid modding pack identical in format to hand-authored packs. Teachers with JSON knowledge can open and extend it manually.
+
+
+> ** Design Note: Future Distribution System — Classroom Codes **
+> 
+> To simplify classroom deployment,
+> future versions may support loading Book Packs via short codes.
+> 
+> Example workflow:
+> 
+> Teacher publishes a pack online and receives a short code.
+> Students enter the code in the game.
+> The pack is downloaded automatically.
+> 
+> This removes the need to manually copy files to each device.
+> 
+> Planned milestone: M4.
 
 ---
 
@@ -1115,6 +1197,32 @@ This interface makes it trivial to add new puzzle types without modifying core s
 | Khan Academy Kids | Educational app | Broader focus, no modding |
 
 **READCRAFTERY's Differentiator:** The only literacy-focused word puzzle game with a full modding system enabling teachers and community creators to add their own books and themes.
+
+## Appendix C: Optional Phonetic Metadata (Future Feature)
+
+Future versions of READCRAFTERY may support phonetic metadata
+for each puzzle word.
+
+Example:
+
+```json
+{
+  "word": "conejo",
+  "phonetic_difficulty": "medium",
+  "pattern": "CV-CV-CV",
+  "tags": ["regular", "animal"]
+}
+```
+
+This metadata would allow:
+
+• phonics-aware puzzle generation
+• difficulty scaling
+• targeted reading exercises
+
+This feature is planned for milestone M2
+and is not required for the initial implementation.
+
 
 ---
 
