@@ -123,7 +123,7 @@ ACENTO Y MAGIA
 ────────────────────────────────────────────────────────────
 accent              #D4A017   Dorado — highlights, selecciones, estrellas
 accent_warm         #E8721A   Amber — primary buttons, CTA
-magic_glow          #7B4FBE   Magic purple — Istari Owl effects, runes
+magic_glow          #7B4FBE   Magic purple — Owlorumo staff crystal, rune glows, puzzle highlights
 magic_blue          #1E3A5F   Night blue — depth, magical shadows
 
 FEEDBACK
@@ -140,7 +140,7 @@ neutral             #9E9E9E   Gris — elementos inactivos o deshabilitados
 `accent` (#D4A017) is reserved for achievements, found words, earned stars. Using it on decorative elements degrades it. Every time the player sees gold, they must feel they earned something.
 
 **Rule 2 — Magic is rare.**  
-`magic_glow` (#7B4FBE) appears only on elements directly associated with the Istari Owl or narrative magical effects. Not in functional UI.
+`magic_glow` (#7B4FBE) appears only on Owlorumo's staff crystal, puzzle highlight effects, and narrative rune glows. Not in functional UI.
 
 **Rule 3 — Text on parchment always uses `text_primary`.**  
 Never grey text on a light background for children aged 4–9. Minimum WCAG AA contrast on all reading text.
@@ -208,58 +208,68 @@ RULE COMMON TO ALL THREE MODES:
 
 The Istari Owl companion is named **Owlorumo**. This is the official name — not a working title. References to "the Professor" in earlier drafts refer to this character.
 
-**Visual personality:** Old, wise, kind, slightly eccentric. Think of Radagast the Brown if he had dedicated his life to books instead of animals. Or the Wizard of Oz if he were genuinely wise instead of a charlatan. There are decades of history in every feather, but his eyes are warm and understanding — never intimidating.
+**Visual personality:** Young, curious, kind, slightly clumsy with magic but never with words. Owlorumo is a companion, not a mentor — he discovers things alongside the child rather than explaining from above. His amber eyes are his most expressive feature: wide with wonder, warm with encouragement, never intimidating.
 
-**The central design tension:** He is more wizard than owl, but the bird nature never disappears. The tension between the two is what makes him visually interesting.
+**The central design tension:** He is more wizard than owl, but the bird nature never disappears. The tension between the two is what makes him visually interesting. Unlike older depictions, Owlorumo has no beard — he is too young for one.
 
 ### Character Anatomy
 
+> **Reference:** The confirmed concept art establishes Owlorumo's definitive design.
+> All pixel art production must match this reference. When in doubt, this image wins.
+
 ```
-PROPORCIONES BASE
+PROPORTIONS
 ────────────────────────────────────────────────────────────
-Total height:       ~8 "heads" tall in standard pose
+Total height:       Compact and slightly chubby — reads as young
 Head:               Large, round — owl characteristic
 Eyes:               The most expressive feature. Large, circular,
-                    amber-gold color. Independent eyebrows
-                    (owls don't have them — it's Seuss-style)
-Beak:               Small, curved, almost hidden by the beard
-Barba:              Yes. Larga, blanca, ligeramente alborotada.
-                    Flows over the robe. The beard is what makes
-                    ancla como mago, no como ave.
+                    bright amber-gold. Independent eyebrows
+                    (owls don't have them — Seuss-style)
+Beak:               Small, curved, grey. Prominent but not harsh.
+No beard:           Owlorumo is young. No beard.
 
-VESTIMENTA
+CLOTHING — confirmed from concept art
 ────────────────────────────────────────────────────────────
-Robe:               Deep night blue (#1E3A5F) with details
-                    en dorado. Mangas largas que ocultan las
-                    "manos" (alas anteriores). La tela tiene
-                    textura — no es plana.
-Belt/sash:          Worn leather with a golden clasp.
-Sombrero:           Puntiagudo, levemente torcido (estilo Seuss).
-                    Same blue as the robe. It has a band
-                    with runes and a feather (from himself, or
-                    from another bird — to be defined).
-Staff:              Dark knotted wood, approximately his own
-                    altura. Tiene un cristal en la punta que
-                    emite una luz suave cuando "habla" o ayuda.
-                    El cristal es el color magic_glow (#7B4FBE).
+Robe:               Navy blue — deep, dark, closer to #1E2A4A
+                    than purple. Long sleeves that cover the
+                    wings/hands. Fabric has texture — not flat.
+                    Slightly oversized, which adds to the
+                    young/apprentice feel.
+Neck wrap:          Same navy fabric, wrapped loosely as a scarf.
+                    Adds volume and warmth to the silhouette.
+Lunar brooch:       Crescent moon clasp on the neck wrap.
+                    Gold (#D4A017). Identity detail — always present.
+Belt:               Worn brown leather, gold buckle. Cinches the
+                    robe at the waist. Gives structure to the
+                    otherwise loose silhouette.
+Hat:                Tall, pointed, slightly bent at the tip.
+                    Same navy as the robe. Band with rune engravings.
+                    A feather tucked in the band — brown, natural.
+                    Small wooden/bone emblem on the band.
+Boots:              Short brown leather boots. Cover the talons
+                    completely. Slightly oversized — endearing.
 
-NATURALEZA DE AVE — LO QUE SE MANTIENE
+STAFF — integral element (see §3 staff section)
 ────────────────────────────────────────────────────────────
-Plumas:             Visibles en el cuello, asomando bajo la
-                    robe on shoulders and arms. Base color:
-                    brown-grey with subtle striping (like a Bubo
-                    bubo real). Algunas plumas primarias tienen
-                    tips dorados.
-Talons:             His feet are owl talons. Large, curved,
-                    expressive. Sometimes they grip the staff with
-                    them. They are the most visibly "bird" part
-                    personaje.
-Movimiento:         Cuando piensa, gira la cabeza casi 180°
-                    (real owl behavior). When he is
-                    emocionado, las plumas del cuello se erizan
-                    levemente. Parpadea lentamente — el parpadeo
-                    slow blink of owls is a signal of trust
-                    y afecto en la naturaleza real.
+Wood:               Dark, twisted, organic. Darker than the robe.
+Crystal:            Purple-white, glowing. Color: magic_glow
+                    (#7B4FBE) in idle, brightens in active states.
+                    The crystal is the single most recognizable
+                    element of Owlorumo's silhouette after the hat.
+Grip:               Owlorumo holds the staff in his left hand.
+                    The staff reaches above his head.
+
+BIRD NATURE — what remains visible
+────────────────────────────────────────────────────────────
+Feathers:           Visible at the neck and shoulders above the
+                    robe. Base color: brown-grey, soft.
+                    Wing tips visible below the sleeves.
+Talons:             Hidden under the boots in standard poses.
+                    May appear in jump or celebrate animations.
+Movement:           Head turns nearly 180° when thinking
+                    (real owl behavior). Neck feathers ruffle
+                    slightly when excited. Slow blink is a signal
+                    of trust — used in idle and hint animations.
 ```
 
 ### Required animation states (M1)
@@ -325,7 +335,7 @@ Accessories are earned with accumulated stars. Design in v1.1.
 - ❌ Not perfect — has ink stains on the robe, slightly ruffled feathers
 - ❌ Not bulky or threatening — even if tall, its posture is open
 - ❌ Does not float in the air — walks (with talons), uses the staff for support
-- ❌ Does not speak in the game (only TTS of the book text) — expresses itself through animations only
+- ✅ Owlorumo speaks — speech complexity adapts to `reading_stage` (see GDD §Owlorumo adaptive language)
 
 ---
 
@@ -349,7 +359,7 @@ Libros en los estantes:
 Lighting:
   Primary source: chandeliers/oil lamps. Warm light (#D4A017 tinted).
   Source secundaria: los propios libros disponibles. Emiten light suave.
-  Magic source: Owlorumo's staff. Pulses slowly.
+  Magic source: Owlorumo's staff crystal. Pulses at 0.8Hz in idle.
   
 Parallax layers (for background animation):
   Layer 1 (closest):  Table, chairs, foreground objects
