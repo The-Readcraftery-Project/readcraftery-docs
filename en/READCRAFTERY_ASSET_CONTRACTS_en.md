@@ -118,15 +118,15 @@ Assets that appear in multiple scenes. Defined once, referenced in each scene.
 
 | asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
 |---|---|---|---|---|---|---|---|---|---|
-| `owl_idle` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | loop (4fr @ 4fps) | decorative | M0 | `#4A2E1A` surface |
-| `owl_thinking` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | loop (4fr @ 4fps) | decorative | M0 | `#4A2E1A` surface |
-| `owl_hint` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | one-shot (4fr @ 8fps) | decorative | M0 | `#4A2E1A` surface |
-| `owl_happy` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | loop (6fr @ 6fps) | decorative | M1 | `#4A2E1A` surface |
-| `owl_excited` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | one-shot (8fr @ 8fps) | decorative | M1 | `#4A2E1A` surface |
-| `owl_reading` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | loop (4fr @ 4fps) | decorative | M1 | `#4A2E1A` surface |
-| `owl_celebrate` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | one-shot (8fr @ 8fps) | decorative | M1 | `#4A2E1A` surface |
-| `owl_sleepy` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | loop (4fr @ 3fps) | decorative | M1 | `#4A2E1A` surface |
-| `owl_wave` | AnimatedSprite2D | 48×48 | 192×192 | bottom-center | — | one-shot (6fr @ 6fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_idle` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | loop (4fr @ 4fps) | decorative | M0 | `#4A2E1A` surface |
+| `owl_thinking` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | loop (4fr @ 4fps) | decorative | M0 | `#4A2E1A` surface |
+| `owl_hint` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | one-shot (4fr @ 8fps) | decorative | M0 | `#4A2E1A` surface |
+| `owl_happy` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | loop (6fr @ 6fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_excited` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | one-shot (8fr @ 8fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_reading` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | loop (4fr @ 4fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_celebrate` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | one-shot (8fr @ 8fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_sleepy` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | loop (4fr @ 3fps) | decorative | M1 | `#4A2E1A` surface |
+| `owl_wave` | AnimatedSprite2D | 64×64 | see Art Guide §5 | bottom-center | — | one-shot (6fr @ 6fps) | decorative | M1 | `#4A2E1A` surface |
 | `star_empty` | TextureRect | 8×8 | 32×32 | center | — | no | interactive | M0 | `#9E9E9E` neutral |
 | `star_filled` | TextureRect | 8×8 | 32×32 | center | — | no | interactive | M0 | `#D4A017` accent |
 | `star_shimmer` | AnimatedSprite2D | 8×8 | 32×32 | center | — | one-shot (4fr @ 8fps) | decorative | M1 | `#D4A017` accent |
@@ -148,7 +148,8 @@ func set_owl_state(state: String) -> void:
     owl.play(state)  # state = "idle", "thinking", "hint", etc.
 ```
 
-The atlas is at `res://content/atlas_owl.png`. Animations are defined in the `SpriteFrames` resource assigned to the node — not in code.
+The atlas is at `res://content/atlas_owlorumo.png`.
+Display size is set per-scene via `scale`: `Vector2(3, 3)` for PassageView, `Vector2(4, 4)` for Library/menu. Animations are defined in the `SpriteFrames` resource assigned to the node — not in code.
 
 ---
 

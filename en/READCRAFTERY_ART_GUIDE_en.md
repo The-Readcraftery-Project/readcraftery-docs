@@ -19,7 +19,8 @@
 >
 > Sections §1–§5 are for internal production. Section §6 is the public guide for modders.
 > This document uses **pixel art with Strategy B** as the definitive style — sprites at
-> 48×48 px scaled 4× in a 1920×1080 viewport, text always at native resolution.
+> 64×64 px master draw size for Owlorumo, scaled per context (3× in PassageView, 4× in Library/menu).
+> All other sprites at 48×48 or smaller, scaled 4×. Text always at native resolution.
 > This decision is closed. The technical sections (§4–§5) reflect this choice.
 
 ---
@@ -270,6 +271,8 @@ Movement:           Head turns nearly 180° when thinking
                     (real owl behavior). Neck feathers ruffle
                     slightly when excited. Slow blink is a signal
                     of trust — used in idle and hint animations.
+                    Each eye has a 1-pixel white highlight in the upper-left corner. 
+                    This is what makes them read as alive at 64×64px. Do not omit.
 ```
 
 ### Required animation states (M1)
@@ -309,8 +312,7 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 
 The staff with the purple crystal is a permanent, integral part of Owlorumo's design. It is present in every animation state, including `idle`. It is never removed or hidden. The staff is not an accessory — it is part of the character's silhouette.
 
-**Visual rule:** Owlorumo's silhouette must always read as "owl with wizard hat and staff." If a frame cannot accommodate the staff legibly at 48×48px, the crystal glow alone is sufficient to imply it.
-
+**Visual rule:** Owlorumo's silhouette must always read as "owl with wizard hat and staff." If a frame cannot accommodate the staff legibly at the smallest display context (192×192, PassageView), the crystal glow alone is sufficient to imply it.
 **Animation note:** The crystal glow (`magic_glow` `#7B4FBE`) pulses at 0.8Hz in `idle`. In `hint` and `cast` states it brightens to full `#A87FE8` and emits particle sparks.
 
 ---
@@ -645,8 +647,10 @@ Nunca mezclar filtro Nearest con Bilinear en la misma scene.
 ```
 Asset                   Dibujado en      Se muestra en    Factor
 ────────────────────────────────────────────────────────────────
-Istari Owl (sprite)     48 × 48 px    →  192 × 192 px     4×
-Accessories (overlay)   48 × 48 px    →  192 × 192 px     4×
+Owlorumo (master)       64 × 64 px    →  variable (see display rules below)
+Owlorumo (gameplay)     64 × 64 px    →  192 × 192 px     3× (PassageView)
+Owlorumo (menu/reward)  64 × 64 px    →  256 × 256 px     4× (Library, Celebration)
+Accessories (overlay)   64 × 64 px    →  matches context
 UI icons                16 × 16 px    →   64 ×  64 px     4×
 Buttons / tiles         16 × 16 px    →   64 ×  64 px     4×   (NineSlice)
 Scene tiles            16 × 16 px    →   64 ×  64 px     4×
@@ -720,13 +724,18 @@ Colores fuera de la master palette: no existen.
 ### Sprites y assets del personaje
 
 ```
-Istari Owl — sprite atlas:
-  Resolution per frame:   48 × 48 px
+Owlorumo — sprite atlas:
+  Master resolution:      64 × 64 px per frame (source of truth)
+  Display rules:
+    PassageView/gameplay: scale to 192×192 px (3×)
+    Library/menu:         scale to 256×256 px (4×)
+    Celebration/reward:   256×320 px or larger
   Frames por estado:      4–8 frames (idle: 4, excited: 8, celebrate: 8)
   Formato de dibujo:      PNG-8 (paleta indexada) o PNG-24 con alpha
   Formato de export:      PNG con alpha transparente
-  Target atlas:           atlas_owl.png — max 2048 × 2048
-  Naming:                 owl_[estado]_[frame_2digits].png
+Target atlas:           atlas_owlorumo.png — max 2048 × 2048
+  Naming:                 owl_[state]_[frame_2digits].png
+  Scaling in Godot:       texture_filter = NEAREST, integer scale only
   Punto de anclaje:       centro-base del sprite (pies del personaje)
   
   Atlas organization (Godot SpriteFrames):
