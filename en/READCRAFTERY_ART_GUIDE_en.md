@@ -18,7 +18,7 @@
 > - **Modders** — guide to create themes and book packs with compatible visual assets
 >
 > Sections §1–§5 are for internal production. Section §6 is the public guide for modders.
-> El documento usa **pixel art con Estrategia B** como estilo definitivo — sprites a
+> This document uses **pixel art with Strategy B** as the definitive style — sprites at
 > 48×48 px scaled 4× in a 1920×1080 viewport, text always at native resolution.
 > This decision is closed. The technical sections (§4–§5) reflect this choice.
 
@@ -27,9 +27,9 @@
 ## Table of Contents
 
 1. [Visual References and Philosophy](#1-visual-references-and-philosophy)
-2. [Palette and Color Values](#2-paleta-y-valores-de-color)
+2. [Palette and Color Values](#2-palette-and-color-values)
 3. [The Istari Owl — Character Design](#3-the-istari-owl--character-design)
-4. [The Default Theme — Cozy Library](#4-el-default-theme--cozy-library)
+4. [The Default Theme — Cozy Library](#4-the-default-theme--cozy-library)
 5. [Shape Language & Rendering Rules](#5-shape-language--rendering-rules)
 6. [UI Readability Doctrine](#6-ui-readability-doctrine)
 7. [Technical Production Specifications](#7-technical-production-specifications)
@@ -54,9 +54,9 @@ What we don't take: the dark drama. READCRAFTERY is for children aged 4–9 — 
 **Dr. Seuss (Theodor Seuss Geisel, 1937–1991)**  
 Seuss's visual universe has very specific rules that make it immediately recognizable and deeply child-like in the best sense:
 - **Nothing is perfectly straight.** Towers twist, trees curve, houses lean. There is organic life in every line.
-- **Las texturas son inventadas.** No piel real, no madera real — texturas que solo existen en ese mundo.
+- **Textures are invented.** No real skin, no real wood — textures that only exist in that world.
 - **The palette is limited and bold.** Few colors, highly saturated, with strong contrasts. The white of the page (or light background) works as its own color.
-- **Los personajes tienen expresividad exagerada pero nunca aterradora.** Ojos grandes, posturas teatrales, emociones claras desde lejos.
+- **Characters have exaggerated expressiveness but are never frightening.** Big eyes, theatrical poses, clear emotions desde lejos.
 - **Typography and illustrations coexist as part of the same visual world.**
 
 What we take: **the line with personality, organic shapes, the bold palette, the invented texture**.
@@ -65,12 +65,12 @@ What we don't take: the extreme eccentricity. We want the world to be recognizab
 
 ### The synthesis: Storybook Arcane
 
-El estilo resultante tiene nombre propio en este documento: **Storybook Arcane**.
+The resulting style has its own name in this document: **Storybook Arcane**.
 
 It is a hand-drawn magical library, where:
-- Los libros en los estantes tienen colores imposibles y brillan suavemente
-- El mobiliario se curva levemente, como si hubiera crecido en lugar de haber sido construido
-- La magia es ambient, no explosiva — rayos de luz, motas de polvo dorado, runas que parpadean suavemente
+- Books on shelves have impossible colors and glow softly
+- Furniture curves slightly, as if it had grown rather than been built
+- Magic is ambient, not explosive — rays of light, motes of golden dust, softly blinking runes
 - Everything has tactile texture — grainy paper, woven fabric, grained wood
 - Colors are rich and warm, with a deep night-blue counterpoint for magic
 
@@ -82,15 +82,15 @@ It is a hand-drawn magical library, where:
 
 ### What to explicitly avoid
 
-- ❌ **Flat design moderno** — iconos sin textura, gradientes minimalistas, look de app de productividad
+- ❌ **Modern flat design** — textureless icons, minimalist gradients, productivity-app look
 - ❌ **Chibi / anime** — Japanese large-head proportions do not fit the reference
 - ❌ **Smooth digital illustration** — perfect vectors, soft gradients, no pixel texture
 - ❌ **Realism** — correct anatomical proportions, PBR lighting
-- ❌ **Dark fantasy** — calaveras, garras, oscuridad inquietante; incluso el mago es amable
+- ❌ **Dark fantasy** — skulls, claws, unsettling darkness; even the wizard is friendly
 
 ### Pixel art — the closed decision
 
-El estilo visual de READCRAFTERY es **pixel art**, con Estrategia B de escalado (ver §5).
+The visual style of READCRAFTERY is **pixel art**, with Strategy B scaling (see §5).
 
 The core reason: text is the product. A 5-year-old needs perfectly sharp text on any screen. Pixel art with Strategy B allows text at native 1080p resolution while sprites and backgrounds live at their natural resolution scaled to 4×. There is no trade-off between visual warmth and text readability.
 
@@ -102,7 +102,7 @@ Pixel art is also consistent with the references: the CYOA books of the 80s are 
 
 ### Palette principal — Cozy Library
 
-Estos son los valores de color del default theme. Los themes de modders pueden usar paletas completamente diferentes, pero deben mantener los mismos **roles funcionales** (ver §6).
+These are the color values for the default theme. Modder themes may use completely different palettes, butro deben mantener los mismos **roles funcionales** (ver §6).
 
 ```
 FONDOS Y SUPERFICIES
@@ -136,16 +136,16 @@ neutral             #9E9E9E   Gris — elementos inactivos o deshabilitados
 
 ### Rules de uso de color
 
-**Regla 1 — El dorado es sagrado.**  
+**Rule 1 — Gold is sacred.**  
 `accent` (#D4A017) is reserved for achievements, found words, earned stars. Using it on decorative elements degrades it. Every time the player sees gold, they must feel they earned something.
 
-**Regla 2 — La magia es rara.**  
+**Rule 2 — Magic is rare.**  
 `magic_glow` (#7B4FBE) appears only on elements directly associated with the Istari Owl or narrative magical effects. Not in functional UI.
 
-**Regla 3 — El texto sobre parchment siempre en `text_primary`.**  
+**Rule 3 — Text on parchment always uses `text_primary`.**  
 Never grey text on a light background for children aged 4–9. Minimum WCAG AA contrast on all reading text.
 
-**Regla 4 — `incorrect` nunca es el rojo agresivo de un error.**  
+**Rule 4 — `incorrect` is never the aggressive red of an error.**  
 It is a soft, momentary red. The game does not punish — it informs. The error animation lasts a maximum of 500ms and the color returns to neutral state.
 
 ### Color accessibility notes
@@ -157,9 +157,9 @@ It is a soft, momentary red. The game does not punish — it informs. The error 
 
 **Architecture decision:** The game applies automatic palette transformations as a first line of defense. Modders may optionally provide manual palettes in `theme.json` that replace the automatic transformation for their theme. If they do not provide a manual palette, the automatic transformation is applied. This gives compatibility to all themes without extra work from the modder.
 
-**Herramienta recomendada para validar:** Color Oracle (gratis, macOS/Windows/Linux) — simula las tres condiciones en tiempo real sobre cualquier pantalla.
+**Recommended validation tool:** Color Oracle (free, macOS/Windows/Linux) — simulates all three conditions in real time on any screen.
 
-**Milestone:** Paletas definidas y testeadas en M1. Integradas en `colorblind_mode` en M2. El Preview Tool valida contraste de paleta desde M1.
+**Milestone:** Palettes defined and tested in M1. Integrated into `colorblind_mode` in M2. The Preview Tool validates againstste de paleta desde M1.
 
 ```
 DEUTERANOPIA (no green cone — most common, ~6% of men)
@@ -206,7 +206,7 @@ RULE COMMON TO ALL THREE MODES:
 
 ### Concepto y personalidad
 
-The Istari Owl is the player's companion. The child names it at the start. In this document it is called **"the Professor"** as an internal working name.
+The Istari Owl companion is named **Owlorumo**. This is the official name — not a working title. References to "the Professor" in earlier drafts refer to this character.
 
 **Visual personality:** Old, wise, kind, slightly eccentric. Think of Radagast the Brown if he had dedicated his life to books instead of animals. Or the Wizard of Oz if he were genuinely wise instead of a charlatan. There are decades of history in every feather, but his eyes are warm and understanding — never intimidating.
 
@@ -273,9 +273,9 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 | `thinking` | Loop | Slow head turn. One talon scratches the chin (with staff in the other). | During active puzzle, waiting for input |
 | `excited` | One-shot | Wings slightly extended. Short hop. Staff crystal flashes. | 3 stars, first book completed |
 | `hint` | One-shot | Leans forward. Staff gently points toward the puzzle area. Crystal glowing. | When giving hint |
-| `reading` | Loop | Sostiene un libro abierto. Los ojos se mueven de un lado al otro lentamente. | Durante lectura de pasaje con TTS |
+| `reading` | Loop | Holds an open book. Eyes move slowly from side to side. | During passage read-aasaje con TTS |
 | `celebrate` | One-shot | Wings fully extended (maximum expansion). `magic_glow` magic motes emerge. | Completing an entire book |
-| `sleepy` | Loop | Cabeceos lentos. Ojos semicerrados. Para pantallas de descanso o inactividad. | Timeout de inactividad |
+| `sleepy` | Loop | Slow nodding. Half-closed eyes. For rest screens or inactivity. | Inactivity timeouad |
 | `wave` | One-shot | Raises one wing in greeting. For onboarding and player return. | First time, returning to session |
 
 #### Animation → feedback protocol mapping
@@ -295,7 +295,19 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 
 ### Accesorios desbloqueables (M2)
 
-Los accesorios son overlays sobre el sprite base. No requieren redibujar el personaje completo — se superponen en el layer de accesorios.
+#### Owlorumo's staff — integral element
+
+The staff with the purple crystal is a permanent, integral part of Owlorumo's design. It is present in every animation state, including `idle`. It is never removed or hidden. The staff is not an accessory — it is part of the character's silhouette.
+
+**Visual rule:** Owlorumo's silhouette must always read as "owl with wizard hat and staff." If a frame cannot accommodate the staff legibly at 48×48px, the crystal glow alone is sufficient to imply it.
+
+**Animation note:** The crystal glow (`magic_glow` `#7B4FBE`) pulses at 0.8Hz in `idle`. In `hint` and `cast` states it brightens to full `#A87FE8` and emits particle sparks.
+
+---
+
+#### Accessories — earned overlays
+
+Accessories are overlays on top of the base sprite. They do not require redrawing the full character — they are layereder de accesorios.
 
 ```
 Categories:
@@ -305,15 +317,15 @@ Categories:
   badges/      — Medallions on the belt, brooches on the robe
 ```
 
-Los accesorios se ganan con estrellas acumuladas. Design en v1.1.
+Accessories are earned with accumulated stars. Design in v1.1.
 
 ### Lo que NO es el Istari Owl
 
 - ❌ Not condescending — never has the face of "you should know this"
 - ❌ Not perfect — has ink stains on the robe, slightly ruffled feathers
-- ❌ No es voluminoso o amenazante — aunque es alto, su postura es abierta
+- ❌ Not bulky or threatening — even if tall, its posture is open
 - ❌ Does not float in the air — walks (with talons), uses the staff for support
-- ❌ No habla en el juego (solo TTS del texto del libro) — se expresa solo con animaciones
+- ❌ Does not speak in the game (only TTS of the book text) — expresses itself through animations only
 
 ---
 
@@ -337,7 +349,7 @@ Libros en los estantes:
 Lighting:
   Primary source: chandeliers/oil lamps. Warm light (#D4A017 tinted).
   Source secundaria: los propios libros disponibles. Emiten light suave.
-  Magic source: the Professor's staff. Pulses slowly.
+  Magic source: Owlorumo's staff. Pulses slowly.
   
 Parallax layers (for background animation):
   Layer 1 (closest):  Table, chairs, foreground objects
@@ -380,7 +392,7 @@ Each book pack has a `cover_image`. The Library Scene design shows books on the 
 
 ### Philosophy: organic pixel art, not geometric pixel art
 
-READCRAFTERY's pixel art is not the cold, geometric pixel art of retro action games. It is pixel art with **deliberate organic shapes**: shelf corners curve gently, the Professor's hat bends to one side, books have slightly irregular spines. The pixel grid is the medium, not the message. Seuss's warmth can be achieved in pixel art — Stardew Valley and Celeste prove it.
+READCRAFTERY's pixel art is not the cold, geometric pixel art of retro action games. It is pixel art with **deliberate organic shapes**: shelf corners curve gently, Owlorumo's hat bends to one side, books have slightly irregular spines. The pixel grid is the medium, not the message. Seuss's warmth can be achieved in pixel art — Stardew Valley and Celeste prove it.
 
 ### Rules de outline
 
@@ -549,7 +561,7 @@ FEEDBACK HIERARCHY (most to least visible):
   1. Correcto: palabra encontrada → glow dorado → vuela al word bank → SFX
   2. Completado: todas las palabras → celebration scene completa
   3. Error: soft red tile 500ms maximum → returns to normal state
-  4. Hint: the Professor points → crystal glows → subtle highlight in area
+  4. Hint: Owlorumo points → crystal glows → subtle highlight in area
 
 DURATION RULE:
   Feedback positivo (correcto, completado): puede durar todo lo necesario
@@ -577,7 +589,7 @@ LIMITS OF RICHNESS:
 
 DURING SELECTION:
   When cursor/finger is over a book: everything else reduces brightness to 70%
-  Only the selected book and the Professor have active animation
+  Only the selected book and Owlorumo have active animation
 ```
 
 ### Rule of "how alive is too alive"
@@ -887,27 +899,27 @@ A theme is a set of files that changes the visual appearance of the game without
 
 ### Override levels — what you can change and when
 
-No todos los overrides son iguales. El sistema tiene tres niveles de apertura:
+Not all overrides are equal. The system has three levels of openness:
 
 **Nivel 1 — Safe overrides (disponible desde M1):**
 Changes that cannot break the game or accessibility even if done wrong. The game validates these automatically.
-- Tokens de color (`theme.json` → `colors`)
-- Backgrounds de la Library Scene (4 layers PNG)
-- Preview image del theme
-- Sonidos de UI (clicks, hover) — especificados en M2
+- Color tokens (`theme.json` → `colors`)
+- Library Scene backgrounds (4 PNG layers)
+- Theme preview image
+- UI sounds (clicks, hover) — specified in M2
 
 **Nivel 2 — Advanced overrides (disponible desde M2):**
 Changes that require more care. The Preview Tool gives warnings but does not block.
-- Fuentes custom (solo OFL — el validador chequea la licencia declarada en metadata)
-- Sprites del Profesor (solo estados completos — no frames sueltos)
+- Custom fonts (OFL only — the validator checks the license declared in metadata)
+- Companion sprites (complete state atlases only — no individual frames)
 - UI tiles: word bank, botones, iconos
 
-**Nivel 3 — Restricted (no disponible para modders externos):**
+**Level 3 — Restricted (not available to external modders):**
 Changes that touch layout, systemic accessibility, or incomplete features.
 - Colorblindness palettes (the game manages these automatically)
 - Celebration scene (schema still open — see §11)
 - Layout RTL visual (Architecture Contract §7.2 abierto)
-- Reemplazos de frames individuales del Profesor (solo atlas completo)
+- Individual companion frame replacements (full atlas only)
 - Anything that changes tap target sizes
 
 ### Estructura de un theme pack
@@ -951,7 +963,7 @@ mi_theme/
 
 ### `theme.json`
 
-Define los colores usando los tokens del sistema. **Solo necesitas definir los tokens que quieres cambiar** — los que omitas usan los valores del Cozy Library por defecto.
+Define colors using the system tokens. **You only need to define the tokens you want to change** — those omitas usan los valores del Cozy Library por defecto.
 
 ```json
 {
@@ -1178,7 +1190,7 @@ Before considering a milestone visually complete, all checks must pass. These ar
 ✓ Mostrar Library Scene 3 segundos → tapar → preguntar:
   "Where would you click to read?"
   Correct answer: points to glowing books.
-  If they point to the Professor or decoration: books do not stand out enough.
+  If they point to Owlorumo or decoration: books do not stand out enough.
 
 ✓ Passage text at `small` size (18px) readable from 40cm on a screen
   of a 7-inch tablet. Physical test.
@@ -1235,9 +1247,9 @@ Before considering a milestone visually complete, all checks must pass. These ar
 | **Specific fonts** | ✅ Closed — Andika (passage) + Nunito (UI) | M0 | Download and commit to `res://fonts/` before building PassageView |
 | **Display typography for titles** | ✅ Closed — Nunito (same as UI font) | M0 | Consistent with UI font decision |
 | **Istari Owl accessories** | ⚠️ Open — categories defined | M2 | Does not block M0/M1 |
-| **Design Celebration Scene completo** | ⚠️ Abierto — stub en M0 | M1 | Stub suficiente para M0 |
-| **Libro como objeto con perspectiva** | ⚠️ Abierto | M2+ | Puede ser sprite 2D plano en M0/M1 |
-| **RTL layout visual** | 🔴 Bloqueado — Architecture Contract §7.2 | Post-M3 | No producir assets RTL |
+| **Full Celebration Scene design** | ⚠️ Open — stub in M0 | M1 | Stub sufficient for M0 |
+| **Book as perspective object** | ⚠️ Open | M2+ | Can be flat 2D sprite in M0/M1 |
+| **RTL visual layout** | 🔴 Blocked — Architecture Contract §7.2 | Post-M3 | Do not produce RTL assets |
 | **Visual validation with mock** | ⚠️ Pending | Before end of M0 | 1 Library, 1 PassageView, 1 owl sheet, 1 UI set |
 
 ---

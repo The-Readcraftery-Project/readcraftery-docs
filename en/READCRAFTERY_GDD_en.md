@@ -377,7 +377,7 @@ Each puzzle earns 1–3 stars:
 Stars unlock new books on the library shelf.
 
 ### The Reading Owl Companion
-The player's owl companion (named by the player at start) grows and changes as progress is made:
+The player's owl companion is named **Owlorumo**. The name is fixed — it is part of the character's identity, not assigned by the player. Owlorumo grows and changes as progress is made:
 - Earns accessories: hats, scarves, glasses, wings
 - Reacts emotionally to player performance — celebrates, looks curious, cheers
 - Can be renamed and reskinned via unlockable themes
@@ -420,6 +420,24 @@ keeps trying or develops a negative identity as a reader.
 - **Automatic** (inactivity > 13 seconds): does not deduct from `hint_count`
 - **Manual** (child presses hint button): deducts from `hint_count`
 - `hint_count` minimum: 3 per puzzle, regardless of difficulty
+
+### Owlorumo — adaptive language — ✅ CLOSED
+
+Owlorumo speaks. The complexity of his speech adapts to the `reading_stage` of the active book pack.
+
+| `reading_stage` | Example phrase | Speech style |
+|---|---|---|
+| `early_emergent` (ages 5–6) | *"That one!"* / *"Yes!"* / magic sound | Single words or exclamations. TTS-driven. |
+| `developing` (ages 7–9) | *"You found 'seed'!"* | Short, complete sentence. Positive. |
+| `fluent` (ages 9+) | *"'Seed' comes from 'to sow'. Well done!"* | Word origin or usage. One extra fact. |
+
+**Implementation:** Owlorumo's lines are strings defined per `reading_stage` in the book pack's locale file or in the base `en.json` / `es.json`. The engine selects the appropriate string set at pack load time via `LocaleManager`.
+
+**Rules:**
+- Owlorumo never comments on errors — only on correct actions and on hints (see feedback protocol above)
+- Speech lines are never longer than one sentence at any level
+- The `early_emergent` level may replace speech with a short TTS sound effect and an animation — no words required
+- All Owlorumo speech goes through TTS — never pre-recorded (ensures voice consistency across languages)
 
 ### Sticker Collection
 Each book completed adds stickers to the player's "Reading Journal" — an in-game scrapbook. Stickers are themed around the book's content (animals, objects, characters).

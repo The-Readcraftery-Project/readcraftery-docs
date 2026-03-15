@@ -19,8 +19,8 @@
 > When the real art arrives, the change is texture replacement, not refactoring.
 >
 > **How to use placeholders:**
-> Para cada asset, instanciar el `node_type` correcto con `modulate = Color("hex")`
-> usando el `placeholder_color` de la tabla. Cuando llega el arte: asignar la
+> For each asset, instantiate the correct `node_type` with `modulate = Color("hex")`
+> using the `placeholder_color` from the table. When the art arrives: assign the
 > texture, remove the modulate. Nothing else changes.
 >
 > **Global scale:** all game assets are drawn at native pixels
@@ -54,15 +54,15 @@
 | Column | Description |
 |---|---|
 | `asset_id` | Filename without extension. It is the canonical identifier. |
-| `node_type` | Nodo de Godot que renderiza este asset. Usar este nodo en el placeholder — no cambia cuando llega el arte. |
+| `node_type` | Godot node that renders this asset. Use this node in the placeholder — it does not change when the arte. |
 | `draw_size` | Drawing pixel dimensions (what the artist draws). |
 | `display_size` | On-screen dimensions at 4×. For NinePatch: minimum container size. |
-| `anchor` | Punto de anclaje del nodo. En Godot: `PRESET_*` del enum `Control` o `centered` para `Sprite2D`. |
-| `states` | Lista de estados visuales requeridos. Cada estado = un archivo PNG separado (o frame en AnimatedSprite2D). |
+| `anchor` | Node anchor point. In Godot: `PRESET_*` from the `Control` enum or `centered` for `Sprite2D`. |
+| `states` | List of required visual states. Each state = a separate PNG file (or frame in AnimatedSprite2D). |
 | `animates` | Whether the asset has a loop or one-shot animation. Format: `type (Nframes @ Xfps)`. |
 | `layout_role` | `structural` = defines layout (moving it breaks the screen) · `interactive` = the child touches this · `decorative` = visual only |
-| `priority` | Milestone en que debe existir el arte real. M0 = bloqueador de primer pasaje jugable. |
-| `placeholder_color` | Token de paleta para el ColorRect/modulate del placeholder. |
+| `priority` | Milestone by which real art must exist. M0 = blocker for first playable passage. |
+| `placeholder_color` | Palette token for the placeholder ColorRect/modulate. |
 
 ### Node types used in this document
 
@@ -162,13 +162,13 @@ The atlas is at `res://content/atlas_owl.png`. Animations are defined in the `Sp
 
 | asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
 |---|---|---|---|---|---|---|---|---|---|
-| `bg_library_layer_4` | Sprite2D (en ParallaxLayer) | 480×270 | 1920×1080 | top-left | — | no (estático) | structural | M0 | `#2C1A0E` background |
+| `bg_library_layer_4` | Sprite2D (in ParallaxLayer) | 480×270 | 1920×1080 | top-left | — | no (estático) | structural | M0 | `#2C1A0E` background |
 | `bg_library_layer_3` | Sprite2D (en ParallaxLayer) | 480×270 | 1920×1080 | top-left | — | no (factor 0.1) | structural | M0 | `#4A2E1A` surface |
 | `bg_library_layer_2` | Sprite2D (en ParallaxLayer) | 480×270 | 1920×1080 | top-left | — | no (factor 0.3) | structural | M1 | `#6B4226` surface_light |
 | `bg_library_layer_1` | Sprite2D (en ParallaxLayer) | 480×270 | 1920×1080 | top-left | — | no (factor 0.6) | structural | M1 | `#4A2E1A` surface |
 
-> **M0:** layers 3 y 4 con arte real. Layers 1 y 2 como ColorRect plano.  
-> **M1:** los 4 layers con arte real y parallax activo.
+> **M0:** layers 3 and 4 with real art. Layers 1 and 2 as flat ColorRect.  
+> **M1:** all 4 layers with real art and active parallax.
 
 ### Interactive UI
 
@@ -224,7 +224,7 @@ Library (Node2D)
 |---|---|---|---|---|---|---|---|---|---|
 | `passage_text` | RichTextLabel | — | fills panel - padding | top-left | normal / word_highlighted | no (BBCode handles highlight) | structural | M0 | — (es texto, no imagen) |
 | `book_illustration` | TextureRect | variable | max 30% panel height | top-center | static | no | decorative | M1 | `#6B4226` surface_light |
-| `passage_title` | Label | — | top of panel | top-left | static | no | decorative | M0 | — (es texto) |
+| `passage_title` | Label | — | top of panel | top-left | static | no | decorative | M0 | — (text) |
 
 ### Bottom Bar (shared between passage and puzzle)
 
@@ -232,7 +232,7 @@ Library (Node2D)
 |---|---|---|---|---|---|---|---|---|---|
 | `btn_hint` | TextureButton | 24×24 | 96×96 | bottom-right | normal / pressed / disabled | no | interactive | M0 | `#7B4FBE` magic_glow |
 | `btn_exit` | TextureButton | 24×24 | 96×96 | bottom-left | normal / pressed | no | interactive | M0 | `#E53935` incorrect |
-| `hint_counter` | Label | — | over btn_hint | center | static | no | decorative | M0 | — (es texto) |
+| `hint_counter` | Label | — | over btn_hint | center | static | no | decorative | M0 | — (text) |
 | `star_row` | HBoxContainer (3× star) | — | top of bottom bar | top-center | — | — | decorative | M0 | — (ver §2 stars) |
 
 ### Puzzle Panel (right, 40%)
@@ -327,7 +327,7 @@ WordGlow (VBoxContainer)  ← instanciado en PuzzleContainer
 | `tile_letter_incorrect` | NinePatchRect | 16×16 | 64×64 | center | — | shake one-shot (500ms) | decorative | M0 | `#E53935` incorrect |
 | `slot_letter_empty` | NinePatchRect | 16×16 | 64×64 | center | — | no | interactive | M0 | `#2C1A0E` background |
 | `slot_letter_filled` | NinePatchRect | 16×16 | 64×64 | center | — | no | interactive | M0 | `#6B4226` surface_light |
-| `word_target_label` | Label | — | top of puzzle | top-center | static | no | structural | M0 | — (es texto) |
+| `word_target_label` | Label | — | top of puzzle | top-center | static | no | structural | M0 | — (text) |
 
 ### NinePatch margins para `tile_letter_*` y `slot_letter_*`
 
@@ -366,7 +366,7 @@ Scramble (VBoxContainer)
 | `grid_cell_selected` | NinePatchRect | 16×16 | 64×64 | center | — | no | interactive | M0 | `#D4A017` accent |
 | `grid_cell_found` | NinePatchRect | 16×16 | 64×64 | center | — | glow loop | decorative | M0 | `#4CAF50` correct |
 | `grid_cell_hint` | NinePatchRect | 16×16 | 64×64 | center | — | pulse loop | decorative | M0 | `#FF9800` hint |
-| `found_word_label` | Label | — | lista lateral | top-left | normal / found (strikethrough) | no | structural | M0 | — (texto) |
+| `found_word_label` | Label | — | side list | top-left | normal / found (strikethrough) | no | structural | M0 | — (texto) |
 | `grid_selection_line` | Line2D | — | overlay sobre grid | absolute | — | animates con drag | decorative | M1 | `#D4A017` accent |
 
 > **Note:** `grid_selection_line` is a `Line2D`, not a texture — it is drawn in code following the selected cells. It has no art asset.
@@ -473,7 +473,7 @@ RhymeFinder (VBoxContainer)
 | `confetti_fx` | AnimatedSprite2D | 480×270 | 1920×1080 | fill (overlay) | — | one-shot (12fr @ 12fps) | decorative | M1 | `#D4A017` accent |
 | `label_book_title` | Label | — | top of scene | top-center | static | no | decorative | M0 | — (texto) |
 
-> **M0 implementation:** `celebration_bg_stub` es un `TextureRect` con `ColorRect` placeholder. `stars_row_big` usa los assets de `star_empty/star_filled` de §2. `btn_continue` es `TextureButton` con `ColorRect`. Todo funcional sin arte.
+> **M0 implementation:** `celebration_bg_stub` is a `TextureRect` with a `ColorRect` placeholder. `stars_row_big` uses the assets de `star_empty/star_filled` de §2. `btn_continue` es `TextureButton` con `ColorRect`. Todo funcional sin arte.
 
 ---
 
@@ -512,7 +512,7 @@ RhymeFinder (VBoxContainer)
 | `slider_thumb` | TextureRect | 8×8 | 32×32 | center (sobre track) | normal / dragging | no | interactive | M1 | `#D4A017` accent |
 | `theme_preview_frame` | NinePatchRect | 32×20 | 128×80 | center (en grid) | normal / selected | no | interactive | M2 | `#6B4226` surface_light |
 
-> **M0:** Settings solo necesita `btn_back` funcional y los controles de Godot nativos (`HSlider`, `CheckButton`, `OptionButton`) sin arte custom. Los assets custom son M1/M2.
+> **M0:** Settings only needs a functional `btn_back` and native Godot controls (`HSlider`, `CheckButton`, `OptionButton`) sin arte custom. Los assets custom son M1/M2.
 
 ---
 
@@ -534,7 +534,7 @@ RhymeFinder (VBoxContainer)
 
 ## Appendix A — M0 Priorities Summary
 
-Assets que deben existir (arte real o placeholder correcto) antes del primer pasaje jugable:
+Assets that must exist (real art or correct placeholder) before the first playable passage:
 
 ```
 GLOBAL:
@@ -591,4 +591,4 @@ Before considering an asset "correctly implemented" in code, verify:
 
 *Documento: READCRAFTERY Asset Contracts v1.0*  
 *Update when new scenes are added or when the Art Guide changes dimensions.*  
-*Este documento es fuente de verdad para dimensiones y node types — el Art Guide es fuente de verdad para estilo y paleta.*
+*This document is the source of truth for dimensions and node types — the Art Guide is the source of truth for style and palea.*
