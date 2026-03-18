@@ -1,0 +1,728 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{ifthen}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{amssymb}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!50!black,
+  urlcolor=blue!50!black,
+  pdftitle={READCRAFTERY — Artist Brief (Post-M1 Technical Handoff)},
+  pdfauthor={OpenAI},
+  pdfsubject={Artist production handoff},
+  pdfcreator={LaTeX}
+}
+
+\definecolor{RCBrown}{HTML}{2C1A0E}
+\definecolor{RCParchment}{HTML}{F5E6C8}
+\definecolor{RCGold}{HTML}{D4A017}
+\definecolor{RCAmber}{HTML}{E8721A}
+\definecolor{RCMagic}{HTML}{7B4FBE}
+\definecolor{RCBlue}{HTML}{1E3A5F}
+\definecolor{RCCorrect}{HTML}{4CAF50}
+\definecolor{RCIncorrect}{HTML}{E53935}
+\definecolor{RCHint}{HTML}{FF9800}
+\definecolor{RCNeutral}{HTML}{9E9E9E}
+\definecolor{RCSection}{HTML}{3E2A1F}
+\definecolor{RCLightBorder}{HTML}{D8C6A3}
+\definecolor{RCSoftBg}{HTML}{FBF7EF}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{READCRAFTERY — Artist Brief}
+\rhead{Post-M1 Technical Handoff}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+
+\titleformat{\section}{\large\bfseries\color{RCSection}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{RCSection}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.5em}{}
+
+\setlist[itemize]{topsep=4pt,itemsep=2pt,leftmargin=1.6em}
+\setlist[enumerate]{topsep=4pt,itemsep=2pt,leftmargin=1.8em}
+
+\newcommand{\docversion}{0.2}
+\newcommand{\docdate}{March 2026}
+
+% ---------- Image path placeholders ----------
+% Replace these paths with your actual image files.
+% If a file does not exist, the PDF will show a framed placeholder box instead.
+
+% Canon Owlorumo reference — source of truth for silhouette and proportions.
+\newcommand{\CanonCharacterPath}{path/to/canon_owlorumo_reference.png}
+
+% Approved concept art — mood, texture, and emotional tone.
+\newcommand{\ConceptArtPath}{path/to/approved_owlorumo_concept_art.png}
+
+% PassageView mock — size and hierarchy reference.
+\newcommand{\PassageViewMockPath}{path/to/passageview_context_mock.png}
+
+% Library mock — scene-role reference.
+\newcommand{\LibraryMockPath}{path/to/library_context_mock.png}
+
+% Mini moodboard image — optional 2–3 image collage.
+\newcommand{\MoodboardPath}{path/to/mini_moodboard.png}
+
+% Do / Don't strip — optional alignment panel.
+\newcommand{\DoDontPath}{path/to/do_dont_strip.png}
+
+% ---------- Utility macros ----------
+
+% Prints a color swatch and the hex code using the encoded color.
+% Usage: \hexcode{7B4FBE}
+\newcommand{\hexcode}[1]{%
+  \begingroup
+  \definecolor{temphex}{HTML}{#1}%
+  \fcolorbox{black}{temphex}{\rule{0pt}{1.1ex}\rule{1.6ex}{0pt}}\hspace{0.45em}%
+  {\ttfamily\textcolor{temphex}{\##1}}%
+  \endgroup
+}
+
+\newcommand{\checkbox}{\ensuremath{\square}}
+
+\newcommand{\briefbox}[2]{%
+  \begin{tcolorbox}[
+    colback=RCSoftBg,
+    colframe=RCLightBorder,
+    boxrule=0.5pt,
+    arc=1mm,
+    left=4mm,right=4mm,top=2.5mm,bottom=2.5mm,
+    title=\textbf{#1},
+    coltitle=black,
+    fonttitle=\bfseries
+  ]
+  #2
+  \end{tcolorbox}
+}
+
+\newcommand{\imageref}[4]{%
+  \begin{figure}[H]
+    \centering
+    \IfFileExists{#1}{%
+      \includegraphics[width=0.92\linewidth]{#1}%
+    }{%
+      \fbox{\begin{minipage}[c][52mm][c]{0.88\linewidth}
+      \centering
+      \textit{Image placeholder}\\[0.6em]
+      {\ttfamily\detokenize{#1}}\\[0.8em]
+      \small #4
+      \end{minipage}}%
+    }
+    \caption{#2}
+    \label{#3}
+  \end{figure}
+}
+
+\begin{document}
+
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\Huge\bfseries READCRAFTERY\\[0.4em]Artist Brief\par}
+\vspace{0.3cm}
+{\Large Post-M1 Technical Handoff\par}
+\vspace{1cm}
+
+\begin{tcolorbox}[
+  width=0.9\linewidth,
+  colback=RCParchment,
+  colframe=RCLightBorder,
+  boxrule=0.7pt,
+  arc=1mm,
+  auto outer arc
+]
+\centering
+\textbf{Version:} \docversion \quad | \quad
+\textbf{Date:} \docdate \quad | \quad
+\textbf{Status:} Internal production brief\\[0.5em]
+\textbf{Audience:} External artist / internal art production\\[0.5em]
+\textbf{Canonical references:} Art Style Guide v1.5 · Asset Contracts (synced) · Architecture Contract v1.3 · Canon Core (synced) · Roadmap v5
+\end{tcolorbox}
+
+\vfill
+
+{\large This file is intentionally production-oriented.\\
+It assumes the technical slice already exists and the art layer is replacing placeholders, not redefining the system.\par}
+
+\vfill
+\end{titlepage}
+
+\section{Purpose of this brief}
+
+This is \textbf{not} the long-form style bible. This is the production handoff for the moment when \textbf{M1 technical is already complete and stable}.
+
+At this stage:
+\begin{itemize}
+  \item all target screens already exist in-engine,
+  \item all final node types are already in place,
+  \item placeholder colors already match asset contracts,
+  \item scene layout is already locked enough that real art can replace placeholders.
+\end{itemize}
+
+The artist is \textbf{not} asked to invent system behavior, layout, or UX. The artist is asked to deliver final production art that drops into a working technical slice.
+
+\section{What this brief is for}
+
+The goal of this handoff is to produce the \textbf{first real visual pass} for READCRAFTERY after the technical milestone is proven.
+
+That means:
+\begin{itemize}
+  \item replace M0/M1 placeholders with real production-ready art,
+  \item preserve all locked dimensions, anchors, and node types,
+  \item keep readability and child clarity above decoration,
+  \item produce only the assets required for the \textbf{M1 final vertical slice}.
+\end{itemize}
+
+This brief does \textbf{not} authorize broader worldbuilding, alternate themes, extra VFX, or speculative polish.
+
+\section{Production context}
+
+READCRAFTERY is a reading game for children aged \textbf{4–9}. The core mechanic is reading-first, not action-first.
+
+The visual world is called \textbf{Storybook Arcane}:
+\begin{itemize}
+  \item warm,
+  \item alive,
+  \item handmade,
+  \item magical but not explosive,
+  \item child-safe and welcoming.
+\end{itemize}
+
+Two source inspirations define the feel:
+\begin{itemize}
+  \item \textbf{Choose Your Own Adventure} → each screen feels like a real book page.
+  \item \textbf{Dr. Seuss} → organic shape language, expressive personality, invented texture.
+\end{itemize}
+
+Avoid completely:
+\begin{itemize}
+  \item modern flat SaaS look,
+  \item anime/chibi proportions,
+  \item realism,
+  \item dark fantasy,
+  \item polished vector smoothness.
+\end{itemize}
+
+\section{Critical production rule}
+
+\briefbox{Non-negotiable rule}{
+\textbf{This handoff begins only after M1 technical is complete.}
+
+Before that moment:
+\begin{itemize}
+  \item M0 and technical M1 use placeholders,
+  \item concept art is reference only,
+  \item no final atlas production is expected,
+  \item no art should block architecture, loading, save flow, or HTML5 validation.
+\end{itemize}
+
+The artist must assume the engine side already works. The art layer must be a \textbf{drop-in replacement}, not a redesign request.
+}
+
+\section{Single source of truth hierarchy}
+
+If documents ever conflict, this order wins:
+\begin{enumerate}
+  \item \textbf{Asset Contracts} — dimensions, node types, anchors, states, placeholder replacement logic.
+  \item \textbf{Art Style Guide} — visual style, palette, character identity, rendering rules.
+  \item \textbf{Architecture Contract} — runtime rules and invariants.
+  \item \textbf{Roadmap} — production sequencing and milestone timing.
+  \item This brief — applied summary for art production.
+\end{enumerate}
+
+If there is still doubt, stop and ask before producing.
+
+\section{Core visual direction}
+
+\subsection{Style name}
+\textbf{Storybook Arcane}
+
+\subsection{Emotional target}
+The game should feel like:
+\begin{itemize}
+  \item a magical library on a rainy evening,
+  \item a safe storybook world,
+  \item handcrafted and warm,
+  \item visually rich, but never at the cost of reading clarity.
+\end{itemize}
+
+\subsection{Most important rule}
+\textbf{Text is king.} If an art decision makes the text less readable, that art decision is wrong.
+
+\section{Owlorumo — character production summary}
+
+Owlorumo is the official companion character. He is a \textbf{young owl wizard}: kind, curious, encouraging, never intimidating.
+
+\subsection{Must-read silhouette}
+Owlorumo must read clearly as:
+\begin{itemize}
+  \item owl,
+  \item wizard hat,
+  \item staff with glowing crystal.
+\end{itemize}
+
+\subsection{Key identity features}
+\begin{itemize}
+  \item large amber eyes,
+  \item small curved beak,
+  \item navy robe,
+  \item wrapped neck cloth,
+  \item crescent moon clasp,
+  \item bent wizard hat,
+  \item brown boots,
+  \item dark twisted staff,
+  \item purple-white crystal glow (idle tone: \hexcode{7B4FBE}).
+\end{itemize}
+
+\subsection{Hard rules}
+\begin{itemize}
+  \item no beard,
+  \item never threatening,
+  \item never smug or condescending,
+  \item staff is integral, not optional,
+  \item silhouette must remain legible at native sprite size.
+\end{itemize}
+
+\section{Pixel art production rules}
+
+\subsection{Rendering rules}
+\begin{itemize}
+  \item true pixel art,
+  \item no smooth digital painting,
+  \item no vector-clean curves,
+  \item no blur,
+  \item no gradient shading,
+  \item no manual anti-aliasing,
+  \item no pillow shading.
+\end{itemize}
+
+\subsection{Outline rules}
+\begin{itemize}
+  \item 1px outline only,
+  \item never pure black,
+  \item use darker local color instead.
+\end{itemize}
+
+\subsection{Lighting rules}
+\begin{itemize}
+  \item light direction: upper-left,
+  \item flat shadow blocks only,
+  \item max 2 shadow values per element,
+  \item highlight used sparingly.
+\end{itemize}
+
+\subsection{Palette examples}
+The final production palette is defined in the Art Style Guide. In this PDF, any hex code can be shown using its own encoded color. Examples:
+\begin{itemize}
+  \item Background dark: \hexcode{2C1A0E}
+  \item Parchment: \hexcode{F5E6C8}
+  \item Reward gold: \hexcode{D4A017}
+  \item Magic glow: \hexcode{7B4FBE}
+  \item Correct feedback: \hexcode{4CAF50}
+  \item Error feedback: \hexcode{E53935}
+\end{itemize}
+
+\section{Technical size rules}
+
+These are locked.
+
+\begin{longtable}{@{}p{0.36\linewidth}p{0.22\linewidth}p{0.22\linewidth}p{0.14\linewidth}@{}}
+\toprule
+\textbf{Asset} & \textbf{Native size} & \textbf{Display} & \textbf{Scale} \\
+\midrule
+Owlorumo (PassageView) & 64×64 px & 192×192 px & 3× \\
+Owlorumo (Library/menu) & 64×64 px & 256×256 px & 4× \\
+Owlorumo (Celebration) & 64×64 px & 256–320 px & 4–5× \\
+Accessories (overlay) & 64×64 px & matches context & same as base \\
+UI icons & 16×16 px & 64×64 px & 4× \\
+Buttons / tiles & 16×16 px base & 64×64 px & 4× \\
+Buttons (touch-driven where specified) & 24×24 px min & 96×96 px target & 4× \\
+Background layers & 480×270 px & 1920×1080 px & 4× \\
+Parchment / wood tiles & 64×64 px & repeated in UI & 4× \\
+Stars small & 8×8 px & 32×32 px & 4× \\
+Stars large & 16×16 px & 64×64 px & 4× \\
+\bottomrule
+\end{longtable}
+
+\textbf{Do not upscale before export.} Deliver at native draw size only.
+
+\section{Engine-facing rules}
+
+The engine is already built against the contract. The artist must \textbf{not} change:
+\begin{itemize}
+  \item node types,
+  \item layout role,
+  \item anchor point assumptions,
+  \item state names,
+  \item naming convention,
+  \item expected frame counts unless approved.
+\end{itemize}
+
+Art replaces textures. It does not redefine UI architecture.
+
+\section{Delivery format}
+
+\subsection{Required source delivery}
+\begin{itemize}
+  \item preferred: \texttt{.aseprite}
+  \item acceptable: layered \texttt{.psd}
+\end{itemize}
+
+\subsection{Required export delivery}
+\begin{itemize}
+  \item PNG with transparency where applicable,
+  \item one file per state or frame as requested,
+  \item no embedded scale-up,
+  \item no texture atlas packing unless explicitly requested later.
+\end{itemize}
+
+\subsection{Naming}
+Use the contract names exactly. Examples:
+\begin{itemize}
+  \item \texttt{owl\_idle\_01.png}
+  \item \texttt{owl\_thinking\_03.png}
+  \item \texttt{tile\_word\_found.png}
+  \item \texttt{bg\_library\_layer\_4.png}
+\end{itemize}
+
+\subsection{Registration / anchor}
+\begin{itemize}
+  \item Owlorumo anchor: center-bottom,
+  \item accessories: pixel-perfect registration with base sprite,
+  \item UI assets: preserve exact margins for NineSlice where applicable.
+\end{itemize}
+
+\section{Approval sequence}
+
+To minimize rework, approval happens in this order:
+\begin{enumerate}
+  \item Owlorumo silhouette sheet,
+  \item Owlorumo color pass,
+  \item Owlorumo idle,
+  \item Owlorumo thinking,
+  \item Owlorumo hint,
+  \item PassageView textures and WordGlow UI tiles,
+  \item Library background layers,
+  \item Remaining M1-final states.
+\end{enumerate}
+
+Do not fully produce later items before earlier ones are approved.
+
+\section{What the artist is producing in this handoff}
+
+This handoff is for the \textbf{M1 final vertical slice}. It is intentionally limited.
+
+\subsection{In scope}
+\begin{itemize}
+  \item Owlorumo production sprite work for approved states,
+  \item PassageView textures,
+  \item WordGlow UI tiles and icons,
+  \item minimum library background art required for the slice,
+  \item celebration stub replacement only if the milestone calls for it.
+\end{itemize}
+
+\subsection{Not in scope}
+\begin{itemize}
+  \item alternate themes,
+  \item accessories system,
+  \item community mod art,
+  \item RTL assets,
+  \item speculative polish,
+  \item VFX-heavy celebration sequences,
+  \item book perspective system beyond approved slice needs,
+  \item final atlas optimization pass.
+\end{itemize}
+
+\section{Visual quality targets}
+
+The final art should satisfy all of these:
+\begin{itemize}
+  \item child-safe,
+  \item readable at gameplay size,
+  \item warm, not sterile,
+  \item magical, not explosive,
+  \item expressive but not noisy,
+  \item screen hierarchy always favors text and puzzle interaction.
+\end{itemize}
+
+If a beautiful asset competes with the reading task, it must be simplified.
+
+\section{Acceptance checks for artist review}
+
+Before approving an asset, verify:
+\begin{itemize}
+  \item it matches locked draw size,
+  \item silhouette reads clearly at gameplay size,
+  \item outline is consistently 1px,
+  \item light direction is upper-left,
+  \item no blur / no anti-aliasing / no gradients,
+  \item palette remains in-family with project tokens,
+  \item readability remains stronger than decoration,
+  \item anchor assumptions still hold,
+  \item export name matches contract exactly.
+\end{itemize}
+
+\section{Visual Reference Pack}
+
+The brief should include a \textbf{small, controlled visual pack}. Do not send a giant moodboard. Do not send conflicting references. Every included image must have a clear role.
+
+\briefbox{Image handling rules}{
+\begin{itemize}
+  \item Keep the pack small: \textbf{4 to 6 images total}.
+  \item Do not include deprecated concept art.
+  \item Do not include contradictory old versions.
+  \item Do not include placeholder screenshots unless clearly labeled as layout-only.
+  \item Label every image with its role.
+  \item If a conflict appears, the \textbf{canon character reference wins}.
+\end{itemize}
+}
+
+% PLACEHOLDER: Canon character reference — source of truth for Owlorumo.
+\imageref{\CanonCharacterPath}{\textbf{Canon character reference — source of truth for Owlorumo.} If any other reference conflicts with this one, this image wins.}{fig:canon}{Use this slot for the single most authoritative Owlorumo image.}
+
+% PLACEHOLDER: Approved concept art — mood, texture, and emotional tone.
+\imageref{\ConceptArtPath}{\textbf{Approved concept art — use for mood, texture, and emotional tone.} Do not override the canon character reference on silhouette or key proportions.}{fig:concept}{Use this slot for the main approved concept art.}
+
+% PLACEHOLDER: PassageView context mock — size and hierarchy reference.
+\imageref{\PassageViewMockPath}{\textbf{PassageView context mock — size and hierarchy reference.} Text and puzzle readability always outrank character decoration.}{fig:passageview}{Use this slot for a layout mock or high-level composition mock of PassageView.}
+
+% PLACEHOLDER: Library context mock — scene-role reference.
+\imageref{\LibraryMockPath}{\textbf{Library context mock — scene-role reference.} Available books must stand out immediately; Owlorumo supports the scene but does not dominate selection.}{fig:library}{Use this slot for a library composition mock.}
+
+% PLACEHOLDER: Mini moodboard — 2 to 3 images maximum, ideally combined into one collage.
+\imageref{\MoodboardPath}{\textbf{Moodboard — atmosphere only.} Use for emotional direction, not for overriding the project’s locked character design or technical pixel-art rules.}{fig:moodboard}{Use this slot for a compact 2–3 image collage only.}
+
+% PLACEHOLDER: Do / Don't strip — optional but recommended.
+\imageref{\DoDontPath}{\textbf{Do / Don't strip — fast alignment tool.} If a new sketch drifts toward any “Don't” column, correct direction before production continues.}{fig:dodont}{Use this slot for a small yes/no comparison strip.}
+
+\subsection{Recommended order inside the brief}
+Put the images in this order:
+\begin{enumerate}
+  \item canon character reference,
+  \item approved concept art,
+  \item PassageView context mock,
+  \item Library context mock,
+  \item mini moodboard,
+  \item Do / Don't strip.
+\end{enumerate}
+
+This order matters. It teaches the artist:
+\begin{itemize}
+  \item who the character is,
+  \item how the character should feel,
+  \item where the character lives in UI,
+  \item what atmosphere to target,
+  \item what styles to avoid.
+\end{itemize}
+
+\section{Final note to artist}
+
+READCRAFTERY is not asking for maximal visual density. It is asking for \textbf{clarity with warmth}. The best result is not the most elaborate result. The best result is the one that makes a child want to read the next word.
+
+\newpage
+\section*{READCRAFTERY — Asset Checklist (Post-M1 Technical Handoff)}
+\addcontentsline{toc}{section}{READCRAFTERY — Asset Checklist (Post-M1 Technical Handoff)}
+
+\subsection*{A. Handoff assumptions}
+Before production starts, all of these must already be true:
+\begin{itemize}
+  \item[\checkbox] M1 technical milestone complete.
+  \item[\checkbox] HTML5 slice runs correctly.
+  \item[\checkbox] Placeholders already wired to final node types.
+  \item[\checkbox] Owlorumo size contract frozen at 64×64 master draw size.
+  \item[\checkbox] Asset Contracts accepted as dimension/source-of-truth document.
+  \item[\checkbox] Scene layout stable enough that art replacement will not cause redesign.
+\end{itemize}
+
+If any box above is unchecked, do not start external asset production.
+
+\subsection*{B. Owlorumo — character assets}
+\textbf{Required first approvals}
+\begin{itemize}
+  \item[\checkbox] Owlorumo silhouette sheet
+  \item[\checkbox] Owlorumo color pass
+  \item[\checkbox] Owlorumo expression sheet
+\end{itemize}
+
+\textbf{Required state deliveries for first production pass}
+\begin{itemize}
+  \item[\checkbox] \texttt{icon\_hint.png} — staff crystal motif, 16×16px. UI indicator only.
+  Note: Owlorumo himself is the hint button. There is no separate btn\_hint asset.
+  \item[\checkbox] \texttt{owl\_idle\_02.png}
+  \item[\checkbox] \texttt{owl\_idle\_03.png}
+  \item[\checkbox] \texttt{owl\_idle\_04.png}
+  \item[\checkbox] \texttt{owl\_thinking\_01.png}
+  \item[\checkbox] \texttt{owl\_thinking\_02.png}
+  \item[\checkbox] \texttt{owl\_thinking\_03.png}
+  \item[\checkbox] \texttt{owl\_thinking\_04.png}
+  \item[\checkbox] \texttt{owl\_hint\_01.png}
+  \item[\checkbox] \texttt{owl\_hint\_02.png}
+  \item[\checkbox] \texttt{owl\_hint\_03.png}
+  \item[\checkbox] \texttt{owl\_hint\_04.png}
+\end{itemize}
+
+\textbf{Optional later in same handoff, only if approved}
+\begin{itemize}
+  \item[\checkbox] \texttt{owl\_happy\_01.png} to \texttt{owl\_happy\_06.png}
+  \item[\checkbox] \texttt{owl\_reading\_01.png} to \texttt{owl\_reading\_04.png}
+  \item[\checkbox] \texttt{owl\_wave\_01.png} to \texttt{owl\_wave\_06.png}
+\end{itemize}
+
+\textbf{Deferred}
+\begin{itemize}
+  \item[\checkbox] excited
+  \item[\checkbox] celebrate
+  \item[\checkbox] sleepy
+  \item[\checkbox] accessories
+  \item[\checkbox] state\_4 fulfilled restoration (blue mantle illuminated white-gold, same identity anchors)
+\end{itemize}
+
+\subsection*{C. PassageView textures}
+\begin{itemize}
+  \item[\checkbox] \texttt{parchment\_tile.png} — 64×64 tileable
+  \item[\checkbox] \texttt{wood\_tile.png} — 64×64 tileable
+\end{itemize}
+
+\textbf{Checks}
+\begin{itemize}
+  \item[\checkbox] parchment contrast remains low-noise behind text
+  \item[\checkbox] wood texture does not compete with puzzle readability
+  \item[\checkbox] both tile seamlessly
+\end{itemize}
+
+\subsection*{D. WordGlow UI assets}
+\begin{itemize}
+  \item[\checkbox] \texttt{tile\_word\_normal.png}
+  \item[\checkbox] \texttt{tile\_word\_selected.png}
+  \item[\checkbox] \texttt{tile\_word\_found.png}
+  \item[\checkbox] \texttt{slot\_word\_empty.png} if included in approved slice
+  \item[\checkbox] \texttt{slot\_word\_filled.png} if included in approved slice
+\end{itemize}
+
+\textbf{Checks}
+\begin{itemize}
+  \item[\checkbox] NineSlice corners survive scaling
+  \item[\checkbox] tile state differences are readable instantly
+  \item[\checkbox] found state feels rewarded, not noisy
+\end{itemize}
+
+\subsection*{E. Global UI icons / buttons}
+\begin{itemize}
+  \item[\checkbox] \texttt{icon\_hint.png} — staff crystal motif, 16×16px.
+    No \texttt{btn\_hint.png} — Owlorumo himself is the hint button.
+  \item[\checkbox] \texttt{btn\_exit.png} — door motif, 24×24px. Tap-hold 1 second to activate.
+  \item[\checkbox] \texttt{book\_tts.png} — small open book, 16×16px. TTS play button in PassageView.
+  \item[\checkbox] \texttt{book\_settings.png} — closed book, navy \#1E2A4A with crescent moon on spine, 16×24px. Fixed top-right of Library.
+\end{itemize}
+
+\textbf{Optional if included in current slice}
+\begin{itemize}
+  \item[\checkbox] \texttt{btn\_continue.png}
+  \item[\checkbox] \texttt{btn\_back.png}
+\end{itemize}
+
+\textbf{Checks}
+\begin{itemize}
+  \item[\checkbox] icon silhouettes read at 16×16 native
+  \item[\checkbox] button artwork respects touch target rules in engine
+  \item[\checkbox] exit door reads as "way out" without text for a 5-year-old
+  \item[\checkbox] settings book is visually distinct from regular library books
+\end{itemize}
+
+\subsection*{F. Library slice assets}
+\textbf{Minimum background delivery}
+\begin{itemize}
+  \item[\checkbox] \texttt{bg\_library\_layer\_4.png}
+  \item[\checkbox] \texttt{bg\_library\_layer\_3.png}
+\end{itemize}
+
+\textbf{Optional if current slice needs them}
+\begin{itemize}
+  \item[\checkbox] \texttt{bg\_library\_layer\_2.png}
+  \item[\checkbox] \texttt{bg\_library\_layer\_1.png}
+  \item[\checkbox] \texttt{book\_available.png}
+  \item[\checkbox] \texttt{book\_dormant.png}
+  \item[\checkbox] \texttt{book\_lock\_icon.png}
+\end{itemize}
+
+\textbf{Checks}
+\begin{itemize}
+  \item[\checkbox] available books stand out immediately
+  \item[\checkbox] dormant vs readable is understandable in under one second
+  \item[\checkbox] Owlorumo does not visually dominate book selection
+\end{itemize}
+
+\subsection*{G. Celebration / transition assets}
+\textbf{Minimum only}
+\begin{itemize}
+  \item[\checkbox] \texttt{celebration\_bg\_stub.png} or approved equivalent replacement
+\end{itemize}
+
+\textbf{Deferred until separately approved}
+\begin{itemize}
+  \item[\checkbox] full celebration sequence
+  \item[\checkbox] confetti / heavy completion VFX
+\end{itemize}
+
+\subsection*{H. Technical delivery checks per file}
+\begin{itemize}
+  \item[\checkbox] native pixel dimensions correct
+  \item[\checkbox] no pre-upscale
+  \item[\checkbox] transparent background where required
+  \item[\checkbox] nearest-neighbor safe pixel structure
+  \item[\checkbox] no anti-aliasing
+  \item[\checkbox] no blur
+  \item[\checkbox] no gradient shading
+  \item[\checkbox] naming matches contract
+  \item[\checkbox] anchor assumptions preserved
+\end{itemize}
+
+\subsection*{I. Source package checks}
+\begin{itemize}
+  \item[\checkbox] source file included (\texttt{.aseprite} or layered \texttt{.psd})
+  \item[\checkbox] export PNGs included
+  \item[\checkbox] version labeled clearly
+  \item[\checkbox] revision notes included for changed assets
+\end{itemize}
+
+\subsection*{J. Explicitly not requested in this handoff}
+\begin{itemize}
+  \item[\checkbox] alternate themes
+  \item[\checkbox] modder assets
+  \item[\checkbox] RTL assets
+  \item[\checkbox] accessories system
+  \item[\checkbox] community pack art
+  \item[\checkbox] speculative book covers beyond approved slice
+  \item[\checkbox] final atlas packing / optimization
+  \item[\checkbox] anything not named in this checklist
+\end{itemize}
+
+\subsection*{K. Handoff completion definition}
+The artist handoff is complete only when:
+\begin{itemize}
+  \item[\checkbox] all required approved assets are delivered
+  \item[\checkbox] files pass technical import without resizing or rework
+  \item[\checkbox] gameplay readability remains intact
+  \item[\checkbox] the vertical slice looks cohesive, warm, and production-directed
+  \item[\checkbox] replacing placeholders requires texture assignment, not scene redesign
+\end{itemize}
+
+\end{document}

@@ -1,15 +1,14 @@
 # READCRAFTERY — Game Design Document
-**Version:** 1.2  
+**Version:** 1.4  
 **Date:** March 2026  
 **Status:** Pre-Production Spec  
 **Author:** Andrés Reyes. El Programador Pobre  
-**Companion documents:** Architecture Contract v1.1 · Build Guide v1.3  
+**Companion documents:** Architecture Contract v1.2 · Build Guide v1.4  
 
 ---
 
-> **Note for technical readers:** This document describes the game's vision and design.
-> It is intentionally aspirational: it includes features such as Teacher Dashboard,
-> karaoke-style highlighting, and RTL support that do not yet have a closed technical contract.
+> **Note for technical readers:** This document describes the game's product vision and design intent.
+> It includes future-facing ideas such as public mod tooling, advanced localization paths, and classroom-oriented usage patterns that may not yet have a closed technical contract.
 > To see what is specified and buildable today, see the **Architecture Contract**.
 > For build order and implementation guidance, see the **Build Guide**.
 
@@ -29,7 +28,7 @@
 9. [UI/UX Design](#9-uiux-design)
 10. [Audio Design](#10-audio-design)
 11. [Accessibility & Localization](#11-accessibility--localization)
-12. [Teacher & Parent Tools](#12-teacher--parent-tools)
+12. [Classroom & Caregiver Use](#12-classroom--caregiver-use)
 13. [Modding System](#13-modding-system)
 14. [Monetization Strategy](#14-monetization-strategy)
 15. [Platform Strategy](#15-platform-strategy)
@@ -46,19 +45,40 @@
 | Field | Details |
 |---|---|
 | **Title** | READCRAFTERY |
-| **Tagline** | *"Every word is an adventure."* |
+| **Tagline** | *"Reading is a power that changes the world."* |
 | **Genre** | Educational Word Puzzle / Literary Adventure |
 | **Primary Platform** | PC (Windows/Mac/Linux), Web (HTML5), Android & iOS |
-| **Target Age** | 4–9 years old (core); 6–12 with teacher/classroom use |
-| **Languages at Launch** | English, Spanish (+ modding API supports any language) |
+| **Target Age** | 4–9 years old (core); usable in classroom and home contexts |
+| **Language Scope** | English and Spanish are the core product languages; the closed localization system lands in M2 |
 | **Monetization** | One-time purchase (itch.io / Steam) — pay once, own forever |
 
 ### Elevator Pitch
-READCRAFTERY is a word discovery game that wraps age-appropriate literary content inside fun, colorful puzzle mechanics. Players explore a magical library, choose books, and then dive into the text — hunting for hidden words, unscrambling letters, and connecting meaning to story. Each found word animates, sparkles, and rewards the player with story progress, unlockable characters, and visual celebrations. The entire game — from books to UI themes — is community-moddable.
+READCRAFTERY is a reading-first word discovery game set in a magical sleeping library. Players explore books, read passages, and then recognize words and patterns inside the text through warm, age-appropriate puzzle play. Each successful interaction returns light to Owlorumo's crystal and helps reawaken the library. The content system is designed so books — and later themes — can be extended through the same mod-friendly structure.
+
+### Design Thesis — ✅ CLOSED
+**Reading is a power that discovers and restores human knowledge.**
+
+The child does not begin by hunting disconnected targets. The child reads the passage first, then recognizes and names words and patterns inside it. Immediate puzzle feedback may react to individual correct interactions, but major restoration happens through meaningful reading milestones across passages, books, and arcs.
 
 ---
 
 ## 2. Vision & Pillars
+
+### The Core Mechanic — One Sentence
+
+**Reading restores the world in a visible and thematic way.**
+
+This is not a metaphor. It is the mechanic:
+- Every word the child finds returns a fragment of light to Owlorumo's crystal
+- Every book completed restores a layer of his presence and memory
+- Every arc completed brings the library into a more awake, more responsive state — opening new continuity rather than returning to a pristine past
+
+The child is doing something that matters
+in a world that responds to reading as a real force.
+
+This is what makes Readcraftery different from every other literacy game:
+the reward is not external to the reading act — it is the reading act itself,
+made visible.
 
 ### Design Pillars
 
@@ -68,7 +88,7 @@ READCRAFTERY is a word discovery game that wraps age-appropriate literary conten
 | 🎉 **Joyful Reward** | Children must feel celebrated frequently. Visual and audio feedback must be immediate, warm, and exciting. |
 | 📚 **Literary Respect** | Books are not mere word banks — the story matters. Players should come away having absorbed content. |
 | 🔧 **Open by Design** | Modding is not an afterthought; the content system IS the game. Books are mods. Themes are mods. |
-| 👩‍🏫 **Teacher Empowered** | The game doubles as a classroom tool. Teachers need control without needing to be developers. |
+| 🧭 **Classroom-Aware** | The core loop must work in short school sessions and in free play at home. Optional discovery layers must never block the reading task. |
 
 ---
 
@@ -116,21 +136,21 @@ The core gameplay loop is designed and tested first for Profile B — a child wh
 ProfileDescriptionMilestone priorityA — Pre-reader (age 4–5)Cannot decode yet. Needs heavy visual/audio support.Adjacent, exploratory. Not M0 validation criteria.B — Emerging reader (age 5–7)Decoding syllables. Golden Path. Core product fit.M0/M1 — primary target.C — Reader with difficulties (age 6–9)Dyslexia, ADHD, visual stress. Needs accessibility adaptations.M2 — accessibility presets, theme support, TTS pacing.
 Profile A and C are real audiences, but the game is validated against Profile B first. Features specific to A or C that don't serve B are deferred to their respective milestones.
 
-### Secondary: Educators & Parents
+### Secondary: Educators & Caregivers
 - Primary school teachers looking for literacy tools
 - Parents seeking screen time with learning value
 - Homeschool families
 
 ### Tertiary: Modding Community
 - Indie developers who want to add book content
-- Teachers creating custom book packs
+- Educators and facilitators selecting or curating suitable book packs
 - Word puzzle enthusiasts (ages 10+) drawn by community content
 
 ### Persona Examples
 
 **"Sofia, age 6"** — learning to read in Spanish and English at home. Loves bright colors and animals. Gets frustrated quickly if puzzles are too hard. Needs audio support and positive reinforcement constantly.
 
-**"Ms. Rivera, 2nd Grade Teacher"** — wants to assign the same book to her class and use it as a shared reading activity. Can direct students to a specific book pack and use the game as a classroom tool without any setup. Creates her own book packs using the Preview Tool.
+**"Ms. Rivera, 2nd Grade Teacher"** — wants to use the game as a shared or station-based reading activity. She values short, readable sessions, the ability to skip optional rewards when time is tight, and the option to revisit discovered content later without breaking the lesson flow.
 
 **"Carlos, indie game dev"** — wants to upload a public domain book and create a puzzle pack to share on itch.io. Needs clean JSON documentation and a mod preview tool.
 
@@ -146,7 +166,7 @@ Profile A and C are real audiences, but the game is validated against Profile B 
 │                                          ↓                  │
 │  [CELEBRATE] ←  [FIND WORDS]  ←  [PUZZLE CHALLENGE]         │
 │       ↓                                                     │
-│  [UNLOCK: next passage / sticker / theme / character]       │
+│  [RESTORATION: next passage / journal / library response]   │
 │       ↓                                                     │
 │  [RETURN TO LIBRARY or CONTINUE BOOK]                       │
 └─────────────────────────────────────────────────────────────┘
@@ -154,22 +174,22 @@ Profile A and C are real audiences, but the game is validated against Profile B 
 
 ### Step-by-Step Flow
 
-1. **The Great Library** — The main menu is a cozy, magical library. Bookshelves line the walls. Books glow softly to invite interaction. The player's "Reading Owl" companion sits nearby.
+1. **The Sleeping Library** — The main menu is a living, magical library discovered in a dormant state. Bookshelves line the walls. Some books glow softly to invite interaction. Others remain quiet and unresponsive. Owlorumo is present nearby, not as decoration, but as part of the place itself.
 
-2. **Book Selection** — The player picks a book. Each book has a cover, a title, a difficulty star rating (1–3), and a word count badge. New books are locked until sufficient stars are collected.
+2. **Book Selection** — The player picks a book. Each book has a cover, a title, and a readable age/reading-stage presentation. Dormant books do not use numeric progress gates; they awaken through restoration milestones and library response.
 
-3. **Story Time (Passage View)** — A passage from the book is displayed. Large, friendly font. Illustration alongside (if the book pack includes art). The Reading Owl reads the passage aloud (text-to-speech or recorded audio). Player can replay the reading at any time.
+3. **Story Time (Passage View)** — A passage from the book is displayed. Large, friendly font. Illustration alongside (if the book pack includes art). Owlorumo or the passage audio reads the passage aloud (runtime TTS or recorded narration). The player can replay the reading at any time.
 
 4. **Puzzle Challenge** — Below or alongside the passage, a puzzle appears. The type of puzzle depends on the difficulty tier and the player's age profile. (See Section 5.)
 
-5. **Word Discovery** — Player interacts with letters/words. Successful finds trigger immediate visual celebration.
+5. **Word Discovery** — The player interacts with words and patterns. Successful finds trigger immediate warm feedback.
 
-6. **Passage Complete** — A "Chapter Complete" screen shows stars earned, new words learned, and a short summary/question to reinforce comprehension.
+6. **Passage Complete** — The current scene transforms briefly in response to completion. Fragments of white-gold light return to Owlorumo's crystal, new words learned may be surfaced, and an optional short comprehension beat may follow.
 
-7. **Unlock & Progress** — New passage unlocks, or bonus content is revealed (sticker, theme element, mini-story). Player returns to library or continues.
+7. **Restoration & Continuity** — New passage access, book awakening, or quiet library changes may occur through restoration milestones. The player returns to the library or continues reading.
 
 
-**UI State Separation (Anti Pattern-Matching Design)**
+**UI State Separation (Anti Pattern-Matching Design)****UI State Separation (Anti Pattern-Matching Design)**
 
 To prevent children from solving puzzles through visual pattern recognition
 instead of reading, the interface separates the reading phase from the search phase.
@@ -193,11 +213,35 @@ but interrupts puzzle solving for a moment.
 
 This design encourages phonological decoding rather than geometric scanning.
 
+> **WordGlow and Scramble exception:** Both puzzles operate during READING_STATE,
+> not SEARCH_STATE. WordGlow requires the passage visible because the child taps
+> words directly in the text. Scramble requires the passage visible because the
+> child reconstructs a word in the context of the sentence it belongs to —
+> removing that context turns spelling reconstruction into abstract memory work.
+> All other puzzle types (WordHunt, FillPassage, RhymeFinder) operate in
+> SEARCH_STATE as defined above.
+
+
+### Profile Selection
+
+The game supports multiple profiles with no hard limit — designed for classroom
+lab deployment where each student needs their own profile on a shared device.
+
+- Profile identification uses a written name — no avatar or color code.
+  A first-grade child knows how to write their name; a teacher can assign
+  conventions like `g1_1` (grade 1, class 1, student 1).
+- Profile selection appears at launch **only when more than one profile exists**.
+  A single-profile device loads directly — no selection screen friction.
+- Adding a new profile is always visible and immediate from the selection screen.
+  The "new profile" button is at the top of the list, never buried after a scroll.
+- Partial progress is saved when exiting mid-passage. The child resumes exactly
+  where they left off in the next session.
+
 ---
 
 ## 5. Puzzle Mechanics
 
-### Puzzle Type 1: Word Glow (Ages 5–7, Difficulty ★☆☆)
+### Puzzle Type 1: Word Glow (Ages 5–7, Difficulty 1/3)
 **Core Mechanic:** The full passage is displayed. A target word appears in the word bank at the bottom. The player must tap/click the same word when they spot it in the passage.
 
 - Words in the passage highlight faintly when hovered.
@@ -210,11 +254,11 @@ This design encourages phonological decoding rather than geometric scanning.
 
 ---
 
-### Puzzle Type 2: Letter Scramble (Ages 5–7, Difficulty ★★☆)
+### Puzzle Type 2: Letter Scramble (Ages 5–7, Difficulty 2/3)
 **Core Mechanic:** A word from the passage is shown scrambled below the text. The player rearranges letter tiles to spell it correctly.
 
 - The scrambled word tiles sit on a small "craft table" visual.
-- A picture hint is available (tap the owl for a hint — limited uses per session).
+- A picture hint is available through Owlorumo support — limited uses per puzzle according to profile and difficulty.
 - The corresponding word in the passage is blurred or hidden until solved.
 - On success: the passage word "unblurs" with a satisfying pop effect.
 
@@ -222,7 +266,7 @@ This design encourages phonological decoding rather than geometric scanning.
 
 ---
 
-### Puzzle Type 3: Word Hunt Grid (Ages 6–9, Difficulty ★★☆ to ★★★)
+### Puzzle Type 3: Word Hunt Grid (Ages 6–9, Difficulty 2/3 to 3/3)
 **Core Mechanic:** A word-search grid is generated from letters in the passage. Players find 5–10 hidden words in the grid.
 
 - Words run left-to-right and top-to-bottom only for younger players (diagonal unlocks at difficulty 3).
@@ -233,7 +277,7 @@ This design encourages phonological decoding rather than geometric scanning.
 
 ---
 
-### Puzzle Type 4: Fill the Passage (Ages 7–9, Difficulty ★★★)
+### Puzzle Type 4: Fill the Passage (Ages 7–9, Difficulty 3/3)
 **Core Mechanic:** A sentence from the passage is shown with 1–3 blanks. A small set of word tiles is offered. Player drags the correct word(s) into the blanks.
 
 - Wrong placements shake and bounce back — no harsh failure sound.
@@ -244,13 +288,56 @@ This design encourages phonological decoding rather than geometric scanning.
 
 ---
 
-### Puzzle Type 5: Rhyme Finder (Ages 4–7, Difficulty ★★☆)
+### Puzzle Type 5: Rhyme Finder (Ages 4–7, Difficulty 2/3)
 **Core Mechanic:** A word from the passage is highlighted. The player must find another word in the passage (or in a provided set) that rhymes with it.
 
 - Rhyming pairs are chosen during book pack authoring.
 - Audio support reads both words aloud for comparison.
 
 **Skill Reinforced:** Phonemic awareness, rhyme recognition.
+
+
+#### WordGlow — UI behavior details
+
+**Tile found behavior:**
+When a target word is found, the tile remains visible in the word bank
+in `found` state — grey, no glow, not interactive. Simultaneously, a copy
+of the tile flies to the anonymous slot and arrives with a gold pulse.
+The child retains the full word inventory visible at all times while
+receiving the motion feedback of the word reaching its destination.
+
+**Anonymous slots:**
+Slots communicate "something belongs here" before any word arrives.
+Visual: grey `#9E9E9E` at 60% opacity. No label, no animation in rest state.
+The count of slots equals the count of target words — the child knows
+how many words to find without being told which ones.
+
+**Hint behavior — Owlorumo as hint button:**
+There is no separate hint button. The child taps Owlorumo directly.
+
+| Situation | Behavior |
+|---|---|
+| Hints available | `owl_hint` — staff points toward puzzle, crystal bright |
+| Hints exhausted | Repeats previous hints in cyclic order — never silence |
+| No hints given yet, inactivity | Accompaniment gesture — looks at child, crystal soft pulse |
+| Inactivity auto-trigger | Same accompaniment, initiated by system |
+
+Owlorumo never expresses frustration or abandonment.
+When hints are exhausted, he repeats what he already shared — he does not refuse.
+
+**Fragments of light — immediate completion feedback:**
+Puzzle completion sends fragments of white-gold light flying to Owlorumo's
+staff crystal.
+
+| Result | Fragments |
+|---|---|
+| Completed without hints | 3 fragments — crystal intense pulse |
+| Completed with 1 hint | 2 fragments — crystal moderate pulse |
+| Completed with 2+ hints | 1 fragment — crystal soft pulse |
+
+Fragments are immediate feedback — fugitive flashes absorbed by the crystal.
+They are visually distinct from the crystal's permanent state base level.
+Permanent progression belongs to book and arc milestones, not individual puzzles.
 
 ---
 
@@ -325,7 +412,7 @@ Book Pack
 }
 ```
 
-> **Auto-generation rule:** When `targets` is the string `"auto"`, `PuzzleGenerator` runs at pack-load time and populates the targets array before any `IPuzzle` scene receives the `PuzzleDefinition`. The puzzle scene never distinguishes between hand-authored and auto-generated targets. Stars awarded are identical in both cases.
+> **Auto-generation rule:** When `targets` is the string `"auto"`, `PuzzleGenerator` runs at pack-load time and populates the targets array before any `IPuzzle` scene receives the `PuzzleDefinition`. The puzzle scene never distinguishes between hand-authored and auto-generated targets. Completion feedback and restoration behavior are identical in both cases.
 >
 > **Auto-generation algorithm (v1 — rule-based, no NLP dependency):**
 > 1. Tokenize passage text → word list
@@ -368,19 +455,59 @@ Book Pack
 
 ## 7. Progression & Reward Systems
 
-### Star System
-Each puzzle earns 1–3 stars:
-- ⭐ — Completed with 2+ hints used
-- ⭐⭐ — Completed with 1 hint
-- ⭐⭐⭐ — Completed with no hints
+### Fragments of Light — Immediate Completion Feedback
 
-Stars unlock new books on the library shelf.
+Puzzle completion sends fragments of white-gold light to Owlorumo's staff crystal.
+Every completion signal is narratively connected to the restoration of Owlorumo's presence.
+
+| Result | Fragments | Crystal response |
+|---|---|---|
+| Completed without hints | 3 | Intense pulse |
+| Completed with 1 hint | 2 | Moderate pulse |
+| Completed with 2+ hints | 1 | Soft pulse |
+
+Fragments are immediate visual feedback — they fly, arrive, and are absorbed.
+They do not accumulate visibly and they do not operate as a visible currency.
+The crystal's permanent brightness is determined by `owlorumo_state`,
+book milestones, and arc milestones.
+
+### Book Awakening — Restoration Milestones
+
+Dormant books awaken through restoration milestones, not through visible numeric accumulation.
+
+- The child never sees a number or a progress bar toward awakening
+- Owlorumo does not announce when a book awakens
+- The child notices a new book on the shelf — or does not
+- Some dormant books are visible from game start
+- Others appear silently when the child returns to the library
+  after completing a passage — as if someone placed them there
+
+There is no lock icon. A dormant book simply does not respond.
+An awakened book breathes softly and invites.
+
+### The Library — Revealed Names by Restoration State
+
+The library is the same place throughout the game, but its deeper name is revealed
+through restoration.
+
+**State names (canonical):**
+- **The Sleeping Library** — the child first discovers the place as dormant, veiled, and waiting
+- **The Reawakened Library** — after meaningful restoration milestones, the place begins to answer again
+- **The Library of Beginnings** — the deeper truth of the place; restoration does not return it to a pristine past, but opens new continuity and new doors
+
+These are not UI “levels” or numeric labels.
+They are narrative names for the same living library-world as it becomes more present.
+
+Words such as **forgotten** or **lost** may be used in prose or narration to evoke the child's discovery,
+but they are not the canonical state names.
 
 ### The Reading Owl Companion
-The player's owl companion is named **Owlorumo**. The name is fixed — it is part of the character's identity, not assigned by the player. Owlorumo grows and changes as progress is made:
-- Earns accessories: hats, scarves, glasses, wings
-- Reacts emotionally to player performance — celebrates, looks curious, cheers
-- Can be renamed and reskinned via unlockable themes
+The player's owl companion is named **Owlorumo**. The name is fixed — it is part of the character's identity, not assigned by the player.
+
+Owlorumo changes through restoration, not through gamified reward layers.
+His main progression is expressed through the staff crystal, eyes, presence, and the library's response.
+Later milestones may unlock carefully chosen accessories or theme-specific visual accents,
+but themes do not rename him and do not replace his core identity.
 
 ### Owl feedback protocol — ✅ CLOSED
 
@@ -418,8 +545,8 @@ keeps trying or develops a negative identity as a reader.
 
 #### Automatic vs manual hints:
 - **Automatic** (inactivity > 13 seconds): does not deduct from `hint_count`
-- **Manual** (child presses hint button): deducts from `hint_count`
-- `hint_count` minimum: 3 per puzzle, regardless of difficulty
+- **Manual** (child presses Owlorumo for help): deducts from `hint_count`
+- Default `hint_count` is set by profile and puzzle difficulty; it is not globally fixed
 
 ### Owlorumo — adaptive language — ✅ CLOSED
 
@@ -439,26 +566,252 @@ Owlorumo speaks. The complexity of his speech adapts to the `reading_stage` of t
 - The `early_emergent` level may replace speech with a short TTS sound effect and an animation — no words required
 - All Owlorumo speech goes through TTS — never pre-recorded (ensures voice consistency across languages)
 
+### The Story of Owlorumo — ✅ CLOSED
+
+Owlorumo is both companion and ancient guardian. He was the owl companion of Athena, and he remains in the library — the last place where wisdom, books, and remembered knowledge survived. But his identity, power, and purpose are veiled by a soft mist. He does not fully remember what he was meant to protect or restore. He only senses that something important has grown dim and must not be lost.
+
+The child does not know this. Owlorumo does not explain it.
+
+The staff crystal is not generic magic. It is collective human wisdom made light. As reading returns, that light returns. Owlorumo's eyes are part of the same logic: they are his connection to vision, insight, and what Athena once entrusted to him. The library is not decorative background; it is the final refuge where wisdom endured long enough to be reawakened.
+
+The child restores this without knowing it directly. Each recognized word or pattern creates a local response, but the deeper restoration is tied to reading progress — passages completed, books finished, arcs fulfilled, and restoration milestones reached. Reading helps reconnect fragments of living human knowledge.
+
+That is the thesis inside the title:
+**Reading is a power that discovers and restores human knowledge.**
+
+> This story is never told explicitly in the game.
+> It lives in visual details, in Owlorumo's phrases,
+> in the progression of his staff crystal, eyes, and presence,
+> and in the awakening of the library itself.
+> A 5-year-old sees a wizard owl getting brighter.
+> A 9-year-old feels they are helping someone who needs them.
+> An attentive adult understands that reading matters because it restores what a culture might otherwise lose.
+
+---
+
+### Owlorumo — Companion Progression — ✅ CLOSED
+
+Owlorumo does not start complete. He starts diminished.
+Restoration is progressive, warm, and never announced as a system reward.
+
+#### Visual progression states
+
+| State | Staff / Crystal | Clothing / Presence | Eyes | Unlocked after |
+|---|---|---|---|---|
+| `state_0` | Staff slightly dry, light cracking; crystal dark | Navy form, diminished presence | Normal | Game start |
+| `state_1` | Cracks gone or reduced; faint crystal glow | Same design, slightly steadier material read | Normal | First passage milestone |
+| `state_2` | Crystal lit and softly pulsing | Same silhouette; more life in material and light | Occasional soft glint | First book |
+| `state_3` | Crystal bright and warm; staff reads stronger and more alive | Presence fuller, library increasingly responsive | Occasional soft glow | 3 books |
+| `state_4` | Powerful white-gold crystal; staff fully alive but still organic | White-and-gold restoration with visible continuity: blue mantle remains, no full redesign | Constant soft living glow | First complete arc / late-game goal |
+
+**Identity anchors that do not change:**
+- moon brooch
+- belt
+- boots
+- organic staff form
+
+`state_4` is not a replacement design. It is a fulfilled form with the journey still visible in it. The white-and-gold restoration is carried by light, material, and presence — not by a radical costume swap.
+
+#### Rules
+
+- Progression is primarily expressed through **staff + crystal**, then eyes, then library response
+- Major restoration happens at reading milestones — not on every isolated word
+- Local correct interactions can trigger micro-feedback without causing a full restoration beat
+- Changes are discovered, not announced
+- Restoration does not return everything to a pristine original state; it opens a living continuity
+
+#### The first crystal ignition moment
+
+When the crystal lights fully for the first time, Owlorumo does not celebrate the child. He looks at them.
+Two seconds of silence.
+The child understands — without anyone explaining — that they did this.
+
+This is the most important moment in the game.
+
+### Display Profile System — ✅ CLOSED
+
+The display profile controls how content is presented to a specific child.
+It is separate from the book pack's `reading_stage` — it adapts to
+the individual child's demonstrated ability, not their age.
+
+#### Three levels — forward only
+```
+conservative → standard → advanced
+```
+
+| Display profile | Passage shown | Owlorumo glow | Slots |
+|---|---|---|---|
+| `conservative` | Relevant sentence only | Active, full radius | Anonymous |
+| `standard` | Full paragraph | Active, reduced radius | Anonymous |
+| `advanced` | Full passage | Disabled | No slots |
+
+#### Conditions to advance — all three must be met
+
+- **Autonomy:** N consecutive puzzles without hints, max glow, or prolonged inactivity
+- **Consistency:** both signals sustained across a full book, not a single passage
+
+> **Design note:** Speed is intentionally excluded as a metric.
+> A child decoding phonologically reads more slowly than one pattern-matching —
+> rewarding speed would penalize the children who are actually reading.
+> Autonomy and consistency are the only pedagogically valid signals of mastery.
+
+#### Application rules
+
+- Change occurs only at the start of the next book — never between passages
+- Owlorumo celebrates the new book with `owl_excited` + phrase adapted to `reading_stage`
+- The phrase never mentions "level" — it only celebrates the new book
+- **The profile never goes down**
+- When a child struggles, support increases silently:
+  more automatic hints, more frequent glow — display profile unchanged
+
+#### Owlorumo's phrase on profile advance
+
+| `reading_stage` | Phrase |
+|---|---|
+| `early_emergent` | *"Look! More words!"* |
+| `developing` | *"This book has more story!"* |
+| `fluent` | *"This one looks interesting..."* |
+
+---
+
+### Celebration — ✅ CLOSED
+
+The Celebration is not a separate screen. It is a **transformation
+of the current screen** — the world reacts to the child's achievement
+without removing them from the world.
+
+#### Sequence (6–8 seconds if child does not interact)
+
+1. **Puzzle complete**
+   — Found tiles pulse gold simultaneously
+   — Passage above glows softly
+
+2. **Owlorumo reacts** (`owl_excited` → `owl_celebrate`)
+   — Staff crystal explodes in particles
+   — Duration: 2–3 seconds
+
+3. **Fragments of light emerge from the staff crystal**
+   — One by one, each with a small sound
+   — Duration: 1.5 seconds
+
+4. **The Discovery moment**
+   — Something small and unexpected happens in the background
+   — A book floats briefly out of the shelf
+   — Profile C: a word from the next passage glows in the crystal
+   — Duration: 1–2 seconds
+
+5. **Continue button appears**
+   — Not urgent — child can stay and watch
+   — Owlorumo returns to `owl_idle` after 3 seconds
+
+#### The Discovery word (Profile C / advanced)
+
+GameManager already knows the next passage before Celebration loads.
+The first target word of the next passage appears briefly in the
+staff crystal — glowing, then fading. No label, no explanation.
+Just a word. The child who sees it and finds it in the next passage
+experiences a moment of recognition that belongs entirely to them.
+
+---
+
+### Onboarding — ✅ CLOSED
+
+#### Design principle
+
+Gandalf does not talk to Bilbo about dragons or rings on their first meeting.
+They talk about the meaning of "good morning."
+
+The Onboarding does not start with "Welcome to ReadCraftery, here you
+will learn to read." It starts with something small, apparently
+unimportant — and in that unimportant moment, everything is contained.
+
+#### The opening scene
+
+The child arrives at the library. It is dim. Owlorumo is at his lectern,
+crystal almost dark, reading — or trying to. He does not look at the
+child immediately.
+
+After a moment, he looks up. And says:
+
+> *"This word... do you see it?"*
+
+He points — not with urgency, with curiosity.
+The passage is open. One word glows faintly.
+
+Pause.
+
+> *"Ah. Yes. That one."*
+
+#### What happens next
+
+Owlorumo does not ask the child for help. He shows them a page.
+One sentence. And says:
+
+> *"This word... do you see it?"*
+
+The child touches the word. The crystal pulses — faintly, like a weak heartbeat.
+
+Owlorumo looks at it. He does not say "well done!" He says:
+
+> *"Ah. Yes. That one."*
+
+As if he just remembered something he had forgotten long ago.
+
+#### Why this works
+
+The child learned to tap a word. But they do not know it —
+they only helped Owlorumo remember something.
+The tutorial happened inside the narrative, not on top of it.
+
+#### Technical note
+
+The Onboarding is a special `BookPack` with `id: "onboarding"`.
+It uses the same PassageView + WordGlow pipeline.
+The only difference is that `GameManager` loads it before any
+other book on first run, and Owlorumo starts in `state_0`.
+No special scene, no special code path.
+
+
 ### Sticker Collection
 Each book completed adds stickers to the player's "Reading Journal" — an in-game scrapbook. Stickers are themed around the book's content (animals, objects, characters).
 
 ### Reading Journal
 A persistent, visual record of:
 - Books read and % completion
-- Favorite words collected (player can "keep" any word they like)
-- Star totals per book
-- Badges earned (e.g., "Found 100 words!", "Night Owl Reader!")
+- Favorite words collected (the player can "keep" any word they love)
+- Restoration milestones discovered across books and the library-world
+- Meaningful reading memories and collection-style badges (e.g., "Found 100 words!", "Night Owl Reader!", "First Book Completed")
 
 ### Achievement Badges
 | Badge | Trigger |
 |---|---|
 | First Word! | Find first word ever |
 | Bookworm | Complete first book |
-| No Hints Needed | Complete a puzzle without hints |
-| Speed Reader | Complete a puzzle under time limit |
-| Library Card | Unlock 5 books |
-| Word Collector | Save 50 words to journal |
-| Language Star | Complete a puzzle in a second language |
+| Library Awakener | Help reawaken 5 books |
+| Word Collector | Save 50 words to the journal |
+| Night Owl Reader | Complete 10 reading sessions |
+| Second Language Reader | Complete a puzzle in a second language |
+
+
+###  — BookPack Theme Family
+
+🔴 INTENT — do not implement until closed.
+
+Each BookPack may declare a `theme_family` that drives coherent
+visual and symbolic feedback during gameplay.
+
+Example values: `ocean`, `forest`, `sky`, `ancient`, `urban`
+
+When declared, the engine uses `theme_family` to select:
+- fragment light color palette (currently always white-gold)
+- particle variant for celebration and restoration moments
+- rune variant family for Owlorumo's mantle progression
+
+The modder declares the family. The engine resolves the assets.
+No semantic analysis required — this is a creative declaration, not computation.
+
+Status: 🔴 INTENT — schema, asset pipeline, and fallback behavior not specified.
+Earliest milestone: M2.
 
 ---
 
@@ -471,26 +824,28 @@ For ages 4–9, feedback must be **immediate (< 200ms)**, **visually clear**, an
 - **Sparkle Burst:** The found word emits a burst of colored sparkles matching the book's color palette.
 - **Word Flight:** The word physically lifts from the passage and floats into its word bank slot.
 - **Letter Pop:** Each correct letter tile bounces in sequence with a soft pop sound.
-- **Star Rain:** On puzzle complete, 1–3 stars fall from the top of the screen with a gentle chime.
-- **Owl Dance:** The Reading Owl bounces and flaps wings on word found; performs a full celebratory dance on passage complete.
+- **Fragment Flight:** On puzzle complete, 1–3 white-gold fragments of light arc toward Owlorumo's crystal with a gentle chime.
+- **Owlorumo Reaction:** Owlorumo answers with a brief warm reaction tied to the moment — never a comic dance, never a game-show mascot beat.
 
 ### Encouragement Effects (Wrong Attempt)
 - **Gentle Wobble:** Wrong answer tiles wobble and return to position. No harsh sound.
 - **Owl Hint Nudge:** The owl tilts its head and blinks as if curious — subtly guiding without criticizing.
 - **Soft Glow Fade:** Attempted letters briefly glow amber then fade, suggesting "almost."
 
-### Passage Complete Screen
-Full-screen celebration:
-- Confetti in book-themed colors
-- Stars animate in one by one
-- Owl performs a unique animation tied to the book theme (e.g., dances with the book's main character)
-- New sticker slides in from the side and "sticks" to the journal with a satisfying thwap
+### Passage Completion Transformation
+The current scene reacts without cutting away to a detached reward screen.
+
+- Confetti is optional and theme-safe only if it does not compete with reading clarity
+- Fragments of light animate toward Owlorumo's crystal
+- Owlorumo performs a warm, brief reaction tied to the book tone
+- A new sticker or journal update may appear if that book milestone grants one
 
 ### Effect Variety System
 To prevent repetition fatigue, celebrate effects are drawn from a randomized pool per session:
+
 - 5 sparkle color palettes per book theme
 - 3 owl celebration animations
-- 4 confetti patterns
+- 4 ambient celebratory particle patterns
 - Effects escalate in intensity for streaks (3 in a row correct = bigger burst)
 
 
@@ -526,26 +881,120 @@ To prevent repetition fatigue, celebrate effects are drawn from a randomized poo
 
 #### Main Library Screen
 - Warm illustrated library room (isometric or flat 2D)
-- Bookshelves with glowing available books, faded locked books
+- Bookshelves with inviting readable books and quiet dormant books
 - Owl companion seated or animated in corner
-- Top bar: stars collected, player name, settings icon
+- Top bar: player name, settings icon, and optional teacher-facing progress summary when relevant
 - Large, friendly "PLAY" or "READ" button for youngest players
 
 #### Passage View Screen
-- Left panel (60%): Book passage in large, readable font. Active words subtly shimmer.
-- Right panel (40%): Puzzle area (grid / tiles / blanks)
-- Bottom: Word bank targets, Owl hint button, audio replay button
+- Primary reading area: Book passage in large, readable font. The passage remains visually central.
+- Secondary support area: Puzzle support UI (target card / tiles / blanks depending on puzzle type)
+- WordGlow rule: the child resolves WordGlow in the passage itself; support UI remains informative
+- Bottom / support area: target inventory, Owlorumo hint access, audio replay button
 - Top: Book title, passage number, exit to library
 
 #### Responsive Breakpoints
 | Device | Layout |
 |---|---|
-| Mobile portrait (phones) | Stacked: passage on top, puzzle on bottom; swipe to switch |
+| Mobile portrait (phones) | Stacked: passage on top, support/puzzle area below; no swipe-only navigation required |
 | Tablet / iPad | Side-by-side (passage left, puzzle right) |
 | PC / Web 1080p | Full side-by-side with decorative book frame |
 | Web 720p | Condensed side-by-side |
 
-### Theme System (Modding-Friendly)
+### Diegetic UI — The World as Interface
+
+READCRAFTERY uses diegetic UI wherever possible: interface elements exist
+inside the world, not drawn on top of it. Every interactive element is
+an object the child recognizes as part of the library.
+
+#### Settings Book
+A closed book with a navy spine (`#1E2A4A`) and a crescent moon symbol.
+Fixed position: top-right of the Library Scene. Always visible.
+Tap-hold 1 second to activate — prevents accidental activation.
+
+The color and moon symbol are brand invariants. A theme may restyle
+the texture but must preserve both. This is the child's and teacher's
+navigation anchor across all sessions and themes.
+
+> **Classroom use case:** before the first session, the teacher shows
+> the class the blue book with the moon. "When I say so, hold that book
+> and save." One second. Done. No menu navigation required.
+
+#### TTS Button — Open Book
+A small open book in the passage panel. Tap to read the passage aloud.
+Tap again to stop. Pulses softly while audio plays.
+Karaoke word highlighting available when using runtime TTS or
+pre-generated audio with sync data. Pre-recorded `.ogg` without sync
+illuminates the full passage as a block.
+
+#### Exit Button — Door
+A small door, bottom-left of PassageView. Always visible.
+Tap-hold 1 second to activate — Owlorumo looks toward the door
+during the hold as visual feedback of progress.
+On activation: partial progress is saved before transitioning.
+The child resumes exactly where they left off.
+
+#### Library Books — Three States
+Books communicate their state through visual presence, not labels or icons.
+
+| State | Visual | Behavior |
+|---|---|---|
+| Available | Saturated colors, gold shimmer, breathes softly | Brightens on hover |
+| Dormant | Desaturated, no shimmer | No reaction to hover or tap |
+| Completed | Warm permanent glow | Owlorumo occasionally looks toward it |
+
+Dormant books have no lock icon. They simply do not respond.
+Some are visible from the first session. Others appear silently
+after a passage is completed — never announced, never explained.
+
+#### Owlorumo in the Library
+Owlorumo inhabits the library — he is not static in a corner.
+
+**Ambient activities:**
+- Sorting books with magic — a book floats, he examines it, returns it
+- Walking to the window — looks outside, returns
+- Reading at his lectern — base state between activities
+- Writing on parchment — state_2 and above only
+
+**Energy by state:** same activities, different quality.
+In state_0 movements are heavy and occasionally clumsy.
+In state_3/4 they are fluid and present.
+
+**On child entry:** Owlorumo always notices. He finishes his current
+gesture naturally, then looks at the child. Never startled. Never ignoring.
+He was here. He was waiting. There is a difference.
+
+**On book selection:** a small gesture of recognition.
+Not celebration, not instruction.
+
+**On tap in library (no active event):** crystal soft pulse,
+a glance toward the child. Presence, not function.
+
+#### Progress Indicator
+Two layers for two audiences:
+
+**For the child:** Owlorumo himself communicates accumulated progress.
+His `owlorumo_state` visual — crystal brightness, runes, mantle — is the
+only progress indicator the child needs. No numbers, no bars.
+
+**For the teacher:** a discrete indicator in the top bar showing
+the active profile name and "X of Y books completed."
+Visible only when more than one profile is configured.
+Readable from a distance in one glance.
+
+#### Audio Strategy
+
+| Content | Strategy |
+|---|---|
+| Owlorumo's lines | Runtime TTS (canonical) |
+| Built-in books | Pre-recorded narration when available; runtime TTS fallback |
+| Modder books | Runtime TTS |
+| Universal fallback | System TTS |
+
+Owlorumo's lines are text-first and spoken through runtime TTS for consistency across languages and milestones.
+Built-in passage audio may use bundled narration when available, but the system always falls back to runtime TTS when needed.
+
+### Theme System (Future-Compatible, Modding-Friendly)
 The UI is skinned via **Theme Packs** — JSON + asset bundles that override:
 - Color palette tokens (background, text, primary, accent, shadow)
 - Font family (must be included in pack; default: Nunito / Comic Neue)
@@ -554,14 +1003,13 @@ The UI is skinned via **Theme Packs** — JSON + asset bundles that override:
 - Button / tile sprite frames
 - Particle effect color overrides
 
-**Built-in themes at launch:**
+**Future-compatible theme examples (M2+):**
 | Theme | Description |
 |---|---|
-| Cozy Library (default) | Warm browns, amber, cream. Classic bookshelf aesthetic. |
-| Enchanted Forest | Deep greens, purples, firefly particles. |
-| Ocean Voyage | Blues, teals, wave animations. |
-| Space Station | Dark blue, neon, star particles. |
-| Classroom Chalk | Simple, high-contrast, teacher-friendly. |
+| The Sleeping Library (default/base) | Warm browns, amber, parchment, wood, and dormant living shelves. |
+| Enchanted Castle | Ancient stone halls, torchlight, tower shelves, and sleeping corridors of knowledge. |
+| Alchemical Observatory | Brass instruments, star charts, moonlit study, and a tower-of-reading atmosphere. |
+| Sky City | Elevated terraces, bridges, cloudlight, and airy architecture of living knowledge. |
 
 
 Motor Precision Tolerance
@@ -595,15 +1043,20 @@ The system evaluates reading, not pointing accuracy.
 | Letter placed correctly | Gentle pop |
 | Scaffolding cue | Soft ambient tone — signals Owl is about to help. Not associated with error. |
 | Owl hint | Soft hoot |
-| Book unlock | Page turn + brief fanfare |
+| Book awakening | Page turn + brief warm reveal |
 | Sticker earned | Satisfying sticky-paper sound |
 | Button tap | Soft click / thump |
 
 ### Text-to-Speech (TTS) System
 - All passage text must be readable by TTS engine or pre-recorded audio.
-- **Fallback order:** Pre-recorded audio → Platform TTS (OS-native) → in-engine TTS library.
+- **Fallback order for passages:** Pre-recorded audio → Platform TTS (OS-native) → in-engine TTS library.
+- **Owlorumo's adaptive lines:** runtime TTS only.
 - TTS speed should be adjustable (0.75x, 1x, 1.25x) — important for early readers.
 - Word highlight synced to TTS playback (karaoke-style word highlighting during read-aloud).
+  **Scope:** karaoke highlighting is available only when using runtime TTS (OS-native).
+  Pre-recorded `.ogg` audio does not carry word-level timing data — when a pack uses
+  pre-recorded audio, the full passage illuminates as a block during playback,
+  not word by word. Timestamp-based sync files are not required from modders.
 
 ### Audio Accessibility
 - All audio is independently volume-controllable: Music, SFX, Voice/TTS.
@@ -630,7 +1083,7 @@ The system evaluates reading, not pointing accuracy.
 - Date/number formatting respects locale.
 - Font system supports extended Latin, Cyrillic, Arabic (RTL layout flag available).
 - Language selector always accessible from main menu and settings.
-- **Launch Languages:** English (en), Spanish (es).
+- **Core product languages:** English (en), Spanish (es). Full closed localization system lands in M2.
 - **Modding:** Any community member can submit a locale file; framework handles it automatically.
 
 ### RTL Language Support
@@ -638,46 +1091,29 @@ The UI layout engine must support `direction: RTL` flag for Arabic, Hebrew, and 
 
 ---
 
-## 12. Teacher & Parent Tools
+## 12. Classroom & Caregiver Use
 
-### Parent Dashboard (in-app)
-Accessible via PIN or password set at first launch. Shows:
-- Time spent reading today / this week
-- Books completed
-- Words found total
-- Puzzle accuracy over time (simple chart)
-- Difficulty profile settings
+READCRAFTERY should work in homes, classrooms, and school computer labs without requiring teacher-facing tooling in the core product.
 
-### Teacher Book Upload Flow (No JSON Required)
-Teachers can create a playable book pack in under 5 minutes without editing any JSON:
+### Core rule
 
-```
-Step 1 — Paste or type passage text (plain text area)
-Step 2 — Set age range: 4–6 / 6–9 (dropdown)
-Step 3 — Pick puzzle types (checkboxes: Word Glow, Scramble, Word Hunt, etc.)
-Step 4 — System auto-generates targets via PuzzleGenerator
-Step 5 — Preview renders exactly as it will appear in-game
-Step 6 — Optional: tap any word in the preview to remove it from the target list
-Step 7 — "Save Pack" → downloads pack.zip → teacher drops into /mods folder
-```
+The reading loop must remain usable in short sessions.
+Optional discovery layers must never block the passage, the puzzle, or core progress.
 
-This flow is powered entirely by `targets: "auto"` under the hood. The resulting `pack.zip` is a valid modding pack identical in format to hand-authored packs. Teachers with JSON knowledge can open and extend it manually.
+### Classroom compatibility goals
 
+- A teacher can use the main reading loop without needing dashboards or analytics
+- Optional discoveries (such as Hidden Books or re-readable rewards) can be left for later
+- Sessions can end cleanly after a passage or book milestone
+- The game should tolerate mixed contexts: station work, shared reading, home follow-up
 
-> ** Design Note: Future Distribution System — Classroom Codes **
-> 
-> To simplify classroom deployment,
-> future versions may support loading Book Packs via short codes.
-> 
-> Example workflow:
-> 
-> Teacher publishes a pack online and receives a short code.
-> Students enter the code in the game.
-> The pack is downloaded automatically.
-> 
-> This removes the need to manually copy files to each device.
-> 
-> Planned milestone: M4.
+### Caregiver-friendly expectations
+
+- The game should be legible and reassuring without requiring constant adult intervention
+- Optional content may be revisited later from the library once discovered
+- The experience should reward curiosity without punishing short sessions
+
+> **Scope note:** teacher dashboards, student management, classroom codes, and upload flows are future-facing ideas and are not part of the closed technical contract for the current milestone set.
 
 ---
 
@@ -692,14 +1128,14 @@ READCRAFTERY is built on the principle that **content = mods**. Even the built-i
 Anyone can create a Book Pack by authoring a folder of JSON + assets.
 
 **Book Pack Validator Tool**
-A standalone desktop/web tool (ships with the game, also available at readcraftery.io) that:
+A future-facing validation/preview tool path that may eventually ship as a desktop/web utility. When present, it would:
 - Lets modders preview their book pack exactly as it will appear in-game
 - Validates JSON schema and reports errors with clear messages
 - Generates a `pack.zip` ready to upload to itch.io or the community hub
 
 **Distribution**
 - Packs uploaded to itch.io as "READCRAFTERY Book Pack" tag
-- In-game mod browser (Phase 2) lets players browse and install packs with one click
+- In-game mod browser remains a later-phase ambition, not a current launch contract
 - Local file drop: players can drop a `pack.zip` into a `/mods` folder and it auto-loads
 
 #### Layer 2: Theme Mods (UI)
@@ -935,7 +1371,7 @@ READCRAFTERY
 │   ├── GameManager.gd          ← Singleton: global state, save/load
 │   ├── AudioManager.gd         ← Singleton: music, SFX, TTS
 │   ├── LocaleManager.gd        ← Singleton: current language, string lookup
-│   └── ProgressManager.gd      ← Singleton: stars, journal, achievements
+│   └── ProgressManager.gd      ← Singleton: restoration milestones, journal, achievements
 │
 ├── /content
 │   ├── ModLoader.gd            ← Scans /mods/, validates, registers packs
@@ -956,7 +1392,7 @@ READCRAFTERY
 │   │   ├── WordHunt/
 │   │   ├── FillPassage/
 │   │   └── RhymeFinder/
-│   ├── Celebration/            ← Passage complete screen
+│   ├── Completion/             ← Passage completion transformation controller / overlay
 │   ├── Journal/                ← Reading journal / stickers
 │   └── Settings/               ← Audio, language, accessibility, profiles
 │
@@ -971,8 +1407,11 @@ READCRAFTERY
 
 ### Save System
 - Save data stored in `user://saves/profile_01.json` (Godot user data path)
-- Supports multiple profiles (up to 4) — useful for siblings sharing a device
-- Save includes: current book progress, stars, journal, settings, active theme
+- Supports multiple profiles — no hard limit. Useful for siblings sharing a device
+or classroom lab deployments where each student needs their own profile.
+Profile selection appears at launch only when more than one profile exists.
+Adding a new profile is always visible and immediate from the selection screen.
+- Save includes: current book progress, restoration milestones, journal, settings, active theme
 
 **Save File Schema (must be implemented from Day 0 / M0):**
 ```json
@@ -985,12 +1424,18 @@ READCRAFTERY
     "language": "es",
     "tts_speed": 1.0,
     "font_size": "large",
-    "active_theme": "cozy_library"
+    "active_theme": "sleeping_library"
   },
   "progress": {
-    "total_stars": 42,
+    "owlorumo_state": 2,
     "books": {
-      "little_seed": { "passages_completed": 3, "stars": [3, 2, 3] }
+      "little_seed": {
+        "awakened": true,
+        "passages_completed": 3,
+        "passage_completion_tiers": [3, 2, 3],
+        "book_milestones": ["first_passage", "book_completed"],
+        "last_played": "2026-03-09T15:30:00Z"
+      }
     },
     "achievements": ["first_word", "bookworm"]
   },
@@ -1031,15 +1476,18 @@ LocaleManager.set_language("es")
 ### Puzzle Engine
 Each puzzle type is a self-contained scene implementing `IPuzzle` interface:
 ```gdscript
-class_name IPuzzle extends Control
+class_name IPuzzle
+extends Control
+
 signal word_found(word: String)
-signal puzzle_completed(stars: int)
+signal puzzle_completed(completion_tier: int)
+signal hint_requested()
 
 func initialize(puzzle_def: PuzzleDefinition, passage_text: String) -> void:
     pass  # Abstract — implemented by each puzzle type
 
-func get_hint() -> void:
-    pass  # Decrements hint count, reveals partial solution
+func show_hint() -> void:
+    pass  # Reveals support according to puzzle rules
 ```
 
 This interface makes it trivial to add new puzzle types without modifying core systems — critical for modding extensibility.
@@ -1050,40 +1498,92 @@ This interface makes it trivial to add new puzzle types without modifying core s
 
 *(These descriptions serve as briefs for an artist. An AI image generation tool such as Midjourney or Stable Diffusion, or a commissioned artist, should produce these assets.)*
 
-### Scene 1: The Great Library (Main Menu)
-**Style:** Warm 2D illustrated, slightly isometric perspective. Think "cozy illustrated children's book." Color palette: ambers, creams, warm reds, soft gold lighting from a fireplace off-screen. Art style reference: Studio Ghibli library scenes meets Duolingo playfulness.
+### Scene 1: The Sleeping Library (Main Menu)
 
-**Contents:** Floor-to-ceiling bookshelves with softly glowing books. A round reading table center-frame. A large owl (the companion) perched on a stack of books, blinking slowly. Books that are unlocked have a golden shimmer. Locked books are dust-covered with a small padlock. Stars float gently around the room.
+**Style:** Storybook Arcane in warm organic pixel art. The scene should feel like a real illustrated page made tangible: hand-touched, slightly irregular, textured, and alive. The library is welcoming and magical, never sterile, modern-flat, or app-like. Warm browns, parchment creams, amber lamplight, and deep night-blue magical counterpoints. Magic is ambient, not explosive.
 
----
+**Camera / Composition:** A readable front-facing or gently angled library composition that prioritizes clarity over spectacle. The player should immediately understand: this is a living library, not a generic fantasy room. Keep the space visually calm enough to support menu readability.
 
-### Scene 2: Puzzle View — Word Glow Mode
-**Style:** Clean split-screen. Left side: a parchment-textured text panel with a large, friendly passage. One word glows with a golden pulse. Right side: the target word card with an illustration of the word (e.g., a drawing of a tree for the word "tree"). Bottom: a wide word bank strip.
+**Contents:** Floor-to-ceiling bookshelves, curved wooden furniture, tactile paper and wood textures, a central reading area, and visible shelf zones that can gradually feel more inhabited over time. Some books glow softly. Some shelves look slightly neglected or dormant. No padlocks, no numeric progress symbols, no overt progression iconography.
 
-**Visual accent:** When the player taps the correct word in the passage, it lifts off the page in a sparkle burst and flies to the word bank.
+**Owlorumo:** Owlorumo is present in the library as companion and guardian, not as a mascot sticker. He should feel alive even at rest: a soft blink, subtle breath, staff crystal dim but not dead, posture attentive and kind. His staff, moon brooch, belt, boots, and blue mantle remain clearly readable. He is young, trustworthy, and curious — never severe, never ornamental.
 
----
+**Progress expression:** Restoration is shown through light, presence, and response — not through numeric gates, lock icons, or overt UI trophies. The earliest visible changes should be subtle: a warmer crystal, a faint eye glow, a shelf that feels more awake, a once-dormant book now breathing softly with invitation.
 
-### Scene 3: Celebration Screen
-**Style:** Full-screen explosion of color. The owl center-screen doing a victory dance. Stars raining down. Confetti in 5 colors spiraling from corners. The earned sticker slides in from the right and "sticks" to a scrapbook visible in the lower corner. Three gold stars animate in one at a time.
+**Emotional goal:** The child should feel: “This place was waiting for reading to wake it.”
 
 ---
 
-### Scene 4: Theme Examples
-**Enchanted Forest Theme:** Background is a twilight forest. Fireflies replace sparkle particles. Bookshelves wrapped in vines. Owl has green and purple feathers.
+### Scene 2: Puzzle View — WordGlow Mode
 
-**Space Station Theme:** Dark space background with Earth visible through a porthole. Books float in zero gravity. Neon blue UI elements. Owl is an astronaut owl with a tiny helmet.
+**Style:** Storybook Arcane reading scene in warm organic pixel art. The passage remains the visual center at all times. The puzzle UI supports the act of reading; it must never overpower or visually replace the text. The overall feeling is calm, focused, magical, and tactile.
 
-**Classroom Chalk Theme:** Black/dark green chalkboard background. All UI text looks hand-written in chalk. Simple, high-contrast. Designed for projector display in classrooms.
+**Layout / Composition:** The readable passage occupies the primary area of the screen on a parchment-like reading surface. A compact target card and puzzle support UI sit below or beside the passage without creating a hard competitive split. The child should immediately understand that the task is happening in the text itself.
+
+**Passage behavior:** The full passage is visible and readable. Words may respond softly on hover or touch-ready focus, but the correct answer is never pre-revealed by a strong glow. The text must feel inviting and searchable, not annotated like a worksheet.
+
+**Target presentation:** One target word appears at a time. It is shown clearly with optional picture support and can be read aloud. The target presentation should feel like a gentle reading prompt, not a command badge.
+
+**Word bank / progress UI:** A persistent word inventory remains visible as supportive puzzle UI. Found words stay visible in a quiet `found` state. Anonymous slots communicate how many targets belong to the puzzle, but they do not turn the screen into a progress dashboard.
+
+**Success accent:** When the child taps the correct word in the passage, that occurrence responds warmly. A copy of the found word travels toward its destination with a soft magical trail, while the original location in the passage remains resolved and calm. The feedback should feel satisfying, never explosive.
+
+**Owlorumo presence:** Owlorumo may appear nearby as a reading companion or support anchor, watching, thinking, or gently reacting. He is not the center of the layout. The passage is.
+
+**Emotional goal:** The child should feel: “I found it because I read it.”
+
+---
+
+### Scene 3: Passage Completion Transformation
+
+**Style:** In-scene transformation, not a separate reward screen. The existing reading scene responds warmly and briefly to completion. The feeling is magical, restorative, and intimate — never noisy, arcade-like, or disconnected from the act of reading.
+
+**Visual behavior:** Small white-gold fragments of light emerge and travel toward Owlorumo's staff crystal. The crystal answers with a soft pulse whose intensity reflects the completion result. Light may briefly echo into Owlorumo's eyes and then into the surrounding scene, hinting that the library itself is waking with him.
+
+**Owlorumo:** Owlorumo gives a brief, warm reaction appropriate to the tone of the book and the child's moment of success. He may shift posture, brighten softly, or show a quiet spark of recognition. He does not perform a comic victory dance and he is never framed like a game-show mascot.
+
+**Scene response:** The current environment may answer subtly — a shelf feels more awake, dust lifts in the lamplight, a dormant book breathes, a sticker or journal memory appears if a real milestone was reached. The transformation should feel like the world noticed the reading.
+
+**Intensity rule:** The effect should remain modest and readable. No star rain, no reward numerals, no explosive confetti storm as the default language. If celebratory particles exist, they must remain theme-safe, brief, and secondary to the crystal response.
+
+**Emotional goal:** The child should feel: “Something came back because I finished reading.”
+
+---
+
+### Scene 4: Theme Variations — Future-Compatible Examples
+
+**Purpose:** These are future-compatible theme examples, not alternate core identities for READCRAFTERY. Every theme must preserve reading clarity, functional UI roles, emotional warmth, and Owlorumo's recognizability. A theme may change mood, palette, materials, and decorative language, but it must never make the game feel like a different genre or a different character system.
+
+**Global rule:** Theme variation changes surface expression — not the reading-first structure of the game. Passage readability, target visibility, support cues, and child-safe warmth remain constant across all themes.
+
+**Owlorumo across themes:** Owlorumo remains recognizably the same character in every theme. His hat, staff, moon brooch, belt, boots, and overall silhouette remain intact. Theme variation may appear through one small belt accessory and minor material accents only. These additions are secondary and must never compete with the staff, brooch, or silhouette.
+
+**Enchanted Castle Theme:** Ancient stone halls, warm torchlight, candlelit reading alcoves, tower shelves, carved arches, old banners, and sleeping corridors of knowledge. The mood is magical and noble, never dark-horror or harsh gothic. Reading surfaces remain warm and clear.  
+**Owlorumo accent:** a small adventurer-mage belt pouch — practical, worn, and scholarly, as if it carried small tools, folded notes, or restoration dust.
+
+**Alchemical Observatory Theme:** A high tower of study beneath the night sky. Brass instruments, star charts, parchment diagrams, moonlit windows, and slow dust motes create the feeling of wisdom being interpreted through sky and symbol. This is not sci-fi. It is literary, mystical, and handcrafted — like an old scholar climbing a tower to read the heavens.  
+**Owlorumo accent:** a small astrolabe hanging from the belt. It is a secondary detail only, readable but never dominant.
+
+**Sky City Theme:** Elevated reading terraces, bridges between towers, drifting banners, cloudlight, airy domes, and a sense of wonder carried by height and wind. The theme should feel luminous and spacious without becoming noisy or over-bright. It is a city of living knowledge above the clouds, not a whimsical toy skyline.  
+**Owlorumo accent:** a small celestial star charm hanging from the belt. The charm should read as a sky talisman, not as a game reward icon.
+
+**Constraint:** No theme may break the functional role mapping of the UI, the readability doctrine, or the identity of Owlorumo and the library-world as a refuge of living human knowledge.
 
 ---
 
 ### Scene 5: Mobile Portrait Layout
-**Style:** Top 50% of screen: passage text on a parchment panel. Bottom 50%: puzzle tiles in a bright, colorful tray. Swipe up/down gesture indicator subtly visible. Owl is miniaturized to a small avatar icon in the bottom-right corner.
 
----
+**Style:** A calm stacked reading layout for phones and narrow portrait screens. The passage remains primary and readable in the upper portion of the screen. The lower portion contains puzzle support UI sized for child touch, without reducing the experience to a tray of disconnected tiles.
 
-## 19. Release Roadmap
+**Layout / Composition:** Top area: passage text on a parchment-like panel with generous margins and native-resolution text. Bottom area: puzzle support UI, targets, and interaction controls arranged for single-finger use. WordGlow still resolves in the passage itself; the lower area supports the task rather than replacing it.
+
+**Owlorumo presence:** Owlorumo remains part of the scene as a companion anchor, not a tiny detached avatar sticker. He may appear as a reduced but still integrated support presence near the reading space or support area.
+
+**Interaction rule:** No swipe-only navigation is required for core play. The layout must work through simple taps and visible controls.
+
+**Emotional goal:** The child should feel: “Even on a small screen, the story still comes first.”
+
+## 19. Release Roadmap## 19. Release Roadmap
 
 ### Milestone 0 — Foundation (Month 1–2)
 - [ ] Godot 4 project setup, folder structure, scene architecture
@@ -1092,7 +1592,7 @@ This interface makes it trivial to add new puzzle types without modifying core s
 - [ ] Passage view scene — text display + basic TTS
 - [ ] Word Glow puzzle — fully functional
 - [ ] 1 built-in book (bilingual EN/ES)
-- [ ] Basic progression (stars stored locally)
+- [ ] Basic progression (restoration state stored locally)
 - [ ] **Godot HTML5 export validated on itch.io** — confirm `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: require-corp` headers are active; confirm audio works in Chrome, Firefox, Safari. Failure mode: silent audio breakage. Fix: itch.io HTML5 "SharedArrayBuffer" setting must be enabled in the game dashboard.
 - [ ] **Base build size audit** — HTML5 export must be under 15MB uncompressed. Establish asset compression pipeline (audio as `.ogg` streams, textures with mipmaps) before content accumulates. Retrofitting is expensive.
 - [ ] **TTS platform smoke test** — build a single-screen prototype with one paragraph and a TTS play button. Export to Web (Chrome + Firefox), Android (test device), and iOS (simulator). Confirm Spanish and English voices resolve correctly. Document any fallback behavior per platform. Known risk: Android devices with non-Spanish system locale may not have `es-*` TTS voice installed — define fallback strategy (prompt user to install, or fall back to EN voice with warning).
@@ -1167,7 +1667,7 @@ This interface makes it trivial to add new puzzle types without modifying core s
 
 | Question | Decision |
 |---|---|
-| Same stars for auto-generated vs hand-authored puzzles? | **Yes** — player never knows the difference; parity is correct |
+| Same completion feedback for auto-generated vs hand-authored puzzles? | **Yes** — player never knows the difference; parity is correct |
 | Preview Tool milestone? | **M1 internal, M3 public** — needed to validate own content before distributing to modders |
 | Analytics for base game? | **None** — no analytics. Zero data collection, full stop. |
 | COPPA for base game (no data collection)? | **Trivial** — zero data collection means COPPA compliance is automatic. No personal data is ever collected from players. |
@@ -1195,12 +1695,12 @@ This interface makes it trivial to add new puzzle types without modifying core s
 | Theme Pack | A mod-format bundle that reskins the game's visual UI |
 | Passage | A single text excerpt from a book, with associated puzzles |
 | Word Bank | The list of target words a player must find in the current puzzle |
-| Reading Owl | The player's animated companion character |
+| Owlorumo | The player's animated owl companion character |
 | Reading Journal | The persistent in-game scrapbook of progress and stickers |
 | IPuzzle | The programming interface (abstract class) all puzzle types implement |
 | TTS | Text-to-Speech — automated voice reading of game text |
 | PuzzleGenerator | Rule-based engine that extracts target words from passage text when `targets: "auto"` |
-| Auto-generated puzzle | A puzzle whose targets were produced by PuzzleGenerator, not hand-authored; awards identical stars |
+| Auto-generated puzzle | A puzzle whose targets were produced by PuzzleGenerator, not hand-authored; yields identical completion feedback |
 
 ---
 
@@ -1244,5 +1744,5 @@ and is not required for the initial implementation.
 
 ---
 
-*Document End — READCRAFTERY GDD v1.0*  
+*Document End — READCRAFTERY GDD v1.4*  
 *Next document: Technical Specification (modding API detail) and Art Style Guide*

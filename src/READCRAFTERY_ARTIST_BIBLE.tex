@@ -1,0 +1,710 @@
+% READCRAFTERY — Artist Bible v1.2
+% Compile with: xelatex READCRAFTERY_ARTIST_BIBLE_v1_2.tex
+% Images must be in the same directory as this .tex file
+
+\documentclass[11pt, a4paper]{article}
+
+\usepackage{fontspec}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{mdframed}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{float}
+
+\geometry{a4paper, top=2cm, bottom=2cm, left=2.2cm, right=2.2cm, headheight=14pt}
+
+% Colors
+\definecolor{navycol}{HTML}{1E2A4A}
+\definecolor{goldcol}{HTML}{D4A017}
+\definecolor{parchmentcol}{HTML}{F5E6C8}
+\definecolor{parchment2col}{HTML}{E8D4A8}
+\definecolor{browncol}{HTML}{2C1A0E}
+\definecolor{surfacecol}{HTML}{4A2E1A}
+\definecolor{magiccol}{HTML}{7B4FBE}
+\definecolor{correctcol}{HTML}{4CAF50}
+\definecolor{incorrectcol}{HTML}{E53935}
+\definecolor{neutralcol}{HTML}{9E9E9E}
+\definecolor{lightnote}{HTML}{FFF8E7}
+\definecolor{warnbg}{HTML}{FFF3E0}
+\definecolor{warnring}{HTML}{E65100}
+\definecolor{tabhead}{HTML}{1E2A4A}
+\definecolor{tabrow}{HTML}{F9F6F0}
+\definecolor{m2color}{HTML}{C62828}
+\definecolor{m3color}{HTML}{E65100}
+\definecolor{m2bg}{HTML}{FFEBEE}
+\definecolor{m3bg}{HTML}{FFF3E0}
+\definecolor{okbg}{HTML}{E8F5E9}
+\definecolor{okcolor}{HTML}{1B5E20}
+\definecolor{storytext}{HTML}{3A2510}
+
+\setmainfont{DejaVu Serif}
+\setsansfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+
+\hypersetup{colorlinks=true, linkcolor=navycol, urlcolor=magiccol,
+  pdftitle={READCRAFTERY Artist Bible v1.2}, pdfauthor={The Readcraftery Project}}
+
+\titleformat{\section}{\sffamily\Large\bfseries\color{navycol}}{\thesection.}{0.5em}{}
+  [\color{goldcol}\titlerule[1.5pt]\vspace{2pt}]
+\titleformat{\subsection}{\sffamily\large\bfseries\color{navycol}}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\sffamily\normalsize\bfseries\color{surfacecol}}{}{0em}{}
+\titlespacing*{\section}{0pt}{18pt}{8pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{8pt}{2pt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{navycol}\textbf{READCRAFTERY} -- Artist Bible v1.2}
+\fancyhead[R]{\small\sffamily\color{neutralcol}March 2026}
+\fancyfoot[C]{\small\sffamily\color{neutralcol}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Note box
+\newmdenv[backgroundcolor=lightnote, linecolor=goldcol, linewidth=2pt,
+  leftline=true, rightline=false, topline=false, bottomline=false,
+  innerleftmargin=10pt, innerrightmargin=8pt, innertopmargin=6pt, innerbottommargin=6pt,
+  skipabove=8pt, skipbelow=8pt]{notebox}
+
+% Warning box
+\newmdenv[backgroundcolor=warnbg, linecolor=warnring, linewidth=2pt,
+  leftline=true, rightline=false, topline=false, bottomline=false,
+  innerleftmargin=10pt, innerrightmargin=8pt, innertopmargin=6pt, innerbottommargin=6pt,
+  skipabove=8pt, skipbelow=8pt]{warnbox}
+
+% Story box
+\newmdenv[backgroundcolor=parchmentcol!25, linecolor=browncol!35, linewidth=1pt,
+  leftline=true, rightline=true, topline=true, bottomline=true,
+  innerleftmargin=14pt, innerrightmargin=14pt, innertopmargin=10pt, innerbottommargin=10pt,
+  skipabove=10pt, skipbelow=10pt, roundcorner=4pt]{storybox}
+
+% \hex{RRGGBB} — shows hex code in its own color
+\newcommand{\hex}[1]{\textcolor[HTML]{#1}{\texttt{\##1}}}
+
+% \colorswatch{colorname}{RRGGBB}{description}
+\newcommand{\colorswatch}[3]{%
+  \noindent
+  \begin{tikzpicture}[baseline=-0.5ex]
+    \fill[#1] (0,0) rectangle (0.7cm, 0.35cm);
+    \draw[gray!40] (0,0) rectangle (0.7cm, 0.35cm);
+  \end{tikzpicture}
+  \hspace{4pt}\hex{#2}\hspace{8pt}{\sffamily\small #3}\\[3pt]
+}
+
+% Priority badge
+\newcommand{\badgeM}[1]{%
+  \colorbox{\ifnum#1=2 m2bg\else\ifnum#1=3 m3bg\else okbg\fi\fi}{%
+    \color{\ifnum#1=2 m2color\else\ifnum#1=3 m3color\else okcolor\fi\fi}%
+    \sffamily\small\bfseries M#1}%
+}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\begin{document}
+\thispagestyle{empty}
+
+% COVER
+\begin{center}
+  \vspace*{1.5cm}
+  {\fontsize{42}{50}\selectfont\sffamily\bfseries\color{navycol} READCRAFTERY}\\[6pt]
+  {\Large\sffamily\color{surfacecol} Artist Bible --- Visual Canon and Production Rules}\\[4pt]
+  {\normalsize\sffamily\color{neutralcol}\itshape Version 1.1 --- March 2026}\\[2cm]
+  \includegraphics[width=7cm]{owlorumo_concept}\\[6pt]
+  {\small\sffamily\itshape\color{neutralcol} Owlorumo --- Official Concept Art}\\[1.5cm]
+  \begin{mdframed}[linecolor=goldcol, linewidth=1.5pt,
+      innerleftmargin=16pt, innerrightmargin=16pt,
+      innertopmargin=8pt, innerbottommargin=8pt]
+    {\small\sffamily\itshape\color{neutralcol} Confidential --- Not for distribution}
+  \end{mdframed}
+\end{center}
+
+\newpage
+\setcounter{page}{1}
+{\sffamily\tableofcontents}
+\newpage
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Project Overview}
+
+READCRAFTERY is an educational word puzzle game for children ages 5--9, built in Godot 4.
+The game teaches reading through interactive puzzles set in a magical library world.
+Players read short passages, then search for target words guided by their companion
+Owlorumo --- a young owl wizard whose power returns as the child reads.
+
+The visual style is pixel art with a warm, magical, child-friendly aesthetic:
+\textbf{Stardew Valley} meets a \textbf{1980s illustrated storybook}.
+
+\subsection{Target Platforms}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item HTML5 (itch.io) --- primary
+  \item Android / iOS
+  \item PC (Windows / Linux / macOS)
+\end{itemize}
+
+\subsection{Art Style --- Storybook Arcane}
+
+The style has a name: \textbf{Storybook Arcane}. Key principles:
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Pixel art with deliberate organic shapes --- curves, not sharp geometry
+  \item Warm candlelight as primary light source --- upper left in all scenes
+  \item Magic is ambient, not explosive --- soft glows, floating particles, pulsing runes
+  \item Textures are invented --- textures that only exist in this world
+  \item Characters have exaggerated expressiveness --- big eyes, never frightening
+  \item No dark fantasy --- no skulls, no scary darkness; the wizard is always kind
+\end{itemize}
+
+\subsection{The Library Through Restoration}
+
+The same place is encountered under three progressively revealed names:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \textbf{The Sleeping Library} --- the first state; dormant, veiled, waiting
+  \item \textbf{The Reawakened Library} --- a warmer, more responsive state after meaningful restoration
+  \item \textbf{The Library of Beginnings} --- the deeper revealed truth; restoration does not return a pristine past, it opens new continuity
+\end{itemize}
+
+These are not separate worlds or separate levels. They are names for the same living library-world as it becomes more present.
+
+\subsection{Master Color Palette}
+
+All assets must use \textbf{only} these colors. No additional colors without approval.
+
+\vspace{6pt}
+\colorswatch{browncol}{2C1A0E}{background --- main background, dark warm brown}
+\colorswatch{surfacecol}{4A2E1A}{surface --- shelves, furniture, elevated surfaces}
+\colorswatch{parchmentcol}{F5E6C8}{parchment --- reading area background, light UI}
+\colorswatch{parchment2col}{E8D4A8}{parchment\_shadow --- secondary text backgrounds}
+\colorswatch{goldcol}{D4A017}{accent (gold) --- restoration cues, warm highlights, identity elements}
+\colorswatch{magiccol}{7B4FBE}{magic\_glow --- staff crystal, rune glows, puzzle highlights}
+\colorswatch{correctcol}{4CAF50}{correct --- correct answer feedback}
+\colorswatch{incorrectcol}{E53935}{incorrect --- use sparingly, never harsh}
+\colorswatch{neutralcol}{9E9E9E}{neutral --- disabled states, dormant content}
+
+\begin{warnbox}
+  \textbf{Warning:} \texttt{magic\_glow} (\hex{7B4FBE}) appears \textit{only} on Owlorumo's
+  staff crystal, puzzle highlight effects, and narrative rune glows. Never in functional UI.\\[4pt]
+  The accent gold (\hex{D4A017}) is sacred --- do not substitute with other yellows.
+  Gold should feel meaningful and warm, but never like score or trophy UI.
+\end{warnbox}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Owlorumo --- Character Design}
+
+\subsection{The Story (context for the artist)}
+
+\begin{storybox}
+{\sffamily\small\color{storytext}
+Owlorumo was the companion owl of Athena. As the habit of reading dimmed in the human world,
+his memory, power, and presence diminished with it. He remains in the library --- the last
+place where wisdom survived long enough to be reawakened.
+
+\vspace{6pt}
+The child is never told this directly. Owlorumo does not explain it. But each recognized word,
+pattern, and finished passage returns a little more light to what was fading.
+
+\vspace{6pt}
+\textbf{Reading is a power that discovers and restores human knowledge.}
+
+\vspace{6pt}
+\textit{This story lives in visual details: the staff crystal, Owlorumo's eyes, the warmth of
+his presence, and the awakening of the library itself. \textbf{state\_4} is a deliberate homage
+to Tolkien's Gandalf the White: fulfilled, not replaced. The blue mantle remains visible.
+The moon brooch, belt, boots, and organic staff form remain. The transformation is one of
+light, material, and presence. Never explained. Only discovered.}
+}
+\end{storybox}
+
+\subsection{Personality}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Young, curious, slightly clumsy with magic but never with words
+  \item Companion, not authority --- discovers alongside the child
+  \item Amber eyes are his most expressive feature: wide with wonder, warm with encouragement
+  \item Never intimidating, never scared, never disappointed
+  \item No beard --- Owlorumo is young
+\end{itemize}
+
+\subsection{Reference Images}
+
+The following two images are the \textbf{official design reference}.
+All pixel art must match these. When in doubt, the concept art wins.
+
+\vspace{8pt}
+\begin{figure}[H]
+  \centering
+  \begin{minipage}{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{../assets/img/owlorumo_concept_art}\\
+    {\small\itshape\color{neutralcol} Concept Art --- official reference}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.46\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{owlorumo_concept_pixel_art}\\
+    {\small\itshape\color{neutralcol} AI Pixel Art --- style guide}
+  \end{minipage}
+\end{figure}
+
+\subsection{Character Anatomy}
+
+\subsubsection{Proportions}
+Compact and slightly chubby --- reads as young. Large round head. \textbf{No beard.}
+
+\subsubsection{Clothing --- confirmed from concept art}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Navy blue robe --- deep, dark (\hex{1E2A4A}). Slightly oversized (apprentice feel)
+  \item Gold trim on robe hem and cuffs (\hex{D4A017})
+  \item Neck wrap --- same navy fabric, loosely wrapped
+  \item \textbf{Crescent moon brooch} --- \hex{D4A017}. Always present. Identity detail.
+  \item Brown leather belt with gold buckle
+  \item Tall pointed wizard hat --- same navy, slightly bent. Feather + rune engravings.
+  \item Short brown leather boots --- slightly oversized, covers talons completely
+\end{itemize}
+
+\subsubsection{Staff --- Integral Element (NEVER remove)}
+
+The staff is a \textbf{permanent} part of Owlorumo's design --- present in every frame.
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Dark twisted organic wood --- darker than the robe
+  \item Purple crystal on top --- \hex{7B4FBE} in idle, brighter in active states
+  \item Owlorumo holds the staff in his \textbf{LEFT hand}, reaching above his head
+  \item The crystal glow is the single most recognizable silhouette element after the hat
+\end{itemize}
+
+\begin{notebox}
+  Owlorumo's silhouette must always read as ``owl with wizard hat and staff'' at 64x64px.
+  If the staff cannot fit legibly, show the crystal glow at minimum.
+\end{notebox}
+
+\subsection{Eyes}
+
+At 64x64px the eyes will be 4--5 pixels wide each. Every emotion comes through the eyes.
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Bright amber-gold (\hex{D4A017} tint toward orange)
+  \item Large and round --- Seuss-style, not realistic
+  \item Independent eyebrows (owls don't have them --- intentional)
+  \item Slow blink in idle = signal of trust and warmth
+  \item \textbf{Each eye has a 1-pixel white highlight in the upper-left corner.}
+        This is what makes them read as alive. Do not omit.
+\end{itemize}
+
+\subsection{Companion Progression States}
+
+Owlorumo starts diminished and is progressively restored as the child reads.
+\textbf{The artist delivers 5 PNG atlas files with identical frame layout.}
+
+\vspace{6pt}
+\begin{tabularx}{\textwidth}{@{}c >{\ttfamily\small}l >{\raggedright\arraybackslash}X
+    >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries \# &
+  \color{white}\sffamily\bfseries File &
+  \color{white}\sffamily\bfseries Crystal &
+  \color{white}\sffamily\bfseries Robe &
+  \color{white}\sffamily\bfseries Unlocked after \\
+  \midrule
+  \rowcolor{tabrow}0 & atlas\_owlorumo\_state0.png & Cracked, dark & Navy, no runes & Game start \\
+  1 & atlas\_owlorumo\_state1.png & Faint \hex{7B4FBE} glow & Navy, no runes & First passage \\
+  \rowcolor{tabrow}2 & atlas\_owlorumo\_state2.png & Lit, pulsing & Navy, first rune & First book \\
+  3 & atlas\_owlorumo\_state3.png & Bright \hex{7B4FBE} & Navy, several runes & 3 books \\
+  \rowcolor{tabrow}4 & atlas\_owlorumo\_state4.png & \textbf{White-gold, blinding} & \textbf{Blue mantle illuminated white-gold; same brooch, belt, boots} & First complete arc \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+\begin{notebox}
+  \textbf{Crystal behavioral states — animation guidance:}\\[4pt]
+  The crystal communicates four distinct states through animation:
+  \begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+    \item \textbf{Idle pulse} — soft \hex{7B4FBE} pulse at 0.8Hz. Base state.
+    \item \textbf{Hint active} — brightens to \hex{A87FE8}, staff points toward puzzle area.
+    \item \textbf{Fragment absorption} — brief white-gold flash when a puzzle is completed.
+      The flash arrives, pulses once, is absorbed. Duration: under 1 second.
+      Visually distinct from the idle pulse — brighter, warmer, directional.
+    \item \textbf{State base level} — permanent ambient glow determined by owlorumo\_state.
+      This is the resting brightness between all other states.
+      Fragments arrive on top of this level — they do not replace it.
+  \end{itemize}
+  The artist must design the crystal so all four states are readable
+  at 64×64px native size.
+\end{notebox}
+\begin{notebox}
+  \textbf{state\_0 and state\_1 are M2 blockers} --- deliver these first.\\[4pt]
+  \textbf{state\_4} is a homage to Tolkien's Gandalf the White. Never explained in the game.
+  Only discovered. The crystal in state\_4 transitions from \hex{7B4FBE} to a white-gold glow
+  --- the only state where the crystal color changes.
+\end{notebox}
+
+\subsection{Required Animation States}
+
+Deliver as sprite atlas PNG, transparent background, \textbf{64x64px per frame}.
+All 5 state atlases share the same frame layout.
+
+\vspace{6pt}
+\begin{tabularx}{\textwidth}{@{}l c l >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries State &
+  \color{white}\sffamily\bfseries Frames &
+  \color{white}\sffamily\bfseries Priority &
+  \color{white}\sffamily\bfseries Description \\
+  \midrule
+  \rowcolor{tabrow}\texttt{owl\_idle}      & 4 fr & \badgeM{2} & Soft breathing. Slow blink fr 3. Staff crystal pulses 0.8Hz. \\
+  \texttt{owl\_happy}     & 4 fr & \badgeM{2} & Neck feathers ruffled. Slight sway. Half-closed eyes. \\
+  \rowcolor{tabrow}\texttt{owl\_hint}      & 4 fr & \badgeM{2} & Leans forward. Staff gently points toward puzzle. Crystal bright. \textbf{Owlorumo is the hint button — the child taps him directly.} \\
+  \texttt{owl\_thinking}  & 4 fr & \badgeM{2} & Slow head turn. Talon scratches chin. Staff in other hand. \\
+  \rowcolor{tabrow}\texttt{owl\_excited}   & 6 fr & \badgeM{3} & Wings slightly extended. Short hop. Crystal flashes. \\
+  \texttt{owl\_celebrate} & 8 fr & \badgeM{3} & Wings fully extended. Magic motes emerge from crystal. \\
+  \rowcolor{tabrow}\texttt{owl\_reading}   & 4 fr & \badgeM{3} & Holds open book. Eyes move side to side slowly. \\
+  \texttt{owl\_sleepy}    & 4 fr & \badgeM{3} & Slow nodding. Half-closed eyes. Inactivity screens. \\
+  \rowcolor{tabrow}\texttt{owl\_wave}      & 4 fr & \badgeM{3} & Raises one wing in greeting. Onboarding and return. \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+\begin{warnbox}
+  \textbf{M2 = first 4 states are blockers.}
+  Deliver \texttt{owl\_idle}, \texttt{owl\_happy}, \texttt{owl\_hint},
+  \texttt{owl\_thinking} for \textbf{state\_0} and \textbf{state\_1} first.\\[4pt]
+  Display is controlled by Godot per context:
+  192x192px in PassageView (3x), 256x256px in Library/menu (4x).
+  Both are integer scales --- no quality loss.
+\end{warnbox}
+
+\subsection{Owlorumo in the Library — Ambient Behavior}
+
+Owlorumo is not static in the library. He inhabits the space.
+The artist must design animations that communicate this.
+
+\begin{notebox}
+  \textbf{Core rule:} Owlorumo is always doing something when the child arrives.
+  He finishes his current gesture naturally, then looks at the child.
+  He was not waiting. He was here. There is a difference.
+\end{notebox}
+
+\textbf{Ambient activities — same action, different energy per state:}
+
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Activity &
+  \color{white}\sffamily\bfseries state\_0 / state\_1 &
+  \color{white}\sffamily\bfseries state\_3 / state\_4 \\
+  \midrule
+  \rowcolor{tabrow}Sorting books with magic & Slow, a book falls, he picks it up & Fluid, effortless \\
+  Walk to window & Heavy, slightly hunched & Light, curious \\
+  \rowcolor{tabrow}Reading at lectern & Eyes moving slowly, sometimes stops & Engaged, occasional soft smile \\
+  Writing on parchment & Only state\_2+ & Present from state\_2 \\
+  \bottomrule
+\end{tabularx}
+
+\vspace{6pt}
+\textbf{On child entry:} Owlorumo always notices. He finishes his gesture,
+then turns toward the child. Never startled. Never ignoring.
+
+\textbf{On book selection:} a small gesture of recognition —
+not celebration, not instruction. As if the child chose exactly right.
+
+\textbf{On tap in library (no active event):} crystal pulses softly,
+a glance toward the child. Presence, not function.
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Environment Assets}
+
+All backgrounds: \textbf{draw at 480x270px}, displayed at 1920x1080 (4x).
+Light source always upper left.
+
+\subsection{Library Scene}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.85\textwidth]{../assets/img/library_scene_concept_art}\\
+  {\small\itshape\color{neutralcol} Library Scene --- AI reference (official style reference)}
+\end{figure}
+
+Key elements to preserve:
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Isometric corner view --- two walls of shelves meeting at center
+  \item Candelabra as primary warm light source (upper left)
+  \item Purple glowing books on shelves --- \hex{7B4FBE}, ambient not explosive
+  \item Reading podium in center. Small desk with quill, ink pot, candle.
+  \item Warm stone floor with amber candlelight reflection --- \textbf{not cold grey}
+  \item Owlorumo's lectern or nearby presence anchor --- implies he inhabits this space
+\end{itemize}
+
+\vspace{6pt}
+\begin{tabularx}{\textwidth}{@{}l c c c >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Asset &
+  \color{white}\sffamily\bfseries Draw &
+  \color{white}\sffamily\bfseries Display &
+  \color{white}\sffamily\bfseries Priority &
+  \color{white}\sffamily\bfseries Content \\
+  \midrule
+  \rowcolor{tabrow}\texttt{bg\_library\_layer\_4} & 480x270 & 1920x1080 & \badgeM{2} & Far background --- dark shelves, stone wall \\
+  \texttt{bg\_library\_layer\_3} & 480x270 & 1920x1080 & \badgeM{2} & Mid shelves --- books, some glowing \hex{7B4FBE} \\
+  \rowcolor{tabrow}\texttt{bg\_library\_layer\_2} & 480x270 & 1920x1080 & \badgeM{3} & Foreground --- podium, desk, candelabra \\
+  \texttt{bg\_library\_layer\_1} & 480x270 & 1920x1080 & \badgeM{3} & Closest --- particles, dust motes \\
+  \bottomrule
+\end{tabularx}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.65\textwidth]{../assets/img/bookshelf_close_up}\\
+  {\small\itshape\color{neutralcol} Bookshelf close-up --- use for layer\_3 detail level}
+\end{figure}
+
+\subsection{Library — Diegetic UI elements}
+
+The library UI is part of the world, not drawn on top of it.
+
+\begin{tabularx}{\textwidth}{@{}l >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Element &
+  \color{white}\sffamily\bfseries Visual identity &
+  \color{white}\sffamily\bfseries Position \\
+  \midrule
+  \rowcolor{tabrow}\texttt{book\_settings} &
+    Closed book. Navy \hex{1E2A4A} spine. Crescent moon symbol.
+    Visually distinct from all other books. &
+    Fixed top-right. Always visible. \\
+  \texttt{book\_tts} &
+    Small open book. Parchment \hex{F5E6C8}.
+    Pulses softly while audio plays. &
+    Passage panel, fixed. \\
+  \rowcolor{tabrow}\texttt{btn\_exit} &
+    Small door. Warm wood. Visible glow on hold.
+    Tap-hold 1 second to activate. &
+    Bottom-left of PassageView. Fixed. \\
+  \bottomrule
+\end{tabularx}
+
+\begin{warnbox}
+  \textbf{book\_settings color and moon symbol are brand invariants.}
+  A theme may restyle the texture but must preserve \hex{1E2A4A} and the crescent moon.
+  These are the child's and teacher's navigation anchor — they must be immediately
+  recognizable across all themes and sessions.
+\end{warnbox}
+
+\textbf{Library books — three visual states:}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \textbf{Available} — saturated colors, subtle gold shimmer, breathes softly.
+    Brightens on hover. This is the book that invites.
+  \item \textbf{Dormant} — desaturated, no reaction to hover, no lock icon.
+    Simply does not respond. Some visible from the first session; others appear
+    after completing a passage — placed silently, never announced.
+  \item \textbf{Completed} — warm permanent glow. Owlorumo occasionally
+    looks toward it during idle.
+\end{itemize}
+
+\subsection{PassageView --- Reading Panel}
+
+The reading area. Text legibility is the absolute priority.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.52\textwidth]{../assets/img/passage.jpg}\\
+  {\small\itshape\color{neutralcol} Parchment frame reference --- AI concept}
+\end{figure}
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Full-panel frame, \textbf{not} a repeating tile
+  \item Center must be \textbf{clean} --- no texture, no detail --- text goes here
+  \item Corner decorations: crescent moon, quill, book, and celestial glyph motifs --- small, \hex{D4A017}
+  \item Faint paper grain. Subtle warm glow from upper left.
+\end{itemize}
+
+\begin{tabularx}{\textwidth}{@{}l c c c >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Asset &
+  \color{white}\sffamily\bfseries Draw &
+  \color{white}\sffamily\bfseries Display &
+  \color{white}\sffamily\bfseries Priority &
+  \color{white}\sffamily\bfseries Notes \\
+  \midrule
+  \rowcolor{tabrow}\texttt{parchment\_tile} & 64x64 & 256x256 & \badgeM{2} & Full panel frame. Clean center. Base \hex{F5E6C8}. \\
+  \texttt{wood\_tile} & 64x64 & 256x256 & \badgeM{2} & Puzzle panel. Dark warm wood. Base \hex{4A2E1A}. \\
+  \bottomrule
+\end{tabularx}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{UI Assets}
+
+\subsection{Interactive Tiles}
+
+\begin{tabularx}{\textwidth}{@{}l c c c >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Asset &
+  \color{white}\sffamily\bfseries Draw &
+  \color{white}\sffamily\bfseries Display &
+  \color{white}\sffamily\bfseries Priority &
+  \color{white}\sffamily\bfseries Description \\
+  \midrule
+  \rowcolor{tabrow}\texttt{tile\_word\_normal}   & 16x8 & 64x32 & \badgeM{2} & Word tile. Base \hex{F5E6C8}. Resting state. \\
+  \texttt{tile\_word\_selected} & 16x8 & 64x32 & \badgeM{2} & \hex{D4A017} highlight. Pulse animation. \\
+  \rowcolor{tabrow}\texttt{tile\_word\_found}    & 16x8 & 64x32 & \badgeM{2} & \hex{4CAF50}. Completed. No animation. \\
+  \texttt{slot\_word\_empty}    & 16x8 & 64x32 & \badgeM{2} & Anonymous target slot. \hex{2C1A0E}. Pulse. \\
+  \rowcolor{tabrow}\texttt{slot\_word\_filled}   & 16x8 & 64x32 & \badgeM{2} & Slot with found word. \hex{4CAF50}. \\
+  \texttt{tile\_letter\_normal} & 16x16 & 64x64 & \badgeM{2} & Square letter tile for Scramble puzzle. \\
+  \bottomrule
+\end{tabularx}
+
+\subsection{Icons \& Buttons}
+
+\begin{tabularx}{\textwidth}{@{}l c c c >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Asset &
+  \color{white}\sffamily\bfseries Draw &
+  \color{white}\sffamily\bfseries Display &
+  \color{white}\sffamily\bfseries Priority &
+  \color{white}\sffamily\bfseries Description \\
+  \midrule
+  \rowcolor{tabrow}\texttt{fragment\_light\_01} & 8x8   & 32x32 & \badgeM{2} & Small white-gold light fragment. Idle/shimmer state. \\
+  \texttt{fragment\_light\_02} & 8x8   & 32x32 & \badgeM{2} & Alternate fragment shape for travel/arrival variation. \\
+  \rowcolor{tabrow}\texttt{icon\_hint}      & 16x16 & 64x64 & \badgeM{2} & Hint button --- staff crystal motif. \hex{7B4FBE}. \\
+  \texttt{btn\_back}       & 24x24 & 96x96 & \badgeM{2} & Back/home button. Normal + pressed states. \\
+  \rowcolor{tabrow}\texttt{book\_available} & 16x24 & 64x96 & \badgeM{2} & Book cover for Library Scene. \\
+  \texttt{book\_dormant}   & 16x24 & 64x96 & \badgeM{2} & Dormant book. Desaturated, quiet, no lock icon. \\
+  \bottomrule
+\end{tabularx}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Technical Specifications}
+
+\subsection{Pixel Art Rules}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \textbf{No anti-aliasing} --- hard pixel edges only
+  \item Outline: 1px dark outline using shadow variant of each base color.
+        \textbf{Never pure black \#000000}
+  \item Light source: always upper left for all assets
+  \item Max 20 colors per character sprite (all animation frames combined)
+  \item Max 32 colors per background layer
+\end{itemize}
+
+\subsection{Owlorumo --- Display Rules}
+
+\begin{tabularx}{\textwidth}{@{}l c c >{\raggedright\arraybackslash}X@{}}
+  \toprule
+  \rowcolor{tabhead}
+  \color{white}\sffamily\bfseries Context &
+  \color{white}\sffamily\bfseries Master &
+  \color{white}\sffamily\bfseries Display &
+  \color{white}\sffamily\bfseries Scale \\
+  \midrule
+  \rowcolor{tabrow}PassageView (gameplay) & 64x64 & 192x192 & 3x integer \\
+  Library / menu & 64x64 & 256x256 & 4x integer \\
+  \rowcolor{tabrow}Celebration / reward & 64x64 & 256--320+ & 4--5x integer \\
+  \bottomrule
+\end{tabularx}
+
+\begin{notebox}
+  Both 3x and 4x are integer scales from 64px. Godot renders pixel-perfect with
+  \texttt{texture\_filter = NEAREST}. \textbf{One atlas per state, multiple display contexts.}
+\end{notebox}
+
+\subsection{Atlas Delivery Format}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item 5 PNG files: \texttt{atlas\_owlorumo\_state0.png} through \texttt{state4.png}
+  \item Identical frame layout across all 5 atlases --- transparent background
+  \item Frames left-to-right in rows, consistent grid, no padding
+  \item Atlas max size: 2048x2048px
+  \item Anchor point: center-bottom (character feet)
+  \item Deliver Aseprite \texttt{.ase} source + flattened PNG
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Scope \& Phases}
+
+\subsection{Phase 1 --- M1 Final Slice}
+
+Minimum assets for the first approved artist pass on top of the stable technical slice.
+
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item[\textbf{!}] \texttt{atlas\_owlorumo\_state0.png} --- all 4 animations --- cracked crystal (\hex{2C1A0E})
+  \item[\textbf{!}] \texttt{atlas\_owlorumo\_state1.png} --- all 4 animations --- faint crystal glow
+  \item[\textbf{!}] \texttt{bg\_library\_layer\_4} + \texttt{layer\_3} --- far and mid shelves
+  \item[\textbf{!}] \texttt{parchment\_tile} --- PassageView reading panel
+  \item[\textbf{!}] \texttt{fragment\_light\_01} + \texttt{fragment\_light\_02}
+  \item[\textbf{!}] \texttt{slot\_word\_empty} + \texttt{slot\_word\_filled}
+\end{itemize}
+
+\begin{notebox}
+  Deliver \textbf{state\_0} before state\_1. state\_0 is the most important visual state
+  --- it establishes the narrative of diminishment that the child's reading will restore.
+  This is Owlorumo as the child first meets him.
+\end{notebox}
+
+\subsection{Phase 2 --- Expanded Production}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \texttt{atlas\_owlorumo\_state2.png} + \texttt{state3.png} --- crystal lit, runes appear
+  \item \texttt{bg\_library\_layer\_2} + \texttt{layer\_1} --- foreground + parallax
+  \item \texttt{wood\_tile}, \texttt{tile\_word\_*}, \texttt{icon\_hint}, \texttt{btn\_back}
+  \item \texttt{book\_available} + \texttt{book\_dormant}
+\end{itemize}
+
+\subsection{Phase 3 --- Late Content / M2+}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \texttt{atlas\_owlorumo\_state4.png} --- blue mantle illuminated white-gold, \hex{D4A017} runes, identity anchors preserved (fulfilled, not replaced)
+  \item Remaining animations for all states (excited, celebrate, reading, sleepy, wave)
+  \item Celebration, Journal, Settings backgrounds
+  \item Scramble/WordHunt tile backgrounds (16×16px NinePatchRect, no letters).
+    Letters are rendered dynamically by Godot using Nunito — no letter sprites needed.
+\end{itemize}
+
+% ─────────────────────────────────────────────────────────────────────────────
+\section{Working Agreement}
+
+\subsection{Reference Images}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Owlorumo concept art --- official character reference (embedded)
+  \item Owlorumo pixel art --- AI-generated style reference (embedded)
+  \item Library Scene --- AI-generated scene reference (embedded)
+  \item Bookshelf close-up --- AI-generated detail reference (embedded)
+  \item Parchment frame --- AI-generated PassageView reference (embedded)
+\end{itemize}
+
+\begin{notebox}
+  AI references are style guides, not final designs.
+  \textbf{The concept art of Owlorumo is the only non-negotiable reference.}
+\end{notebox}
+
+\subsection{Process}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item Deliver Phase 1 as rough sketches first for approval before final pixel art
+  \item One revision round included per asset
+  \item Deliver Aseprite \texttt{.ase} + flattened PNG
+  \item All source files licensed to The Readcraftery Project upon delivery
+\end{itemize}
+
+\subsection{License}
+
+All delivered assets become the exclusive property of The Readcraftery Project upon
+full payment. The artist retains the right to show the work in their portfolio with credit.
+
+\vspace{1cm}
+\hrule
+\vspace{6pt}
+\begin{center}
+  {\small\sffamily\color{neutralcol}
+    READCRAFTERY --- Artist Bible v1.2 --- March 2026 ---
+    \href{https://github.com/The-Readcraftery-Project}{github.com/The-Readcraftery-Project}
+  }
+\end{center}
+
+\end{document}

@@ -1,8 +1,8 @@
 # READCRAFTERY — Art Style Guide
-**Version:** 1.2  
+**Version:** 1.5  
 **Date:** March 2026  
 **Status:** Pre-Production  
-**Companion documents:** GDD v1.2 · Architecture Contract v1.1 · Build Guide v1.3  
+**Companion documents:** GDD v1.4 · Architecture Contract v1.3 · Build Guide v1.5
 
 ---
 
@@ -10,18 +10,17 @@
 
 ---
 
-
 > **How to read this document**
 >
 > This document has two audiences:
 > - **Developer / artist** — visual direction, character, technical production specs
 > - **Modders** — guide to create themes and book packs with compatible visual assets
 >
-> Sections §1–§5 are for internal production. Section §6 is the public guide for modders.
+> Sections §1–§7 are for internal production. Section §8 is the public guide for modders.
 > This document uses **pixel art with Strategy B** as the definitive style — sprites at
 > 64×64 px master draw size for Owlorumo, scaled per context (3× in PassageView, 4× in Library/menu).
-> All other sprites at 48×48 or smaller, scaled 4×. Text always at native resolution.
-> This decision is closed. The technical sections (§4–§5) reflect this choice.
+> All other sprites at 16–24 px draw size, scaled 4×. Text always at native resolution.
+> This decision is closed. The technical sections (§5–§7) reflect this choice.
 
 ---
 
@@ -29,8 +28,8 @@
 
 1. [Visual References and Philosophy](#1-visual-references-and-philosophy)
 2. [Palette and Color Values](#2-palette-and-color-values)
-3. [The Istari Owl — Character Design](#3-the-istari-owl--character-design)
-4. [The Default Theme — Cozy Library](#4-the-default-theme--cozy-library)
+3. [Owlorumo — Character Design](#3-owlorumo--character-design)
+4. [The Default Theme — The Sleeping Library](#4-the-default-theme--the-sleeping-library)
 5. [Shape Language & Rendering Rules](#5-shape-language--rendering-rules)
 6. [UI Readability Doctrine](#6-ui-readability-doctrine)
 7. [Technical Production Specifications](#7-technical-production-specifications)
@@ -46,7 +45,7 @@
 ### The Two Foundational References
 
 **Choose Your Own Adventure (1979–1998, Bantam Books)**  
-The interactive adventure books of the 80s have a specific visual quality we want to capture: illustrations with *narrative weight*, worlds that feel inhabited and slightly dangerous but fascinating, dramatic compositions with strong light contrast, and a warm palette interrupted by flashes of impossible color (the glowing portal, the luminous creature). Interior illustrations were black and white with great expressiveness of line — each scene suggested a larger world beyond the frame.
+The interactive adventure books of the 80s have a specific visual quality we want to capture: illustrations with *narrative weight*, worlds that feel inhabited and slightly dangerous but fascinating, dramatic compositions with strong light contrast, and a warm palette interrupted by flashes of impossible color. Interior illustrations were black and white with great expressiveness of line — each scene suggested a larger world beyond the frame.
 
 What we take: **the sense that each screen is a page of a real book**. The game must feel like being *inside* an illustration from those books.
 
@@ -57,7 +56,7 @@ Seuss's visual universe has very specific rules that make it immediately recogni
 - **Nothing is perfectly straight.** Towers twist, trees curve, houses lean. There is organic life in every line.
 - **Textures are invented.** No real skin, no real wood — textures that only exist in that world.
 - **The palette is limited and bold.** Few colors, highly saturated, with strong contrasts. The white of the page (or light background) works as its own color.
-- **Characters have exaggerated expressiveness but are never frightening.** Big eyes, theatrical poses, clear emotions desde lejos.
+- **Characters have exaggerated expressiveness but are never frightening.** Big eyes, theatrical poses, clear emotions from a distance.
 - **Typography and illustrations coexist as part of the same visual world.**
 
 What we take: **the line with personality, organic shapes, the bold palette, the invented texture**.
@@ -95,53 +94,53 @@ The visual style of READCRAFTERY is **pixel art**, with Strategy B scaling (see 
 
 The core reason: text is the product. A 5-year-old needs perfectly sharp text on any screen. Pixel art with Strategy B allows text at native 1080p resolution while sprites and backgrounds live at their natural resolution scaled to 4×. There is no trade-off between visual warmth and text readability.
 
-Pixel art is also consistent with the references: the CYOA books of the 80s are the first books many of us chose to read of our own free will — they have a direct relationship with the pixel art era. And the Istari Owl in well-executed pixel art has more personality than in any other style at its level of production complexity.
+Pixel art is also consistent with the references: the CYOA books of the 80s are the first books many of us chose to read of our own free will — they have a direct relationship with the pixel art era. And Owlorumo in well-executed pixel art has more personality than in any other style at its level of production complexity.
 
 ---
 
 ## 2. Palette and Color Values
 
-### Palette principal — Cozy Library
+### Core Palette — The Sleeping Library
 
-These are the color values for the default theme. Modder themes may use completely different palettes, butro deben mantener los mismos **roles funcionales** (ver §6).
+These are the color values for the default theme. Modder themes may use completely different palettes, but must maintain the same **functional roles** (see §6).
 
-```
-FONDOS Y SUPERFICIES
+```text
+BACKGROUNDS AND SURFACES
 ────────────────────────────────────────────────────────────
 background          #2C1A0E   Night brown — the color of the darkened library
 surface             #4A2E1A   Mahogany brown — shelves, wood panels
 surface_light       #6B4226   Warm brown — lit surfaces
-parchment           #F5E6C8   Pergamino — fondo de pasajes de texto
-parchment_shadow    #E8D4A8   Pergamino sombra — bordes de papel, separadores
+parchment           #F5E6C8   Parchment — reading passage background
+parchment_shadow    #E8D4A8   Parchment shadow — paper edges, dividers
 
-TEXTO
+TEXT
 ────────────────────────────────────────────────────────────
-text_primary        #2C1A0E   Sobre parchment: tinta oscura
-text_primary_light  #F5E6C8   Sobre fondos oscuros: pergamino
+text_primary        #2C1A0E   On parchment: dark ink
+text_primary_light  #F5E6C8   On dark backgrounds: parchment
 text_secondary      #8B6914   Golden brown — subtitles, labels, metadata
 
-ACENTO Y MAGIA
+ACCENT AND MAGIC
 ────────────────────────────────────────────────────────────
-accent              #D4A017   Dorado — highlights, selecciones, estrellas
+accent              #D4A017   Gold — highlights, selections, restoration cues
 accent_warm         #E8721A   Amber — primary buttons, CTA
-magic_glow          #7B4FBE   Magic purple — Owlorumo staff crystal, rune glows, puzzle highlights
+magic_glow          #7B4FBE   Magic purple — staff crystal, rune glows, support cues
 magic_blue          #1E3A5F   Night blue — depth, magical shadows
 
 FEEDBACK
 ────────────────────────────────────────────────────────────
-correct             #4CAF50   Verde — palabra encontrada correctamente
-incorrect           #E53935   Rojo suave — error, pero nunca agresivo
-hint                #FF9800   Naranja — pista disponible, sugerencia
-neutral             #9E9E9E   Gris — elementos inactivos o deshabilitados
+correct             #4CAF50   Green — word found correctly
+incorrect           #E53935   Soft red — error, but never aggressive
+hint                #FF9800   Orange — hint available, suggestion
+neutral             #9E9E9E   Grey — inactive or disabled elements
 ```
 
-### Rules de uso de color
+### Color usage rules
 
 **Rule 1 — Gold is sacred.**  
-`accent` (#D4A017) is reserved for achievements, found words, earned stars. Using it on decorative elements degrades it. Every time the player sees gold, they must feel they earned something.
+`accent` (#D4A017) is reserved for meaningful reading feedback, restoration cues, found-word states, and rare reward moments. Using it on decorative filler degrades it. Every time the player sees gold, they must feel that something living responded.
 
 **Rule 2 — Magic is rare.**  
-`magic_glow` (#7B4FBE) appears only on Owlorumo's staff crystal, puzzle highlight effects, and narrative rune glows. Not in functional UI.
+`magic_glow` (#7B4FBE) appears only on Owlorumo's staff crystal, puzzle support effects, and narrative rune glows. Not in routine functional UI.
 
 **Rule 3 — Text on parchment always uses `text_primary`.**  
 Never grey text on a light background for children aged 4–9. Minimum WCAG AA contrast on all reading text.
@@ -154,46 +153,46 @@ It is a soft, momentary red. The game does not punish — it informs. The error 
 - All game text passes minimum WCAG AA (4.5:1 ratio for small text, 3:1 for large text)
 - Feedback colors (`correct`, `incorrect`) are never the **only** signal — they are always accompanied by animation, sound, or icon for colorblind users
 
-### Paletas para modos de daltonismo ✅ CLOSED (M1)
+### Colorblindness palettes ✅ CLOSED (M1)
 
 **Architecture decision:** The game applies automatic palette transformations as a first line of defense. Modders may optionally provide manual palettes in `theme.json` that replace the automatic transformation for their theme. If they do not provide a manual palette, the automatic transformation is applied. This gives compatibility to all themes without extra work from the modder.
 
 **Recommended validation tool:** Color Oracle (free, macOS/Windows/Linux) — simulates all three conditions in real time on any screen.
 
-**Milestone:** Palettes defined and tested in M1. Integrated into `colorblind_mode` in M2. The Preview Tool validates againstste de paleta desde M1.
+**Milestone:** Palettes defined and tested in M1. Integrated into `colorblind_mode` in M2. The Preview Tool validates palette compliance from M1.
 
-```
+```text
 DEUTERANOPIA (no green cone — most common, ~6% of men)
-Problema principal: correct (verde) e incorrect (rojo) son indistinguibles.
+Main issue: correct (green) and incorrect (red) are indistinguishable.
 ────────────────────────────────────────────────────────────────────────
 Token           Base palette     Deuteranopia palette   Reason for change
-correct         #4CAF50         #1E88E5 (azul)        Verde invisible
+correct         #4CAF50         #1E88E5 (blue)        Green invisible
 incorrect       #E53935         #E65100 (orange)      Red visible as brown
-accent          #D4A017         #D4A017               Dorado-amarillo: ok
-hint            #FF9800         #FF9800               Naranja: ok
+accent          #D4A017         #D4A017               Gold-yellow: ok
+hint            #FF9800         #FF9800               Orange: ok
 magic_glow      #7B4FBE         #0288D1 (cyan)        Purple can be confused
 ────────────────────────────────────────────────────────────────────────
 
-PROTANOPIA (sin cono rojo — ~2% hombres)
-Problema principal: incorrect (rojo) aparece como gris oscuro.
+PROTANOPIA (no red cone — ~2% of men)
+Main issue: incorrect (red) appears as dark grey.
 ────────────────────────────────────────────────────────────────────────
 Token           Base palette     Protanopia palette     Reason for change
-correct         #4CAF50         #4CAF50               Verde: legiblemente distinto
-incorrect       #E53935         #FF6F00 (amber)       Rojo invisible
-accent          #D4A017         #D4A017               Dorado: ok
-hint            #FF9800         #FF9800               Naranja: ok
+correct         #4CAF50         #4CAF50               Green: legibly distinct
+incorrect       #E53935         #FF6F00 (amber)       Red invisible
+accent          #D4A017         #D4A017               Gold: ok
+hint            #FF9800         #FF9800               Orange: ok
 magic_glow      #7B4FBE         #7B4FBE               Purple: ok
 ────────────────────────────────────────────────────────────────────────
 
-TRITANOPIA (sin cono azul — <0.1%, ambos sexos)
-Problema principal: azules y amarillos se confunden.
+TRITANOPIA (no blue cone — <0.1%, both sexes)
+Main issue: blues and yellows are confused.
 ────────────────────────────────────────────────────────────────────────
 Token           Base palette     Tritanopia palette     Reason for change
-correct         #4CAF50         #4CAF50               Verde: ok
-incorrect       #E53935         #E53935               Rojo: ok
-accent          #D4A017         #E040FB (magenta)     Dorado confundible con verde
+correct         #4CAF50         #4CAF50               Green: ok
+incorrect       #E53935         #E53935               Red: ok
+accent          #D4A017         #E040FB (magenta)     Gold confused with green
 magic_glow      #7B4FBE         #E91E63 (pink)        Blue-purple invisible
-magic_blue      #1E3A5F         #1B5E20 (verde oscuro) Azul oscuro invisible
+magic_blue      #1E3A5F         #1B5E20 (dark green)  Dark blue invisible
 ────────────────────────────────────────────────────────────────────────
 
 RULE COMMON TO ALL THREE MODES:
@@ -203,11 +202,25 @@ RULE COMMON TO ALL THREE MODES:
 
 ---
 
-## 3. The Istari Owl — Character Design
+## 3. Owlorumo — Character Design
 
-### Concepto y personalidad
+### The Story of Owlorumo
 
-The Istari Owl companion is named **Owlorumo**. This is the official name — not a working title. References to "the Professor" in earlier drafts refer to this character.
+> Owlorumo was the companion owl of Athena. When the goddess disappeared
+> in the ancient era, his power diminished as the world forgot the habit
+> of reading. He remains in the library — the last place where wisdom survived.
+> Each word a child finds restores a fragment of what was lost.
+>
+> This story is never told explicitly. It lives in visual details, in Owlorumo's
+> expressions, in the progression of his staff crystal and robe runes.
+> `state_4` is a deliberate homage to Tolkien's Gandalf the White:
+> fulfilled, not replaced. The blue mantle remains visible.
+> The moon brooch, belt, and boots are unchanged.
+> The transformation is one of light and presence. Never explained. Only discovered.
+
+### Concept and personality
+
+The companion is named **Owlorumo**. This is the official name — not a working title. References to "the Professor" or "the Istari Owl" in earlier drafts refer to this character.
 
 **Visual personality:** Young, curious, kind, slightly clumsy with magic but never with words. Owlorumo is a companion, not a mentor — he discovers things alongside the child rather than explaining from above. His amber eyes are his most expressive feature: wide with wonder, warm with encouragement, never intimidating.
 
@@ -218,7 +231,7 @@ The Istari Owl companion is named **Owlorumo**. This is the official name — no
 > **Reference:** The confirmed concept art establishes Owlorumo's definitive design.
 > All pixel art production must match this reference. When in doubt, this image wins.
 
-```
+```text
 PROPORTIONS
 ────────────────────────────────────────────────────────────
 Total height:       Compact and slightly chubby — reads as young
@@ -271,24 +284,46 @@ Movement:           Head turns nearly 180° when thinking
                     (real owl behavior). Neck feathers ruffle
                     slightly when excited. Slow blink is a signal
                     of trust — used in idle and hint animations.
-                    Each eye has a 1-pixel white highlight in the upper-left corner. 
-                    This is what makes them read as alive at 64×64px. Do not omit.
 ```
 
-### Required animation states (M1)
+### Owlorumo — Companion Progression States
+
+Owlorumo has 5 visual states that unlock progressively as the child completes books.
+Each state is a separate sprite atlas — same frame layout, different texture.
+
+| State | Crystal | Robe | Eyes | Unlocked after |
+|---|---|---|---|---|
+| `state_0` | Cracked, dark | Navy, no runes | Normal | Game start |
+| `state_1` | Faint glow | Navy, no runes | Normal | First passage |
+| `state_2` | Lit, pulsing | Navy, first rune | Normal | First book |
+| `state_3` | Bright | Navy, several runes | Occasional soft glow | 3 books |
+| `state_4` | White-gold, blinding | **Blue mantle illuminated white-gold; same brooch, belt, boots** | Constant soft glow | First complete arc |
+
+> `state_4` is a homage to Tolkien's Gandalf the White — never explained, only discovered.
+
+**The first crystal ignition (state_0 → state_2):** When the crystal lights up for the
+first time, Owlorumo does not celebrate the child. He looks at them. Two seconds of
+silence. The child understands — without anyone explaining — that they did this.
+This is the most important moment in the game.
+
+**Production note:** All 5 atlases share identical frame layout. The artist delivers
+5 PNG files. `state_0` and `state_1` are M2 blockers. `state_2`, `state_3` = M2.
+`state_4` = M3. See Asset Contracts §2 for the technical spec.
+
+### Required animation states
 
 Each state is a loop animation or a one-shot animation. The system uses Godot's `AnimationPlayer`.
 
-| Status | Tipo | Description | Trigger |
+| State | Type | Description | Trigger |
 |---|---|---|---|
 | `idle` | Loop | Soft breathing. Occasional slow blink. Staff tip pulses with soft light. | Default |
 | `happy` | Loop | Neck feathers gently ruffled. Slight swaying. Half-closed eyes (owl smile). | Word found, positive progress |
 | `thinking` | Loop | Slow head turn. One talon scratches the chin (with staff in the other). | During active puzzle, waiting for input |
-| `excited` | One-shot | Wings slightly extended. Short hop. Staff crystal flashes. | 3 stars, first book completed |
+| `excited` | One-shot | Wings slightly extended. Short hop. Staff crystal flashes. | Strong completion moment, first book completed |
 | `hint` | One-shot | Leans forward. Staff gently points toward the puzzle area. Crystal glowing. | When giving hint |
-| `reading` | Loop | Holds an open book. Eyes move slowly from side to side. | During passage read-aasaje con TTS |
-| `celebrate` | One-shot | Wings fully extended (maximum expansion). `magic_glow` magic motes emerge. | Completing an entire book |
-| `sleepy` | Loop | Slow nodding. Half-closed eyes. For rest screens or inactivity. | Inactivity timeouad |
+| `reading` | Loop | Holds an open book. Eyes move slowly from side to side. | During passage read-aloud with TTS |
+| `celebrate` | One-shot | Wings fully extended (maximum expansion). `magic_glow` motes emerge from the staff crystal. | Completing an entire book |
+| `sleepy` | Loop | Slow nodding. Half-closed eyes. For rest screens or inactivity. | Inactivity timeout |
 | `wave` | One-shot | Raises one wing in greeting. For onboarding and player return. | First time, returning to session |
 
 #### Animation → feedback protocol mapping
@@ -302,99 +337,129 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 | Puzzle completed | `celebrate` (M1) / `happy` (M0) | One-shot |
 | TTS reading passage | `reading` (M1) / `idle` (M0) | While TTS plays |
 
-> **Golden rule:** the Owl never expresses frustration, impatience,
+> **Golden rule:** Owlorumo never expresses frustration, impatience,
 > or disappointment. If an animation could be read as negative,
 > it is not used in response to the child's errors.
 
-### Accesorios desbloqueables (M2)
+### Unlockable Accessories (M2)
 
 #### Owlorumo's staff — integral element
 
 The staff with the purple crystal is a permanent, integral part of Owlorumo's design. It is present in every animation state, including `idle`. It is never removed or hidden. The staff is not an accessory — it is part of the character's silhouette.
 
-**Visual rule:** Owlorumo's silhouette must always read as "owl with wizard hat and staff." If a frame cannot accommodate the staff legibly at the smallest display context (192×192, PassageView), the crystal glow alone is sufficient to imply it.
-**Animation note:** The crystal glow (`magic_glow` `#7B4FBE`) pulses at 0.8Hz in `idle`. In `hint` and `cast` states it brightens to full `#A87FE8` and emits particle sparks.
+**Visual rule:** Owlorumo's silhouette must always read as "owl with wizard hat and staff." If a frame cannot accommodate the staff legibly at 64×64px, the crystal glow alone is sufficient to imply it.
 
----
+**Animation note:** The crystal glow (`magic_glow` `#7B4FBE`) pulses at 0.8Hz in `idle`. In `hint` and `cast` states it brightens to full `#A87FE8` and emits particle sparks.
 
 #### Accessories — earned overlays
 
-Accessories are overlays on top of the base sprite. They do not require redrawing the full character — they are layereder de accesorios.
+Accessories are overlays on top of the base sprite. They do not require redrawing the full character — they are accessory layers.
 
-```
+```text
 Categories:
-  hats/        — Sombreros alternativos, gorros, coronas de flores
-  scarves/     — Bufandas, collares, amuletos
+  hats/        — Alternative hats, caps, flower crowns
+  scarves/     — Scarves, collars, amulets
   staff_tips/  — Different crystals/ornaments for the staff tip
   badges/      — Medallions on the belt, brooches on the robe
 ```
 
-Accessories are earned with accumulated stars. Design in v1.1.
+Accessories are unlocked through restoration milestones, book milestones, or future theme systems — never through visible point-like accumulation.
 
-### Lo que NO es el Istari Owl
+### What Owlorumo is NOT
 
 - ❌ Not condescending — never has the face of "you should know this"
 - ❌ Not perfect — has ink stains on the robe, slightly ruffled feathers
 - ❌ Not bulky or threatening — even if tall, its posture is open
-- ❌ Does not float in the air — walks (with talons), uses the staff for support
+- ❌ Does not float in the air — walks, uses the staff for support
 - ✅ Owlorumo speaks — speech complexity adapts to `reading_stage` (see GDD §Owlorumo adaptive language)
 
 ---
 
-## 4. The Default Theme — Cozy Library
+## 4. The Default Theme — The Sleeping Library
+
+### Library Identity Across Restoration
+
+The library keeps the same core identity across the entire game.
+It is not replaced by a different world.
+Its truth is revealed progressively through restoration.
+
+**Canonical revealed names:**
+- **The Sleeping Library** — early state; dormant, veiled, waiting
+- **The Reawakened Library** — mid restoration; warmer, more responsive, more inhabited
+- **The Library of Beginnings** — deeper revealed identity; not a pristine return, but an opening into renewed continuity
+
+This naming is narrative and atmospheric.
+It does not imply three separate levels, maps, or theme packs.
+Artists should treat them as progressive states of the same living library-world.
+
+### Core Palette — The Sleeping Library
+
+The default theme is the first face of the living library-world.
+It should feel ancient, warm, tactile, and magical — not flat, generic, or modern.
+The child discovers the place as dormant rather than dead.
 
 ### Library Scene Composition (main screen)
 
-```
-Vista general:
+```text
+Overall composition:
   A circular or apsidal library. Shelves up to the ceiling on the walls.
-  Escalera de biblioteca con ruedas (la que se desliza en el riel).
-  Mesa de lectura redonda en el centro-frente, con un candelabro.
+  Rolling library ladder (the kind that slides on a rail).
+  Round reading table in the center-front, with warm reading light.
   Large window at the back — soft rain or starry night, depending on the time.
-  El Istari Owl en una percha/atril a la right, en estado `idle` o `reading`.
+  Owlorumo on a perch/lectern at the right, in `idle` or `reading` state.
 
-Libros en los estantes:
-  Locked:         Covered in dust. Muted colors. Small golden lock.
-  Disponibles:    Colores saturados. Un sutil shimmer dorado. "Respiran" levemente.
-  Completed:      Constant soft glow. Small stars floating nearby.
+Books on the shelves:
+  Dormant:        Muted, quiet, dusty only in a gentle way. No lock icon.
+                  They do not invite interaction yet.
+  Awakened:       Saturated colors. A subtle golden shimmer. Breathe softly.
+  Restored:       Constant soft presence. Warmer shelf response, calmer glow.
   
 Lighting:
   Primary source: chandeliers/oil lamps. Warm light (#D4A017 tinted).
-  Source secundaria: los propios libros disponibles. Emiten light suave.
+  Secondary source: awakened books themselves. They emit soft light.
   Magic source: Owlorumo's staff crystal. Pulses at 0.8Hz in idle.
   
 Parallax layers (for background animation):
   Layer 1 (closest):  Table, chairs, foreground objects
-  Layer 2:                Estantes centrales, El Profesor
-  Layer 3:                Estantes del fondo
+  Layer 2:            Central shelves, Owlorumo
+  Layer 3:            Background shelves
   Layer 4 (furthest): Window, sky/rain
 ```
 
 ### PassageView Composition
 
-```
-Screen division (desktop/tablet landscape):
-  60% left:  PassagePanel
-    - Fondo: parchment (#F5E6C8) con bordes ligeramente irregulares
-    - Textura de papel sutil (grain muy suave)
-    - Book title: serif font, text_secondary color
-    - Texto del pasaje: fuente serif legible, color text_primary
+```text
+General rule:
+  The passage remains the visual center at all times.
+  Puzzle UI supports reading; it never replaces the act of reading.
+
+Screen composition (desktop/tablet landscape):
+  Primary area: PassagePanel
+    - Background: parchment (#F5E6C8) with slightly irregular edges
+    - Subtle paper texture (very soft grain)
+    - Book title: UI/title font, text_secondary color
+    - Passage text: Andika or reading font, text_primary color
     - Book illustration (if present in the pack): above or integrated with text
     
-  40% right:    PuzzlePanel
-    - Fondo: surface (#4A2E1A) con textura de madera suave
-    - The puzzle is instantiated here
-    - Small Professor portrait in top corner — in `thinking` state
+  Secondary support area: Puzzle support UI
+    - Background: surface (#4A2E1A) with soft wood texture
+    - The puzzle support scene is instantiated here
+    - Owlorumo may appear nearby in a subordinate support position
 
-  Bottom bar:
-    - Word bank: fichas de pergamino con borde dorado
-    - Hint button: staff crystal (icon), numeric counter
-    - Exit: small door (icon)
+  Bottom support row / shared support area:
+    - Word inventory / bank support UI
+    - Hint button: staff crystal icon, discreet counter if used
+    - Exit: small door icon
+
+WordGlow-specific rule:
+  The full passage stays visible.
+  The child finds the word in the text itself.
+  The word inventory is support UI, not the primary resolution surface.
 ```
 
 ### The book as a physical object
 
-Each book pack has a `cover_image`. The Library Scene design shows books on the shelf as 3D-ish objects (illustrated with a light isometric perspective). The default for packs without a cover_image is a generic book with the spine color generated from the pack's `id` (hash → color in a limited palette).
+Each book pack has a `cover_image`. The Library Scene design shows books on the shelf as 3D-ish objects (illustrated with a light isometric perspective). The default for packs without a `cover_image` is a generic book with the spine color generated from the pack's `id` (hash → color in a limited palette).
 
 ---
 
@@ -404,56 +469,56 @@ Each book pack has a `cover_image`. The Library Scene design shows books on the 
 
 ### Philosophy: organic pixel art, not geometric pixel art
 
-READCRAFTERY's pixel art is not the cold, geometric pixel art of retro action games. It is pixel art with **deliberate organic shapes**: shelf corners curve gently, Owlorumo's hat bends to one side, books have slightly irregular spines. The pixel grid is the medium, not the message. Seuss's warmth can be achieved in pixel art — Stardew Valley and Celeste prove it.
+READCRAFTERY's pixel art is not the cold, geometric pixel art of retro action games. It is pixel art with **deliberate organic shapes**: shelf corners curve gently, Owlorumo's hat bends to one side, books have slightly irregular spines. The pixel grid is the medium, not the message.
 
-### Rules de outline
+### Outline rules
 
-```
-OUTLINE OBLIGATORIO en todos los sprites de personaje, objetos y UI tiles.
-  Grosor:       1px exacto. Nunca 2px, nunca 0px.
-  Color:        NO negro puro (#000000). Usar la variante _shadow del color
-                dominant in the object. E.g.: a brown book has outline #3E1A00,
-                no #000000. Outline negro puro aplana y mata la profundidad.
+```text
+MANDATORY OUTLINE on all character sprites, objects, and UI tiles.
+  Thickness:    1px exact. Never 2px, never 0px.
+  Color:        NOT pure black (#000000). Use the _shadow variant of the dominant color
+                in the object. E.g.: a brown book has outline #3E1A00,
+                no #000000. Pure black outline flattens and kills depth.
   Exception:    Backgrounds have no outline — they are the "world", not objects in it.
-                Tiles de terreno tampoco tienen outline exterior.
+                Ground tiles also have no outer outline.
 
-OUTLINE INTERIOR (inner outline / pillow shading):
+INNER OUTLINE (inner outline / pillow shading):
   Not used. Pillow shading makes sprites look embossed/generic 3D.
-  La forma se define con bloque de sombra, no con outline interior.
+  Shape is defined with shadow blocks, not inner outlines.
 ```
 
 ### Shadow and lighting rules
 
-```
+```text
 SHADOWS: flat blocks only.
   Number of shadow colors:   maximum 2 per element (shadow, deep_shadow)
-  Gradientes:                    NO. Nunca. Una sombra es un color plano.
-  Light direction:               upper left on all assets.
-                                 Direction consistency > realism.
-  Sombra proyectada:             no se dibuja en el sprite — es un efecto
-                                 de scene separado si se necesita.
+  Gradients:                 NO. Never. A shadow is a flat color.
+  Light direction:           upper left on all assets.
+                             Direction consistency > realism.
+  Cast shadow:               not drawn in the sprite — it is a separate
+                             scene effect if needed.
 
 HIGHLIGHTS: a single strategic pixel.
   Number of highlight colors:  maximum 1 per element (light)
   Position:                        upper left corner of the curved shape
-  Superficies planas/madera:       sin highlight especular — solo sombra suave
+  Flat wood surfaces:              no specular highlight — only soft shadow
 ```
 
-### Rules de detalle y densidad
+### Detail and density rules
 
-```
+```text
 MAXIMUM DETAIL DENSITY:
   Fine elements (1–2px):    maximum 20% of sprite area
   The remaining 80%:        flat color masses or with a single transition
 
-  Reason: at 48×48 drawn, every pixel counts. The eye of a 4-year-old
+  Reason: at 64×64 drawn, every pixel counts. The eye of a 4-year-old
   must be able to read "owl with hat" from the silhouette, without processing detail.
 
-SILUETA PRIORITARIA:
-  The Istari Owl must be recognizable by silhouette alone at native 48×48.
+SILHOUETTE FIRST:
+  Owlorumo must be recognizable by silhouette alone at native 64×64.
   Test: desaturate the full sprite and reduce to 12×12 px. If it reads
   as "figure with hat and staff", the silhouette is correct.
-  Si no se reconoce, hay demasiado detalle o la silueta es ambigua.
+  If not recognizable: too much detail or the silhouette is ambiguous.
 
 READING HIERARCHY by asset type:
   Character:    silhouette → facial expression → clothing → details
@@ -464,49 +529,49 @@ READING HIERARCHY by asset type:
 
 ### Organic shape rules
 
-```
-CURVAS EN PIXEL ART:
-  Las curvas se construyen con escalones de pixel decrecientes.
+```text
+CURVES IN PIXEL ART:
+  Curves are built with decreasing pixel steps.
   Correct 45° curve:    2px, 1px, 1px, 2px (irregular steps = organic)
   Incorrect curve:      1px, 1px, 1px, 1px (uniform step = mechanical)
 
-ESQUINAS:
+CORNERS:
   Living objects (character, creatures, magical books):  rounded corners
-  Objetos inanimados (madera, piedra, marco de UI):       esquinas rectas permitidas
+  Inanimate objects (wood, stone, UI frame):             straight corners allowed
   Practical rule: if the object could grow, it has curves. If it was built, it may have angles.
 
 ALLOWED ORGANIC DEFORMATION:
-  El sombrero del Profesor:   puede inclinarse hasta 10° sobre el eje vertical
-  Book spines:    can be 1–2px wider at the center
-  Las paredes de la biblioteca: pueden tener ligera curvatura (max 3px en 480px de ancho)
+  Owlorumo's hat:              can tilt up to 10° on the vertical axis
+  Book spines:                 can be 1–2px wider at the center
+  Library walls:               can have slight curvature (max 3px in 480px width)
   Functional UI (buttons, tiles):  NO deformation — must be precise rectangles
 ```
 
-### Rules de anti-alias y dithering
+### Anti-alias and dithering rules
 
-```
-ANTI-ALIAS MANUAL: NO se usa.
-  No mezclar colores intermedios en los bordes del outline.
-  El outline es 1px limpio. El pixel art puro no tiene AA manual.
+```text
+MANUAL ANTI-ALIAS: NOT used.
+  Do not mix intermediate colors on outline edges.
+  The outline is 1px clean. Pure pixel art has no manual AA.
 
-DITHERING: permitido con restricciones.
-  Correct use:   transition between two colors of the same family
+DITHERING: permitted with restrictions.
+  Correct use:    transition between two colors of the same family
                   (surface → surface_light in a large area)
-  Uso incorrecto: simular gradientes, crear un tercer color intermedio
+  Incorrect use:  simulating gradients, creating a third intermediate color
   Maximum:        2px dithering band between two color zones
   Pattern:        checkerboard — no lines or decorative patterns
 ```
 
-### Rules de paleta por sprite
+### Palette rules per sprite
 
-```
-COLORES POR SPRITE:
-  Character (full Istari Owl):   maximum 20 colors (from the master palette)
+```text
+COLORS PER SPRITE:
+  Character (full Owlorumo):         maximum 20 colors (from the master palette)
   Individual object (book, button):  maximum 8 colors
   UI icon:                           maximum 4 colors
   Background (full layer):           maximum 32 colors
 
-  Todos los colores deben estar en la master palette de §2.
+  All colors must be in the master palette from §2.
   A color outside the master palette in production = error, not style.
 ```
 
@@ -522,82 +587,83 @@ COLORES POR SPRITE:
 
 ### PassageView rules (the most critical screen)
 
-```
+```text
 BACKGROUND BEHIND TEXT:
-  El parchment panel es el fondo del texto. Nunca tiene:
-  - Textura con contraste > 5% sobre el color base de parchment
+  The parchment panel is the background of the text. It never has:
+  - Texture with contrast > 5% over the parchment base color
   - No animation of any kind while the child reads
-  - Gradientes o variaciones de color visibles
-  Permitido: grain muy sutil (noise < 3% de intensidad)
+  - No visible gradients or color drift
+  Allowed: very subtle grain (noise < 3% intensity)
 
 DECORATION IN PASSAGEVIEW:
-  El puzzle panel puede tener textura de madera.
+  The support panel may have wood texture.
   The passage panel: no structural decoration. Only the text and the book illustration.
   Book illustrations: occupy maximum 30% of the passage panel. Never overlap text.
 
-ANIMACIONES DURANTE LECTURA:
+ANIMATIONS DURING READING:
   Active reading status (TTS playing or child reading):
-    → The Istari Owl enters `reading` state (minimal animation, eyes moving)
+    → Owlorumo enters `reading` state (minimal animation, eyes moving)
     → NO other animation active on screen
-    → Parallax: detenido o reducido a 10% de velocidad normal
-  Status activo de puzzle:
-    → El Profesor puede estar en `thinking`
-    → Word bank tiles: only hover animation on the touched tile, never on others
+    → Parallax: stopped or reduced to 10% of normal speed
+  Active puzzle status:
+    → Owlorumo may be in `thinking`
+    → Support tiles: only hover animation on the touched tile, never on others
 ```
 
 ### Visual hierarchy rules in PassageView
 
-```
+```text
 HIERARCHY (visual attention order, most to least):
-  1. Target word in the passage (glow, soft pulse)
-  2. Word bank tiles activos
-  3. Texto del pasaje
-  4. Book title
-  5. Controles (hint button, exit)
-  6. El Istari Owl (siempre subordinado al contenido)
-  7. Background decoration
+  1. Target word / active reading focus inside the passage
+  2. Passage text
+  3. Target card / support prompt
+  4. Word inventory / support tiles
+  5. Book title
+  6. Controls (hint button, exit)
+  7. Owlorumo (always subordinate to the reading task)
+  8. Background decoration
 
-If an element in position 5–7 visually competes with 1–3, it is a visual bug.
+If an element in positions 5–8 visually competes with 1–3, it is a visual bug.
 
 MINIMUM DISTANCE BETWEEN INTERACTIVE ELEMENTS:
-  Entre tiles del word bank:    8px en pantalla (2px en dibujo)
-  Entre tile y borde del panel: 16px en pantalla (4px en dibujo)
-  Entre hint button y word bank: 24px en pantalla (6px en dibujo)
-  Minimum tap target for children: 96×96 px on screen (24×24 px in drawing)
+  Between support tiles:          8px on screen (2px at draw scale)
+  Between tile and panel edge:   16px on screen (4px at draw scale)
+  Between hint button and word bank: 24px on screen (6px at draw scale)
+  Minimum tap target for children: 96×96 px on screen (24×24 px at draw scale)
 ```
 
-### Rules de feedback visual
+### Visual feedback rules
 
-```
+```text
 FEEDBACK HIERARCHY (most to least visible):
-  1. Correcto: palabra encontrada → glow dorado → vuela al word bank → SFX
-  2. Completado: todas las palabras → celebration scene completa
-  3. Error: soft red tile 500ms maximum → returns to normal state
-  4. Hint: Owlorumo points → crystal glows → subtle highlight in area
+  1. Correct: word found in passage → warm glow → travels to support destination → SFX
+  2. Completion: current scene transforms briefly in place
+  3. Error: soft red state 500ms maximum → returns to normal state
+  4. Hint: Owlorumo points → crystal glows → subtle area cue
 
 DURATION RULE:
-  Feedback positivo (correcto, completado): puede durar todo lo necesario
+  Positive feedback (correct, completed): may last as long as it remains readable
   Negative feedback (error): maximum 500ms. The game does not punish — it informs.
-  Celebration animations: never block the child's next action
+  Completion transformations: never block the child's next action
 
-REGLA DE CONTRASTE DE FEEDBACK:
-  The "found" state of a tile must be clearly brighter than "normal"
-  The "incorrect" state is momentary — does not persist as a visual state
-  Both states always come with sound AND animation, never color alone
+FEEDBACK CONTRAST RULE:
+  The "found" state must be clearly brighter than "normal"
+  The "incorrect" state is momentary — does not persist as a visual identity
+  States always come with sound AND animation, never color alone
 ```
 
-### Rules de la Library Scene
+### Library Scene rules
 
-```
-RIQUEZA VISUAL PERMITIDA:
+```text
+VISUAL RICHNESS PERMITTED:
   The Library Scene CAN be visually rich — it is the "cover" of the game
   Active parallax: allowed in idle (no active interaction)
-  Animaciones ambient: libros brillando, motas de polvo, el Profesor en `idle`
+  Ambient animations: books glowing, dust motes, Owlorumo in `idle`
   
 LIMITS OF RICHNESS:
-  Los libros interactivos (disponibles) deben destacar sobre los decorativos
-  La diferencia entre libro "disponible" y "bloqueado" debe leerse en 1 segundo
-  The Professor never covers interactive books in his resting position
+  Awakened books must stand out from purely decorative ones
+  The difference between "awakened" and "dormant" books must read in 1 second
+  Owlorumo never covers interactive books in his resting position
 
 DURING SELECTION:
   When cursor/finger is over a book: everything else reduces brightness to 70%
@@ -606,13 +672,13 @@ DURING SELECTION:
 
 ### Rule of "how alive is too alive"
 
-```
+```text
 DISTRACTION TEST:
-  Mostrar la pantalla a un adulto 3 segundos, luego taparla.
+  Show the screen to an adult for 3 seconds, then cover it.
   Question: "What was most important on that screen?"
   
-  En PassageView: respuesta correcta = "el texto / las palabras"
-  En Library: respuesta correcta = "los libros disponibles"
+  In PassageView: correct answer = "the text / the words"
+  In Library:     correct answer = "the available books"
   
   If the answer is "the owl" or "the background" or "the animations",
   there is too much movement or decoration competing with the content.
@@ -622,239 +688,233 @@ DISTRACTION TEST:
 
 ## 7. Technical Production Specifications
 
-### Estrategia de escalado — Estrategia B (CLOSED)
+### Scaling strategy — Strategy B (CLOSED)
 
-```
-ESTILO:                   Pixel art
+```text
+STYLE:                    Pixel art
 STRATEGY:                 B — viewport 1920×1080, sprites scaled 4×
 SCALE FACTOR:             4× (single factor, no exceptions)
 
 Godot viewport:           1920 × 1080 px
 Stretch mode:             disabled (no stretch — the viewport IS the resolution)
-Aspect ratio:             keep (letterbox si necesario)
-Texture filter:           Nearest (TODO — proyecto y por sprite)
+Aspect ratio:             keep (letterbox if needed)
+Texture filter:           Nearest (apply in project settings AND per sprite)
 
   Project Settings → Rendering → Textures → Default Texture Filter → Nearest
   Project Settings → Rendering → 2D → Snap 2D Transforms to Pixel → ON
 
 Text (reading passages, UI labels) lives at native 1080p resolution.
 Sprites and backgrounds live at their drawing resolution scaled to 4×.
-Nunca mezclar filtro Nearest con Bilinear en la misma scene.
+Never mix Nearest and Bilinear filters in the same scene.
 ```
 
-### Tabla de resoluciones de dibujo → pantalla
+### Drawing → screen resolution table
 
-```
-Asset                   Dibujado en      Se muestra en    Factor
+```text
+Asset                   Drawn at         Shown at          Factor
 ────────────────────────────────────────────────────────────────
-Owlorumo (master)       64 × 64 px    →  variable (see display rules below)
-Owlorumo (gameplay)     64 × 64 px    →  192 × 192 px     3× (PassageView)
-Owlorumo (menu/reward)  64 × 64 px    →  256 × 256 px     4× (Library, Celebration)
-Accessories (overlay)   64 × 64 px    →  matches context
+Owlorumo (PassageView)  64 × 64 px    →  192 × 192 px     3× integer
+Owlorumo (Library/menu) 64 × 64 px    →  256 × 256 px     4× integer
+Accessories (overlay)   64 × 64 px    →  matches context  same as base sprite
 UI icons                16 × 16 px    →   64 ×  64 px     4×
 Buttons / tiles         16 × 16 px    →   64 ×  64 px     4×   (NineSlice)
-Scene tiles            16 × 16 px    →   64 ×  64 px     4×
+Scene tiles             16 × 16 px    →   64 ×  64 px     4×
 Background (layer)     480 × 270 px   → 1920 × 1080 px    4×
-Stars (small)           8 ×  8 px    →   32 ×  32 px     4×
-Stars (large)           16 × 16 px    →   64 ×  64 px     4×
-Celebration bg         480 × 270 px   → 1920 × 1080 px    4×
+Fragments (small)        8 ×  8 px    →   32 ×  32 px     4×
+Fragments (large)       16 × 16 px    →   64 ×  64 px     4×
+Transformation bg      480 × 270 px   → 1920 × 1080 px    4×
 ```
 
 All drawing dimensions are **power of 2** or multiples of 16. Godot accepts any size but GPUs prefer POT for atlases.
 
 ### Critical pixel art gotchas in Godot (read before drawing the first sprite)
 
-```
+```text
 GOTCHA 1 — Texture filter (the most common, the most destructive)
-  Godot aplica bilinear por defecto. Destruye el pixel art silenciosamente.
-  Fix OBLIGATORIO antes de cualquier import de sprite:
+  Godot applies bilinear by default. Silently destroys pixel art.
+  Required fix before any sprite import:
     Project Settings → Rendering → Textures → Default Texture Filter → Nearest
-  Y por sprite individualmente si se importa antes del fix:
+  And per sprite individually if it was imported before the fix:
     Inspector → Texture → Filter → Nearest
 
-GOTCHA 2 — Sub-pixel movement (blur en animaciones)
+GOTCHA 2 — Sub-pixel movement (blur in animations)
   Moving a sprite to position 100.7 px causes partial blur even with Nearest.
-  Fix OBLIGATORIO en Project Settings:
+  Required fix in Project Settings:
     Rendering → 2D → Snap 2D Transforms to Pixel → ON
   And in code if there is manual movement:
     position = position.round()
 
-GOTCHA 3 — Atlas demasiado grande
+GOTCHA 3 — Atlas too large
   A 2048×2048 atlas = 16MB in GPU memory, loaded entirely even if unused.
-  Regla: UN ATLAS POR FAMILIA. No mezclar Istari Owl con UI tiles.
-    atlas_owl.png        — todos los frames del personaje
-    atlas_ui.png         — tiles, botones, iconos
-    atlas_fx.png         — effects (stars, magic particles)
+  Rule: ONE ATLAS PER FAMILY. Do not mix Owlorumo with UI tiles.
+    atlas_owlorumo.png   — all character frames
+    atlas_ui.png         — tiles, buttons, icons
+    atlas_fx.png         — effects (fragments, magic particles)
   Maximum 2048×2048 px per atlas.
 
-GOTCHA 4 — Master palette rota
-  Si cada asset usa colores independientes, el juego se ve inconsistente.
+GOTCHA 4 — Broken master palette
+  If each asset uses independent colors, the game looks inconsistent.
   Solution: define the master palette BEFORE drawing any asset.
   See §2 — Palette. All sprites take colors from there, never outside it.
-  Anti-alias manual (colores intermedios en bordes) NO se usa en pixel art puro.
+  Manual anti-alias (intermediate colors on edges) NOT used in pure pixel art.
   The outline is the darkest color of the palette, with no anti-aliasing.
 
 GOTCHA 5 — Importing in Godot
-  Por defecto Godot recomprime las texturas. Para pixel art:
+  Godot recompresses textures by default. For pixel art:
     Inspector del archivo → Import → Compress → Mode → Lossless
     Inspector del archivo → Import → Mipmaps → OFF
-  Hacer esto antes del primer sprite, o hacerlo en el preset de import
+  Do this before the first sprite, or set it in the import preset
   so it applies automatically to all imported PNGs.
 ```
 
-### Palette — estructura para pixel art
+### Palette — structure for pixel art
 
-The §2 Cozy Library palette are the **functional tokens**. The production master palette expands them with the light and shadow variants needed for pixel art:
+The §2 Sleeping Library palette are the **functional tokens**. The production master palette expands them with the light and shadow variants needed for pixel art:
 
-```
-Por cada color base, se generan 3 valores:
+```text
+For each base color, 3 values are generated:
   [base]_shadow   — 25% darker (inner shadows, depth outlines)
-  [base]          — el valor definido en §2
+  [base]          — the value defined in §2
   [base]_light    — 25% lighter (specular highlights)
 
-Ejemplo con parchment (#F5E6C8):
-  parchment_shadow:  #C9B898   ← texto secundario, bordes de papel
-  parchment:         #F5E6C8   ← fondo principal del texto
-  parchment_light:   #FFF5E0   ← highlight en esquinas iluminadas
+Example with parchment (#F5E6C8):
+  parchment_shadow:  #C9B898   ← secondary text, paper edges
+  parchment:         #F5E6C8   ← main text background
+  parchment_light:   #FFF5E0   ← highlight on lit corners
 
 Total master palette: ~32 colors (16 tokens × 2 variants + blacks and whites)
-Colores fuera de la master palette: no existen.
+Colors outside the master palette: they do not exist.
 ```
 
-### Sprites y assets del personaje
+### Character sprites and assets
 
-```
+```text
 Owlorumo — sprite atlas:
-  Master resolution:      64 × 64 px per frame (source of truth)
-  Display rules:
-    PassageView/gameplay: scale to 192×192 px (3×)
-    Library/menu:         scale to 256×256 px (4×)
-    Celebration/reward:   256×320 px or larger
-  Frames por estado:      4–8 frames (idle: 4, excited: 8, celebrate: 8)
-  Formato de dibujo:      PNG-8 (paleta indexada) o PNG-24 con alpha
-  Formato de export:      PNG con alpha transparente
-Target atlas:           atlas_owlorumo.png — max 2048 × 2048
+  Resolution per frame:   64 × 64 px (master draw size — source of truth)
+  Frames per state:       4–8 frames (idle: 4, excited: 8, celebrate: 8)
+  Drawing format:         PNG-8 (indexed palette) or PNG-24 with alpha
+  Export format:          PNG with transparent alpha
+  Target atlas:           atlas_owl.png — max 2048 × 2048
   Naming:                 owl_[state]_[frame_2digits].png
-  Scaling in Godot:       texture_filter = NEAREST, integer scale only
-  Punto de anclaje:       centro-base del sprite (pies del personaje)
+  Anchor point:           center-bottom of the sprite (character feet)
   
   Atlas organization (Godot SpriteFrames):
-    Cada estado es una Animation en AnimationSprite2D
-    FPS por estado:   idle=4, thinking=4, happy=6, hint=8, excited=8,
+    Each state is an Animation in AnimatedSprite2D
+    FPS per state:    idle=4, thinking=4, happy=6, hint=8, excited=8,
                       reading=4, celebrate=8, sleepy=3, wave=6
 
-Accesorios (M2):
-  Resolution:         48 × 48 px exact — same size as base sprite
+Accessories (M2):
+  Resolution:         64 × 64 px exact — same size as base sprite
   Anchor point:       IDENTICAL to base sprite — pixel-perfect registration
-  Atlas destino:      atlas_accessories.png (separado de atlas_owl.png)
+  Target atlas:       atlas_accessories.png (separate from atlas_owlorumo.png)
   Transparency:       100% alpha in areas without accessory
 ```
 
-### Backgrounds y scenes
+### Backgrounds and scenes
 
-```
-Library Scene — 4 layers para parallax:
+```text
+Library Scene — 4 layers for parallax:
   Drawing resolution:   480 × 270 px each layer
-  Shown at:               1920 × 1080 px (scale 4×)
-  Formato:                PNG con alpha en layers 1–2, PNG sin alpha en 3–4
-  Naming:                 bg_library_layer_[1-4].png
+  Shown at:             1920 × 1080 px (scale 4×)
+  Format:               PNG with alpha on layers 1–2, PNG without alpha on 3–4
+  Naming:               bg_library_layer_[1-4].png
   
   Layer 4 (background): Sky/window — no parallax, static
-  Layer 3:            Estantes del fondo — parallax lento (factor 0.1)
-  Layer 2:            Estantes centrales + Profesor — parallax medio (factor 0.3)
-  Layer 1 (frente):   Mesa, objetos primer plano — parallax normal (factor 0.6)
+  Layer 3:              Background shelves — slow parallax (factor 0.1)
+  Layer 2:              Central shelves + Owlorumo — medium parallax (factor 0.3)
+  Layer 1 (front):      Table, foreground objects — normal parallax (factor 0.6)
 
-PassageView — fondos:
+PassageView — backgrounds:
   ParchmentPanel:     tileable 64 × 64 px (repeats at 4× = 256×256 tile)
   WoodPanel:          tileable 64 × 64 px
   Format:             PNG without alpha
 
-Celebration scene:
-  Animated background: 480 × 270 px, 8–12 frames
-  Naming:             celebration_[frame_2digits].png
+Completion transformation:
+  Animated background reaction: 480 × 270 px, 1–8 frames as needed
+  Naming:             completion_[frame_2digits].png
   Format:             PNG without alpha
 ```
 
 ### UI elements
 
-```
-Word Bank tiles:
-  Drawing size:   variable × 8 px minimum height (NineSlice: 16px wide, 4px margins)
+```text
+Word support tiles:
+  Drawing size:       variable × 8 px minimum height (NineSlice: 16px wide, 4px margins)
   Shown at:           ×4 = minimum height 32px — but the tile container
-                      debe tener tap target ≥ 96px alto con padding invisible
-  Statuss:            normal, hover, selected, found, disabled
-  Naming:             tile_word_[estado].png
+                      must have tap target ≥ 96px high with invisible padding
+  States:             normal, hover, selected, found, disabled
+  Naming:             tile_word_[state].png
 
-Botones:
-  Drawing size:   24 × 24 px minimum (tap target 96×96 on screen)
+Buttons:
+  Drawing size:       24 × 24 px minimum (tap target 96×96 on screen)
   Reason:             Apple/Google require 44pt minimum. For 4-year-old fingers
                       with developing motor coordination: 96px on screen
                       is the comfortable minimum. 64px is at the limit — don't use it.
   NineSlice:          4px margins in drawing = 16px on screen
-  Statuss:            normal, hover, pressed, disabled
+  States:             normal, hover, pressed, disabled
 
-Iconos:
-  Drawing size:   16 × 16 px
+Icons:
+  Drawing size:       16 × 16 px
   Shown at:           64 × 64 px on screen
-  Formato:            PNG con alpha
-  Naming:             icon_[nombre].png
+  Format:             PNG with alpha
+  Naming:             icon_[name].png
 
-Estrellas:
-  Drawing size:   8 × 8 px
+Fragments:
+  Drawing size:       8 × 8 px
   Shown at:           32 × 32 px on screen
-  States:             empty, filled, shimmer (4 animation frames)
-  Naming:             star_[estado]_[frame].png
+  States:             soft, medium, bright (optional 4 animation frames)
+  Naming:             fragment_[state]_[frame].png
 ```
 
 ### Fonts — text at native resolution
 
 The passage and UI text **is not pixel art**. It lives at native 1080p resolution for maximum readability. The contrast between sharp text and pixelated sprites is intentional — it reinforces that the text is "real" and the magical world is the game.
 
-```
-Source de lectura (pasajes de texto):
+```text
+Reading font (passage text):
   Function:         Maximum readability for children learning to read
-  Style:            Clear serif with unambiguous letterforms
+  Style:            Clear serif or literacy-safe face with unambiguous letterforms
                     (b/d/p/q clearly distinct — critical for early readers)
   ✅ SELECTED:      Andika (SIL) — OFL — designed specifically for literacy
                     letterforms engineered to minimize b/d/p/q confusion
   Fallback:         OpenDyslexic — for the dyslexia_font mode in settings
   Sizes:            small=18px, medium=22px, large=28px, xl=34px
-  NUNCA menos de 18px para texto de pasaje
+  NEVER below 18px for passage text
 
 UI font (labels, titles, buttons):
-  Estilo:           Rounded, readable from 14px, evokes illustrated book lettering
+  Style:            Rounded, readable from 14px, evokes illustrated book lettering
   ✅ SELECTED:      Nunito (Google Fonts) — OFL — rounded, friendly, legible at small sizes
-  NUNCA cursiva para texto funcional. NUNCA menos de 14px.
+  NEVER italic for functional text. NEVER below 14px.
 
-Rules comunes:
-  - Licencia OFL obligatoria ✅ (Andika: SIL OFL · Nunito: OFL)
-  - Guardadas en res://fonts/ como .ttf
-  - Subsetted si > 500KB (usar pyftsubset — instrucciones en Build Guide)
+Common rules:
+  - OFL license required ✅ (Andika: SIL OFL · Nunito: OFL)
+  - Stored in res://fonts/ as .ttf
+  - Subsetted if > 500KB (use pyftsubset — instructions in Build Guide)
   - Download: https://fonts.google.com/specimen/Andika
               https://fonts.google.com/specimen/Nunito
 ```
 
-### Presupuesto de memoria GPU y build size HTML5
+### GPU memory budget and HTML5 build size
 
-```
-MEMORIA GPU — TEXTURAS EN PANTALLA ACTIVA
+```text
+GPU MEMORY — ACTIVE SCREEN TEXTURES
 ────────────────────────────────────────────────────────────
-Atlas personaje (atlas_owl.png):
-  Content:       ~72 frames × 48×48 → fits in 1024×512 px
+Character atlas (atlas_owlorumo.png):
+  Content:       ~72 frames × 64×64 → fits in 1024×512 px
   In GPU:        1024 × 512 × 4 bytes = 2MB
 
-Atlas UI (atlas_ui.png):
-  Contenido:     tiles, botones, iconos, estrellas
-  Atlas size:  512 × 512 px
+UI atlas (atlas_ui.png):
+  Content:       tiles, buttons, icons, fragments
+  Atlas size:    512 × 512 px
   In GPU:        512 × 512 × 4 bytes = 1MB
 
-Backgrounds (4 layers — ARCHIVOS SEPARADOS, nunca un atlas):
+Backgrounds (4 layers — SEPARATE FILES, never a single atlas):
   Each layer:    480 × 270 × 4 bytes ≈ 500KB
   Total 4 layers: ~2MB
   ⚠️ If the layers were in a 1920×1080 atlas = 8MB in a single texture
-     and would exceed the 2048×2048 limit of school Chromebooks. Do not do this.
+   and would exceed the 2048×2048 limit of school Chromebooks. Do not do this.
 
-Total estimado en pantalla activa: ~5MB de texturas en GPU
+Total estimated active-screen texture memory: ~5MB
 
 TEXTURE LIMITS BY PLATFORM (HTML5)
 ────────────────────────────────────────────────────────────
@@ -869,40 +929,40 @@ Derived rule: no individual atlas exceeds 2048×2048. Ever.
 The 4 background layers are separate PNG files (480×270 each).
 A combined layer atlas at 1920×1080 would break on Chromebooks.
 
-BUILD SIZE HTML5 — EL PRESUPUESTO REAL
+HTML5 BUILD SIZE — THE REAL BUDGET
 ────────────────────────────────────────────────────────────
-Cap objetivo:              < 15MB total (definido en Architecture Contract)
-Godot runtime (WASM):      ~10MB (fijo — no se puede reducir)
-Presupuesto para contenido: ~5MB para TODOS los assets
+Target cap:                < 15MB total (defined in Architecture Contract)
+Godot runtime (WASM):      ~10MB (fixed — cannot be reduced)
+Content budget:            ~5MB for ALL assets
 
-Desglose de los 5MB disponibles:
-  Texturas (atlas_owl + atlas_ui + 4 bg layers):  ~5MB sin comprimir
-  → With real PNG compression:                       ~1.5–2MB ✅
-  UI Audio (SFX, ambient music):                 ~1MB
-  Fuentes (2 fuentes subsetted):                   ~0.3MB
-  Compiled GDScript code:                        ~0.5MB
-  Primer book pack builtin (texto + audio):        ~1MB
-  Total estimado:                                  ~4–4.5MB ✅ con margen
+Breakdown of the available 5MB:
+  Textures (atlas_owlorumo + atlas_ui + 4 bg layers):  ~5MB uncompressed
+  → With real PNG compression:                            ~1.5–2MB ✅
+  UI audio (SFX, ambient music):                       ~1MB
+  Fonts (2 subsetted fonts):                           ~0.3MB
+  Compiled GDScript code:                              ~0.5MB
+  First built-in book pack (text + audio):             ~1MB
+  Estimated total:                                     ~4–4.5MB ✅ with margin
 
-⚠️ BLOQUEADOR: testear export HTML5 en Chromebook real o con
+⚠️ BLOCKER: test HTML5 export on a real Chromebook or with
    Chrome DevTools → More tools → Rendering → Hardware concurrency: 2 cores
    BEFORE end of M0. If the WASM exceeds 10MB in the build, review
-   opciones de export de Godot (template size, strips debug info).
+   Godot export options (template size, strips debug info).
 ```
 
 ### Formats and limits
 
-```
+```text
 Audio (narration):      OGG Vorbis, max 1MB per file
 Images (sprites):       PNG with alpha, max 2MB per file
 Images (backgrounds):   PNG without alpha, max 2MB per file
-Fuentes:                TTF/OTF, max 5MB por archivo
-Cualquier asset:        max 10MB hard cap
+Fonts:                  TTF/OTF, max 5MB per file
+Any asset:              max 10MB hard cap
 
-Import settings en Godot (aplicar a todos los PNG de sprites):
-  Compress → Mode:      Lossless   (preserva pixels exactos)
-  Mipmaps:              OFF        (mipmaps destruyen pixel art)
-  Filter:               Nearest    (ya definido en Project Settings, confirmar por asset)
+Import settings in Godot (apply to all PNG sprite assets):
+  Compress → Mode:      Lossless   (preserves exact pixels)
+  Mipmaps:              OFF        (mipmaps destroy pixel art)
+  Filter:               Nearest    (already defined in Project Settings, confirm per asset)
 ```
 
 ---
@@ -912,53 +972,82 @@ Import settings en Godot (aplicar a todos los PNG de sprites):
 > This section is the content of `THEME_CREATION.md` that will be distributed publicly.
 > Written for an audience of teachers, indie artists, and modders without a deep technical background.
 
-### ¿What is a theme?
+### What is a theme?
 
 A theme is a set of files that changes the visual appearance of the game without touching the code. The content (books, puzzles) and gameplay do not change.
+
+### Themes and the Library's Identity
+
+A theme in READCRAFTERY does not replace the library.
+It reinterprets the same living library-world through a different material and atmospheric language.
+
+This world is first encountered as **The Sleeping Library**.
+As restoration progresses, it may be understood as **The Reawakened Library**,
+and later as **The Library of Beginnings**.
+
+Themes may change palette, materials, decorative motifs, ambient mood, and
+specific accessory accents, but they do not change the library's core function
+as a place of books, memory, restoration, and new openings.
+
+### Functional Library Anchors Across Themes
+
+A theme in READCRAFTERY is a visual reinterpretation of the same living library-world.
+Themes may change mood, palette, materials, decorative motifs, and ambient identity,
+but they do not change gameplay structure, reading-first layout, or the functional roles
+of library elements and UI.
+
+- Books remain books: readable, inviting carriers of knowledge.
+- Shelves, bookcases, and ledges remain the architecture of discovery.
+- Reading tables and surfaces remain places of focus, not decoration only.
+- Windows remain key sources of light, atmosphere, and world identity.
+- Vertical space — ladders, stairs, upper shelves, towers, balconies — continues to suggest hidden knowledge beyond the immediate frame.
+- Owlorumo remains integrated into the same library-world in every theme.
+
+A successful theme does not replace the library. It reveals a different face of the same living library-world.
 
 ### Override levels — what you can change and when
 
 Not all overrides are equal. The system has three levels of openness:
 
-**Nivel 1 — Safe overrides (disponible desde M1):**
+**Level 1 — Safe overrides (available from M1):**
 Changes that cannot break the game or accessibility even if done wrong. The game validates these automatically.
 - Color tokens (`theme.json` → `colors`)
 - Library Scene backgrounds (4 PNG layers)
 - Theme preview image
 - UI sounds (clicks, hover) — specified in M2
 
-**Nivel 2 — Advanced overrides (disponible desde M2):**
+**Level 2 — Advanced overrides (available from M2):**
 Changes that require more care. The Preview Tool gives warnings but does not block.
 - Custom fonts (OFL only — the validator checks the license declared in metadata)
 - Companion sprites (complete state atlases only — no individual frames)
-- UI tiles: word bank, botones, iconos
+- UI tiles: word bank, buttons, icons
 
 **Level 3 — Restricted (not available to external modders):**
 Changes that touch layout, systemic accessibility, or incomplete features.
 - Colorblindness palettes (the game manages these automatically)
-- Celebration scene (schema still open — see §11)
-- Layout RTL visual (Architecture Contract §7.2 abierto)
+- Completion transformation scene (schema still open — see §11)
+- RTL visual layout (Architecture Contract §7.2 open)
 - Individual companion frame replacements (full atlas only)
 - Anything that changes tap target sizes
 
-### Estructura de un theme pack
+### Theme pack structure
 
-```
-mi_theme/
+```text
+my_theme/
 ├── metadata.json         ← REQUIRED — theme description
-├── theme.json            ← OBLIGATORIO — tokens de color y referencias a assets
+├── theme.json            ← REQUIRED — color tokens and asset references
 ├── preview.png           ← Recommended — 640×360 capture for the selector
 ├── sprites/
-│   ├── owl_idle_01.png   ← Optional — reemplaza sprites del Profesor
+│   ├── owl_idle_01.png   ← Optional — replaces Owlorumo sprites
 │   └── ...
 ├── backgrounds/
-│   ├── bg_main.png       ← Optional — fondo de la Library Scene
+│   ├── bg_main.png       ← Optional — background for the Library Scene
 │   └── ...
 ├── ui/
-│   ├── tile_word_normal.png   ← Optional — tiles del word bank
+│   ├── tile_word_normal.png   ← Optional — word support tiles
 │   └── ...
 └── fonts/
-    └── mi_fuente.ttf     ← Optional — fuente custom (licencia OFL)
+    └── my_font.ttf       ← Optional — custom font (OFL)
 ```
 
 ### `metadata.json`
@@ -966,11 +1055,11 @@ mi_theme/
 ```json
 {
   "schema_version": "1.0",
-  "id": "enchanted_forest",
-  "title": "Enchanted Forest",
-  "author": "Tu Nombre",
+  "id": "enchanted_castle",
+  "title": "Enchanted Castle",
+  "author": "Your Name",
   "version": "1.0.0",
-  "description": "A magical forest for reading among trees and glowing mushrooms.",
+  "description": "A towered library of warm stone, candles, and sleeping corridors of knowledge.",
   "preview": "preview.png",
   "license": "CC BY 4.0",
   "flags": {
@@ -982,109 +1071,109 @@ mi_theme/
 
 ### `theme.json`
 
-Define colors using the system tokens. **You only need to define the tokens you want to change** — those omitas usan los valores del Cozy Library por defecto.
+Define colors using the system tokens. **You only need to define the tokens you want to change** — those omitted use The Sleeping Library default values.
 
 ```json
 {
   "schema_version": "1.0",
   "colors": {
-    "background":       "#0D1F0A",
-    "surface":          "#1A3311",
-    "surface_light":    "#2A5218",
-    "parchment":        "#E8F0D4",
-    "parchment_shadow": "#D0E0B0",
-    "text_primary":     "#1A0F00",
-    "text_primary_light": "#E8F0D4",
-    "text_secondary":   "#4A7A2A",
-    "accent":           "#8BC34A",
-    "accent_warm":      "#FF9800",
-    "magic_glow":       "#00BCD4",
-    "magic_blue":       "#0A1F15",
+    "background":       "#24140F",
+    "surface":          "#4A2B1A",
+    "surface_light":    "#6B4025",
+    "parchment":        "#F4E8CC",
+    "parchment_shadow": "#E3D2A8",
+    "text_primary":     "#2A170C",
+    "text_primary_light": "#F4E8CC",
+    "text_secondary":   "#9A7A3C",
+    "accent":           "#D4A017",
+    "accent_warm":      "#E8721A",
+    "magic_glow":       "#7B4FBE",
+    "magic_blue":       "#1E2E4F",
     "correct":          "#4CAF50",
     "incorrect":        "#E53935",
     "hint":             "#FF9800",
-    "neutral":          "#607D4A"
+    "neutral":          "#8A7B73"
   },
   "backgrounds": {
-    "library_layer_1": "backgrounds/forest_layer_1.png",
-    "library_layer_2": "backgrounds/forest_layer_2.png",
-    "library_layer_3": "backgrounds/forest_layer_3.png",
-    "library_layer_4": "backgrounds/forest_sky.png"
+    "library_layer_1": "backgrounds/castle_layer_1.png",
+    "library_layer_2": "backgrounds/castle_layer_2.png",
+    "library_layer_3": "backgrounds/castle_layer_3.png",
+    "library_layer_4": "backgrounds/castle_sky.png"
   },
   "sprites": {
     "owl_idle":     "sprites/owl_idle_01.png",
     "owl_happy":    "sprites/owl_happy_01.png"
   },
   "fonts": {
-    "reading":  "fonts/mi_fuente_lectura.ttf",
-    "ui":       "fonts/mi_fuente_ui.ttf"
+    "reading":  "fonts/my_reading_font.ttf",
+    "ui":       "fonts/my_ui_font.ttf"
   }
 }
 ```
 
-### Tokens de color obligatorios vs opcionales
+### Mandatory vs optional color tokens
 
-| Token | Required | Notas |
+| Token | Required | Notes |
 |---|---|---|
-| `background` | ✅ | Color de fondo principal |
-| `surface` | ✅ | Paneles, contenedores |
-| `parchment` | ✅ | Fondo del texto de lectura |
-| `text_primary` | ✅ | Texto sobre parchment |
-| `text_primary_light` | ✅ | Texto sobre fondos oscuros |
-| `accent` | ✅ | Stars, achievements, highlights. **Choose carefully: the game uses this to reward the child.** Your `accent` must stand out strongly over your `background` (ratio ≥ 3:1). In a cyberpunk theme, neon pink is the new "sacred gold" — use it only for victories. |
-| `correct` | ✅ | Feedback positivo |
-| `incorrect` | ✅ | Feedback de error |
-| `surface_light` | ❌ | Default: `surface` + 20% luminosidad |
-| `parchment_shadow` | ❌ | Default: `parchment` - 15% luminosidad |
-| `text_secondary` | ❌ | Default: `accent` + 30% oscuridad |
-| `accent_warm` | ❌ | Default: `accent` con hue +30° |
+| `background` | ✅ | Main background color |
+| `surface` | ✅ | Panels, containers |
+| `parchment` | ✅ | Reading text background |
+| `text_primary` | ✅ | Text on parchment |
+| `text_primary_light` | ✅ | Text on dark backgrounds |
+| `accent` | ✅ | Restoration cues, found states, special highlights. **Choose carefully.** Your `accent` must stand out strongly over your `background` (ratio ≥ 3:1). |
+| `correct` | ✅ | Positive feedback |
+| `incorrect` | ✅ | Error feedback |
+| `surface_light` | ❌ | Default: `surface` + 20% luminosity |
+| `parchment_shadow` | ❌ | Default: `parchment` - 15% luminosity |
+| `text_secondary` | ❌ | Default: `accent` + 30% darker |
+| `accent_warm` | ❌ | Default: `accent` with hue +30° |
 | `magic_glow` | ❌ | Default: `#7B4FBE` |
 | `magic_blue` | ❌ | Default: `#1E3A5F` |
 | `hint` | ❌ | Default: `#FF9800` |
 | `neutral` | ❌ | Default: `#9E9E9E` |
 
-### Especificaciones de assets para modders
+### Asset specifications for modders
 
-```
-Backgrounds (layers de biblioteca):
+```text
+Backgrounds (library layers):
   Drawing resolution:   480 × 270 px per layer (scaled 4× in game)
-  Formato:      PNG con alpha en layers 1–2, PNG sin alpha en 3–4
-  Limit:        2MB per file
+  Format:               PNG with alpha on layers 1–2, PNG without alpha on 3–4
+  Limit:                2MB per file
 
-Sprites del Profesor (opcionales, Nivel 2):
-  Resolution:   48 × 48 px exact — do NOT scale before exporting
-  Formato:      PNG con alpha, Filter → Nearest, Mipmaps → OFF
-  Punto de anclaje: centro-base — debe coincidir pixel-perfect con default
-  Override:     atlas completo por estado (no frames sueltos)
-  Limit:        100KB per sprite
+Owlorumo sprites (optional, Level 2):
+  Resolution:           64 × 64 px exact — do NOT scale before exporting
+  Format:               PNG with alpha, Filter → Nearest, Mipmaps → OFF
+  Anchor point:         center-bottom — must match default pixel-perfect
+  Override:             full atlas per state (no individual frame swaps)
+  Limit:                100KB per sprite
 
-UI tiles (opcionales, Nivel 2):
-  Word bank tile: 16 × 8 px (NineSlice, 4px margins) — appears 64×32 on screen
-  Buttons:        24 × 24 px minimum — appears 96×96 on screen ← tap target for children
-  Formato:        PNG con alpha
+UI tiles (optional, Level 2):
+  Word support tile:    16 × 8 px (NineSlice, 4px margins) — appears 64×32 on screen
+  Buttons:              24 × 24 px minimum — appears 96×96 on screen ← tap target for children
+  Format:               PNG with alpha
 ```
 
 ### What is NineSlice and how to draw for it?
 
 NineSlice allows a button or tile to stretch to contain text of any length without distorting the corners. It is drawn like this:
 
-```
+```text
 ┌──┬────────────┬──┐   The 16×16 sprite is divided into 9 zones
 │  │            │  │   with 4px margins on each side:
 │  │            │  │
 ├──┼────────────┼──┤   Corners (4px×4px): NEVER stretch
-│  │            │  │   Bordes H (top/bottom): se estiran solo en X
-│  │   centro   │  │   Bordes V (left/right): se estiran solo en Y
-├──┼────────────┼──┤   Centro: se estira en X e Y
+│  │            │  │   Horizontal edges: stretch only in X
+│  │   center   │  │   Vertical edges: stretch only in Y
+├──┼────────────┼──┤   Center: stretches in X and Y
 │  │            │  │
 └──┴────────────┴──┘
 ←4→←────────────→←4→
-     (se estira)
+     (stretches)
+```
 
 Practice: draw the 4 corners with your decoration (rounded, ornamented,
-lo que sea). El centro y los bordes pueden ser color plano o textura simple.
-En Godot: NinePatchRect, patch_margin_left/right/top/bottom = 4 (en px del sprite).
-```
+whatever fits the theme). The center and the edges can be flat color or simple texture.
+In Godot: `NinePatchRect`, `patch_margin_left/right/top/bottom = 4` (in sprite pixels).
 
 ### Accessibility rules (automatically validated by the Preview Tool from M1)
 
@@ -1093,9 +1182,9 @@ A theme that violates these rules will be **blocked** by the Preview Tool — it
 1. **Minimum contrast:** `text_primary` over `parchment` must have ratio ≥ 4.5:1 (WCAG AA)
 2. **Minimum contrast:** `text_primary_light` over `background` must have ratio ≥ 4.5:1
 3. **`correct` and `incorrect` cannot be the same color** nor have contrast < 3:1 between them
-4. **`accent` debe ser distinguible de `background` con ratio ≥ 3:1**
+4. **`accent` must be distinguishable from `background` with ratio ≥ 3:1**
 
-El Preview Tool reporta el ratio exacto de cada regla fallida con el valor necesario para corregirlo.
+The Preview Tool reports the exact ratio of each failed rule with the value needed to correct it.
 
 ---
 
@@ -1105,41 +1194,41 @@ El Preview Tool reporta el ratio exacto de cada regla fallida con el valor neces
 
 ### M0 — First playable passage (absolute minimum)
 
-```
-Personaje:
-  owl_idle_01..04.png        4 frames — el Profesor existe en pantalla
-  owl_thinking_01..04.png    4 frames — durante puzzle activo
-  owl_hint_01..04.png        4 frames — al dar pista
+```text
+Character:
+  owl_idle_01..04.png        4 frames — Owlorumo exists on screen
+  owl_thinking_01..04.png    4 frames — during active puzzle
+  owl_hint_01..04.png        4 frames — when giving a hint
 
 Library Scene:
   bg_library_layer_4.png     static background (window/sky) — no parallax yet
-  bg_library_layer_3.png     estantes del fondo — sin parallax por ahora
-  (layers 1 y 2 pueden ser placeholder de color plano en M0)
+  bg_library_layer_3.png     background shelves — no parallax yet
+  (layers 1 and 2 can be flat color placeholder in M1)
 
 PassageView:
   parchment_tile.png         64×64 tileable for text background
-  wood_tile.png              64×64 tileable for puzzle panel
+  wood_tile.png              64×64 tileable for support panel
 
 UI:
-  tile_word_normal.png       word bank tile — estado base
-  tile_word_selected.png     word bank tile — seleccionado
-  tile_word_found.png        word bank tile — encontrado
+  tile_word_normal.png       support tile — base state
+  tile_word_selected.png     support tile — selected
+  tile_word_found.png        support tile — found
   btn_hint.png               hint button (24×24)
   btn_exit.png               exit button (24×24)
-  star_empty.png             empty star (8×8)
-  star_filled.png            filled star (8×8)
-  icon_hint.png              staff crystal (16×16)
+  fragment_soft.png          soft fragment (8×8)
+  fragment_bright.png        bright fragment (8×8)
+  icon_hint.png              staff crystal icon (16×16)
 
-Celebration:
-  celebration_stub.png       single static frame — placeholder until M1
+Completion transformation:
+  completion_stub.png        single static frame — placeholder until M1
 
-Total M0: ~20 archivos. Todos deben testear en HTML5/Chromebook antes de M1.
+Total M0: ~20 files. All must be tested in HTML5/Chromebook before M1 art production.
 ```
 
-### M1 — Statuss completos y parallax
+### M2 — Complete states and parallax
 
-```
-Personaje (estados restantes):
+```text
+Character (remaining states):
   owl_happy_01..06.png       6 frames
   owl_excited_01..08.png     8 frames
   owl_reading_01..04.png     4 frames
@@ -1148,31 +1237,31 @@ Personaje (estados restantes):
   owl_wave_01..06.png        6 frames
 
 Library Scene:
-  bg_library_layer_1.png     objetos primer plano (con alpha)
-  bg_library_layer_2.png     central shelves + Professor position (with alpha)
-  Parallax activo en los 4 layers
+  bg_library_layer_1.png     foreground objects (with alpha)
+  bg_library_layer_2.png     central shelves + Owlorumo position (with alpha)
+  Active parallax in the 4 layers
 
 UI:
-  tile_word_disabled.png     estado deshabilitado
-  tile_word_hover.png        estado hover (desktop)
-  btn_*_pressed.png          estado pressed para todos los botones
-  btn_*_disabled.png         estado disabled para todos los botones
-  star_shimmer_01..04.png    shimmer animation (4 frames)
-  icon_star.png, icon_settings.png, icon_home.png (16×16 each)
+  tile_word_disabled.png     disabled state
+  tile_word_hover.png        hover state (desktop)
+  btn_*_pressed.png          pressed state for all buttons
+  btn_*_disabled.png         disabled state for all buttons
+  fragment_pulse_01..04.png  fragment pulse animation (4 frames)
+  icon_settings.png, icon_home.png, icon_journal.png (16×16 each)
 
-Celebration scene completa (reemplaza stub)
+Completion transformation complete (replaces stub)
 ```
 
-### M2+ — Accesorios, themes, polish
+### M3+ — Accessories, themes, polish
 
-```
-M2:  Sistema de accesorios del Profesor (atlas_accessories.png)
-     Paletas de daltonismo testeadas e integradas
-     Primer theme comunitario de referencia
+```text
+M2:  Owlorumo accessories system (atlas_accessories.png)
+     Colorblindness palettes tested and integrated
+     First community reference theme
 
-M3+: Rich Celebration scene with particles
-     Libros como objetos con perspectiva en estante
-     Assets RTL si el contrato de §7.2 se cierra
+M3+: Rich in-scene completion transformation with particles
+     Books as perspective objects on shelf
+     RTL assets if Architecture Contract §7.2 is closed
 ```
 
 ---
@@ -1181,74 +1270,74 @@ M3+: Rich Celebration scene with particles
 
 Before considering a milestone visually complete, all checks must pass. These are tests anyone can do — no technical knowledge required.
 
-### Checks de silueta y legibilidad
+### Silhouette and readability checks
 
-```
-✓ The Istari Owl is recognized as "figure with hat and staff"
-  when seeing only the silhouette without color, at native 48×48 size.
-  Test: screenshot → desaturate → reduce to 12×12 → identifiable.
+```text
+✓ Owlorumo is recognized as "figure with hat and staff"
+  when seeing only the silhouette without color, at native 64×64 px.
+  Test: screenshot → desaturate → reduce to 12×12 px → identifiable.
 
-✓ Los tiles del word bank se leen como "palabras en fichas"
+✓ Support tiles read as "words on tiles"
   at 64×32 on screen from 60cm away on a tablet.
 
-✓ Un libro disponible se distingue de uno bloqueado en < 1 segundo
+✓ An awakened book is distinguishable from a dormant book in < 1 second
   without prior instruction. Test with a 5-year-old child.
 
 ✓ Primary action buttons have a touch area ≥ 96×96 px on screen.
-  Test: activar Accessibility → Touch → Show Touches en Android, confirmar zona.
+  Test: enable Accessibility → Touch → Show Touches on Android, confirm zone.
 ```
 
-### Checks de UI readability
+### UI readability checks
 
-```
-✓ Mostrar PassageView 3 segundos a un adulto → tapar → preguntar:
+```text
+✓ Show PassageView 3 seconds to an adult → cover it → ask:
   "What was most important?"
-  Respuesta correcta: "el texto" o "las palabras".
+  Correct answer: "the text" or "the words".
   If they say "the owl" or "the background": there is visual noise.
 
-✓ Mostrar Library Scene 3 segundos → tapar → preguntar:
+✓ Show Library Scene 3 seconds → cover it → ask:
   "Where would you click to read?"
-  Correct answer: points to glowing books.
+  Correct answer: points to softly awakened books.
   If they point to Owlorumo or decoration: books do not stand out enough.
 
 ✓ Passage text at `small` size (18px) readable from 40cm on a screen
   of a 7-inch tablet. Physical test.
 
-✓ En modo daltonismo deuteranopia: `correct` e `incorrect` son distinguibles
-  without sound or animation. Test with Color Oracle enabled.
+✓ In deuteranopia mode: `correct` and `incorrect` are distinguishable
+  without relying only on sound or animation. Test with Color Oracle enabled.
 ```
 
-### Checks de consistencia visual
+### Visual consistency checks
 
-```
-✓ Todos los sprites usan colores de la master palette.
-  Test: abrir atlas_owl.png en editor → usar cuentagotas en 10 pixels random
-  → todos deben estar en la master palette de §2.
+```text
+✓ All sprites use colors from the master palette.
+  Test: open atlas_owl.png in editor → use eyedropper on 10 random pixels
+  → all must be in the master palette from §2.
 
-✓ El outline del Profesor tiene 1px exacto. Sin zonas de 2px ni 0px.
-  Test: zoom 800% en el sprite → inspeccionar borde.
+✓ Owlorumo's outline is exact 1px. No 2px zones, no 0px holes.
+  Test: zoom 800% on the sprite → inspect edge.
 
 ✓ Light direction is upper left on all sprites.
   Test: verify that shadows are in the lower-right of all assets.
 
-✓ El build HTML5 total es < 15MB (incluyendo WASM).
-  Test: `du -sh` en el directorio de export. Bloqueador si > 15MB.
+✓ The HTML5 build total is < 15MB (including WASM).
+  Test: `du -sh` in the export directory. Blocking if > 15MB.
 
-✓ El juego corre a 60fps estables en Chromebook de gama media.
-  Test: Chrome DevTools → Performance → 30 segundos de gameplay.
-  Si hay drops bajo 45fps: investigar antes de continuar.
+✓ The game runs at stable 60fps on a mid-range Chromebook.
+  Test: Chrome DevTools → Performance → 30 seconds of gameplay.
+  If there are drops below 45fps: investigate before continuing.
 ```
 
-### Checks de storybook warmth
+### Storybook warmth checks
 
-```
-✓ Mostrar 3 screenshots del juego a alguien que no lo conoce.
+```text
+✓ Show 3 screenshots of the game to someone who does not know it.
   Question: "Who is this game for?"
-  Expected answer: children, school, reading, magic/magical.
+  Expected answer: children, reading, magic, warm, library.
   If they say "adults" or "action" or "generic": the style needs work.
 
 ✓ The game does NOT look like a productivity app or an education SaaS.
-  Check subjetivo pero importante — si tiene look de Google Classroom,
+  Subjective check, but important — if it looks like Google Classroom,
   something is wrong with the palette or the shapes.
 ```
 
@@ -1258,20 +1347,20 @@ Before considering a milestone visually complete, all checks must pass. These ar
 
 ⚠️ Do not produce assets in these areas until they are closed.
 
-| Tema | Status | Milestone | Impacto |
+| Topic | Status | Milestone | Impact |
 |---|---|---|---|
-| **Estilo: pixel art, Estrategia B** | ✅ Cerrado | — | — |
+| **Style: pixel art, Strategy B** | ✅ Closed | — | — |
 | **Colorblindness palettes** | ✅ Closed in architectural decision | Palettes in M1, integration M2 | Test with Color Oracle before M1 |
-| **Validador contraste Preview Tool** | ✅ Cerrado — M1 | M1 | — |
+| **Preview Tool contrast validator** | ✅ Closed — M1 | M1 | — |
 | **Specific fonts** | ✅ Closed — Andika (passage) + Nunito (UI) | M0 | Download and commit to `res://fonts/` before building PassageView |
 | **Display typography for titles** | ✅ Closed — Nunito (same as UI font) | M0 | Consistent with UI font decision |
-| **Istari Owl accessories** | ⚠️ Open — categories defined | M2 | Does not block M0/M1 |
-| **Full Celebration Scene design** | ⚠️ Open — stub in M0 | M1 | Stub sufficient for M0 |
+| **Owlorumo accessories** | ⚠️ Open — categories defined | M2 | Does not block M0/M1 |
+| **Full completion transformation design** | ⚠️ Open — stub in M0 | M1 | Stub sufficient for M0 |
 | **Book as perspective object** | ⚠️ Open | M2+ | Can be flat 2D sprite in M0/M1 |
 | **RTL visual layout** | 🔴 Blocked — Architecture Contract §7.2 | Post-M3 | Do not produce RTL assets |
 | **Visual validation with mock** | ⚠️ Pending | Before end of M0 | 1 Library, 1 PassageView, 1 owl sheet, 1 UI set |
 
 ---
 
-*Documento: READCRAFTERY Art Style Guide v1.3*  
+*Document: READCRAFTERY Art Style Guide v1.5*  
 *Next revision: visual validation mock (before end of M0), colorblindness palettes tested (M1).*
