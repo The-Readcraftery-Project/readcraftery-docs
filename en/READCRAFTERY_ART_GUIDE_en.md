@@ -279,9 +279,7 @@ Feathers:           Visible at the neck and shoulders above the
                     robe. Base color: brown-grey, soft.
                     Wing tips visible below the sleeves.
 Talons:             Hidden under the boots in standard poses.
-                    May appear in jump or celebrate animations.
-Movement:           Head turns nearly 180° when thinking
-                    (real owl behavior). Neck feathers ruffle
+Movement:           Neck feathers ruffle
                     slightly when excited. Slow blink is a signal
                     of trust — used in idle and hint animations.
 ```
@@ -319,12 +317,25 @@ Each state is a loop animation or a one-shot animation. The system uses Godot's 
 | `idle` | Loop | Soft breathing. Occasional slow blink. Staff tip pulses with soft light. | Default |
 | `happy` | Loop | Neck feathers gently ruffled. Slight swaying. Half-closed eyes (owl smile). | Word found, positive progress |
 | `thinking` | Loop | Slow head turn. One talon scratches the chin (with staff in the other). | During active puzzle, waiting for input |
-| `excited` | One-shot | Wings slightly extended. Short hop. Staff crystal flashes. | Strong completion moment, first book completed |
+| `excited` | One-shot | Crystal flash breve. Eyes gain soft glow (highlight 1–2 px in amber iris). No body movement — the change is in the eyes and crystal. | Last passage of a book completed |
+| `celebrate` | One-shot | Eyes glow sustained (no blink). Crystal stays lit, not pulsing — brighter than any other state. Posture same as idle but more erect, more present. No physical gesture. Silence. | Crystal ignition (state_0→2), completing a full arc, state_4. Occurs 2–3 times per save file. |
 | `hint` | One-shot | Leans forward. Staff gently points toward the puzzle area. Crystal glowing. | When giving hint |
 | `reading` | Loop | Holds an open book. Eyes move slowly from side to side. | During passage read-aloud with TTS |
-| `celebrate` | One-shot | Wings fully extended (maximum expansion). `magic_glow` motes emerge from the staff crystal. | Completing an entire book |
 | `sleepy` | Loop | Slow nodding. Half-closed eyes. For rest screens or inactivity. | Inactivity timeout |
 | `wave` | One-shot | Raises one wing in greeting. For onboarding and player return. | First time, returning to session |
+
+> **Artist note for `celebrate`:** This state has the least movement and the most emotional weight. The instruction is: "Draw Owlorumo as if he just remembered who he is." The difficulty is the subtlety, not the complexity.
+
+### Owlorumo — Library Ambient Activities
+
+| Activity | Description | Milestone |
+|---|---|---|
+| Reading at lectern | Base state. Breathing, slow blink, crystal pulse. Varies by `owlorumo_state`: state_0 posture slightly hunched, state_2+ more upright. | M1 final |
+| Walking to window | Walks to the window, looks outside (rain/night), returns. Most atmospheric and simplest to animate. | M2 |
+| Sorting books with magic | A book floats, Owlorumo examines it, returns it. Requires floating book sprite + magic particles. | M3+ |
+| Writing on parchment | Writes at a desk. Requires prop sprites (parchment, inkwell). state_2+ only. | M3+ |
+
+Energy by state applies to all activities: state_0 movements are heavy/clumsy, state_3/4 are fluid/present. For M1, this variation is expressed only through `reading` (posture and blink speed differences across states).
 
 #### Animation → feedback protocol mapping
 
@@ -408,11 +419,21 @@ Overall composition:
   Large window at the back — soft rain or starry night, depending on the time.
   Owlorumo on a perch/lectern at the right, in `idle` or `reading` state.
 
-Books on the shelves:
-  Dormant:        Muted, quiet, dusty only in a gentle way. No lock icon.
-                  They do not invite interaction yet.
-  Awakened:       Saturated colors. A subtle golden shimmer. Breathe softly.
-  Restored:       Constant soft presence. Warmer shelf response, calmer glow.
+Books on the shelves — four states:
+  Dormant:        Muted grey tones. No glow, no shimmer. Dusty in a gentle way.
+                  Touch response: micro-push (2px shift, 0.2 sec spring back).
+  Awakened:       Saturated cover colors. Golden shimmer. Breathes softly (0.8Hz).
+                  Invites interaction. One tap opens.
+  In-progress:    Same saturated colors as awakened. Soft constant glow, no pulse.
+                  Does not compete visually with awakened books.
+                  One tap opens, resumes where the child left off.
+  Completed:      Warm constant glow, serene. No pulse, no shimmer.
+                  Golden seal on spine — small symbol (4×4 px native).
+                  The seal is art direction: could be rune, crystal mark, library stamp.
+                  One tap opens for re-reading.
+
+  Visual priority on shelf: Awakened > In-progress > Completed > Dormant.
+  A child scanning the shelf should see awakened books first.
   
 Lighting:
   Primary source: chandeliers/oil lamps. Warm light (#D4A017 tinted).
@@ -426,35 +447,118 @@ Parallax layers (for background animation):
   Layer 4 (furthest): Window, sky/rain
 ```
 
+### Library Resonance Points
+
+Resonance points are visual elements in the library that change state as the
+child reads. Each point has a dormant sprite and an awakened sprite (minimum).
+Some may have intermediate states.
+
+```text
+RESONANCE SPRITE RULES:
+  Same position, same anchor, same z-order in both states.
+  The change must be noticeable on second look, not on first glance.
+  Dormant state: muted, still, slightly neglected.
+  Awakened state: warmer, alive, present — but never flashy or animated.
+  Transition: instant swap on library entry. No tween, no animation.
+  The child perceives "this is different" — not "this just changed."
+
+EXAMPLES OF VISUAL CHANGE MAGNITUDE:
+  ✅ Correct: window goes from fogged/rainy to clear/starry — same frame, different fill
+  ✅ Correct: candle unlit → candle lit — same object, light added
+  ✅ Correct: clock hands in different position — same clock, subtle motion implied
+  ❌ Too much: object appears where nothing existed (that's a Hidden Book, not a resonance)
+  ❌ Too little: color shift so subtle no one notices even on second look
+
+LIGHT CHANGES FROM RESONANCES:
+  Awakened resonances may emit soft additional light (candle, window moonlight).
+  This light is a modulate overlay or a Light2D node, not part of the sprite.
+  It contributes to the library feeling warmer as more resonances awaken.
+  The cumulative effect of all awakened resonances should feel organic,
+  not like someone flipped a "bright mode" switch.
+```
+
+### Hidden Book Residue
+
+When a Hidden Book withdraws from a shelf position, it leaves a residue —
+a subtle visual trace that the space was recently occupied.
+
+```text
+RESIDUE VISUAL RULES:
+  The residue is a sprite variant of the empty shelf slot.
+  It must be distinguishable from a never-occupied slot on close inspection
+  but NOT on casual glance.
+
+  Techniques:
+    - Slightly cleaner rectangle in the dust pattern (1-2 pixels difference)
+    - Faint rectangular impression in the wood grain
+    - A single pixel of different color at the slot edge
+
+  The residue is permanent. It accumulates. A library with many residues
+  tells a silent story of books that came and went.
+
+  Residues are NOT interactive. No hover, no tap response. They are scars
+  in the world, not UI elements.
+```
+
 ### PassageView Composition
 
 ```text
 General rule:
-  The passage remains the visual center at all times.
-  Puzzle UI supports reading; it never replaces the act of reading.
+  The passage is the only visual center. There is no separate puzzle panel.
+  The child reads and plays on the same surface.
 
-Screen composition (desktop/tablet landscape):
-  Primary area: PassagePanel
+Background:
+  The library is visible but dimmed. Shelves on the sides, window at the back,
+  warm light points — all subdued (opacity 25–35%). The parchment floats within
+  this space. The child feels they are reading inside the library, not in a
+  separate screen.
+
+  Escalability:
+    M0/M1:  Nivel 1 — dimmed library as static background behind parchment.
+    Post-crowdfunding:  Nivel 2 — book open on table, library visible in periphery.
+    Stretch goal:  Nivel 3 — continuous scene, camera zoom, no scene change.
+
+Screen composition:
+  Primary area: Parchment panel (centered, ~68% width)
     - Background: parchment (#F5E6C8) with slightly irregular edges
     - Subtle paper texture (very soft grain)
     - Book title: UI/title font, text_secondary color
     - Passage text: Andika or reading font, text_primary color
     - Book illustration (if present in the pack): above or integrated with text
-    
-  Secondary support area: Puzzle support UI
-    - Background: surface (#4A2E1A) with soft wood texture
-    - The puzzle support scene is instantiated here
-    - Owlorumo may appear nearby in a subordinate support position
+    - ALL words are tappable (Tap-to-Hear + puzzle targets)
+    - Found targets retain gold glow permanently in the text
 
-  Bottom support row / shared support area:
-    - Word inventory / bank support UI
-    - Hint button: staff crystal icon, discreet counter if used
-    - Exit: small door icon
+  Crystal icon: bottom-right corner
+    - Pixel art: 12×12 native, 48×48 display (4×)
+    - Hexagonal crystal shape, magic_glow (#7B4FBE) palette
+    - Glow effect rendered by engine, not in sprite
+    - Pulses at 0.8Hz during reading (passive presence)
+    - Brighter pulse when hints available during puzzle
+    - Tap target: 64×64 minimum
+
+  Exit icon: bottom-left corner
+    - Small door icon, discreet (unchanged from current spec)
+
+  NO word bank. NO counter. NO puzzle panel. NO Owlorumo sprite.
+  The crystal IS Owlorumo's presence in this scene.
+  
+Pergamino adapts to puzzle type:
+  WordGlow:      TextZone = full interactive passage. SupportZone collapsed.
+  Scramble:      TextZone = passage with target word blurred. SupportZone = letter tiles.
+  FillPassage:   TextZone = passage with blanks. SupportZone = candidate word tiles.
+  RhymeFinder:   TextZone = passage with source word highlighted. SupportZone = rhyme options (if not in text).
+  WordHunt:      TextZone = letter grid (replaces passage). SupportZone = word list.
+
+  SupportZone sits below TextZone inside the parchment.
+  When collapsed (WordGlow), the parchment is text-only + crystal.
+  When active, TextZone shrinks to ~60-70%, SupportZone takes ~30-40%.
+  The split adapts to content — never fixed percentages.  
 
 WordGlow-specific rule:
   The full passage stays visible.
   The child finds the word in the text itself.
-  The word inventory is support UI, not the primary resolution surface.
+  There is no support UI beyond the crystal and exit icons.
+``` support UI, not the primary resolution surface.
 ```
 
 ### The book as a physical object
@@ -596,9 +700,10 @@ BACKGROUND BEHIND TEXT:
   Allowed: very subtle grain (noise < 3% intensity)
 
 DECORATION IN PASSAGEVIEW:
-  The support panel may have wood texture.
+  There is no support panel. The passage panel is the only panel.
   The passage panel: no structural decoration. Only the text and the book illustration.
   Book illustrations: occupy maximum 30% of the passage panel. Never overlap text.
+  The dimmed library background provides ambient decoration — it is not interactive.
 
 ANIMATIONS DURING READING:
   Active reading status (TTS playing or child reading):
@@ -616,12 +721,10 @@ ANIMATIONS DURING READING:
 HIERARCHY (visual attention order, most to least):
   1. Target word / active reading focus inside the passage
   2. Passage text
-  3. Target card / support prompt
-  4. Word inventory / support tiles
-  5. Book title
-  6. Controls (hint button, exit)
-  7. Owlorumo (always subordinate to the reading task)
-  8. Background decoration
+  3. Book title
+  4. Crystal icon (Owlorumo's presence — hint access)
+  5. Exit icon
+  6. Dimmed library background
 
 If an element in positions 5–8 visually competes with 1–3, it is a visual bug.
 
@@ -1207,17 +1310,24 @@ Library Scene:
 
 PassageView:
   parchment_tile.png         64×64 tileable for text background
-  wood_tile.png              64×64 tileable for support panel
-
+  bg_passage_library.png     dimmed library background (static, M1 final)
+  page_corner_turn.png       page corner lifting (16×16 native, display 64×64 at 4×)
+                             Pixel art. Parchment corner with subtle shadow underneath.
+                             Only visible after Completion Beat (1 sec delay + 0.5 sec fade-in).
+                             Tap target: 96×96 minimum.
 UI:
-  tile_word_normal.png       support tile — base state
-  tile_word_selected.png     support tile — selected
-  tile_word_found.png        support tile — found
-  btn_hint.png               hint button (24×24)
+  crystal_icon.png           staff crystal pixel art (12×12 native, display 48×48 at 4×)
   btn_exit.png               exit button (24×24)
   fragment_soft.png          soft fragment (8×8)
   fragment_bright.png        bright fragment (8×8)
-  icon_hint.png              staff crystal icon (16×16)
+
+Removed (no longer needed):
+  wood_tile.png              — no support panel
+  tile_word_normal.png       — no word bank
+  tile_word_selected.png     — no word bank
+  tile_word_found.png        — no word bank
+  btn_hint.png               — crystal replaces hint button
+  icon_hint.png              — crystal IS the icon
 
 Completion transformation:
   completion_stub.png        single static frame — placeholder until M1

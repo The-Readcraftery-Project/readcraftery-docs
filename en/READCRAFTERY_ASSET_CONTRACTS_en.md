@@ -230,18 +230,23 @@ M2: all 4 layers with real art and active parallax.
 
 ### Interactive UI
 
-| asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
-|---|---|---|---|---|---|---|---|---|---|
-| book_readable | TextureButton | 16x24 | 64x96 | center | normal / hover / focused | shimmer loop (4fr @ 4fps) -- M2 | interactive | M1 | #D4A017 accent |
-| book_dormant | TextureRect | 16x24 | 64x96 | center | static | no | decorative | M1 | #9E9E9E neutral |
-| book_restored | TextureRect | 16x24 | 64x96 | center | static | glow loop (4fr @ 3fps) -- M2 | decorative | M2 | #D4A017 accent |
-| btn_settings | TextureButton | 24x24 | 96x96 | top-right | normal / pressed / disabled | no | interactive | M2 | #6B4226 surface_light |
-| owl_idle | (see s2) | -- | -- | bottom-right | -- | -- | decorative | M2 | -- |
-| book_settings | TextureButton | 16x24 | 64x96 | top-right fixed | normal / hover | no | interactive | M2 | #1E2A4A navycol |
+| asset_id | node_type | draw_size | states | animates | priority |
+|---|---|---|---|---|---|
+| book_spine_{pack_id} | TextureRect | 16×48 | dormant / awakened / in_progress / completed | shimmer on awakened (shader) | M1 |
+| book_seal_completed | Sprite2D | 4×4 | static | no | M1 final |
 
-> **`book_settings` invariants:** color `#1E2A4A` and crescent moon symbol on spine
-> are brand invariants — a theme pack may change texture but never color nor symbol.
-> Position top-right is a layout invariant. Tap-hold 1 second to activate.
+> **Book spine color:** Generated from pack `id` hash when no `cover_image` is provided
+> (already specified). The 4 states are achieved via modulate + shader:
+> - Dormant: modulate grey (`#9E9E9E` at 60%)
+> - Awakened: full color + shimmer shader (golden, 0.8Hz)
+> - In-progress: full color + constant glow (no pulse)
+> - Completed: full color + constant warm glow + `book_seal_completed` overlay
+>
+> **Micro-push animation:** Not an art asset — implemented as Tween on `position.x`
+> (2px shift, 0.2 sec, spring ease-back).
+>
+> **Golden seal:** 4×4 native pixel art. Gold (#D4A017) on dark spine. Symbol is
+> art direction — rune fragment, crystal mark, or library stamp. Must read at 4× scale.
 
 ### Suggested node tree
 
@@ -266,6 +271,36 @@ Library (Node2D)
 
 ---
 
+
+### Library Resonance Assets
+
+Resonance points are visual elements with dormant/awakened sprite variants.
+Each resonance requires two sprites at minimum, identical in size and anchor.
+
+| asset_id pattern | node_type | draw_size | states | animates | priority |
+|---|---|---|---|---|---|
+| resonance_{id}_dormant | Sprite2D | varies per point | static | no | M1 final |
+| resonance_{id}_awakened | Sprite2D | same as dormant | static | no (light overlay allowed) | M1 final |
+
+> **Exact resonance assets are not committed yet.** The architecture supports
+> any number of points. Asset IDs will follow the pattern `resonance_{id}_{state}`.
+> Each point is defined when the art direction for the Library scene is finalized.
+
+### Hidden Book Shelf Slots
+
+| asset_id | node_type | draw_size | states | animates | priority |
+|---|---|---|---|---|---|
+| shelf_slot_empty | Sprite2D | 16×12 | static | no | M1 |
+| shelf_slot_occupied | Sprite2D | 16×12 | static | soft glow (shader) | M1 |
+| shelf_slot_residue | Sprite2D | 16×12 | static | no | M2 |
+
+> `shelf_slot_residue` must be distinguishable from `shelf_slot_empty` only on
+> close inspection. The difference is 1–2 pixels of dust pattern or wood tone.
+> This is the most subtle asset in the entire game. If a playtester notices it
+> immediately without looking for it, it is too obvious.
+
+---
+
 ## 4. PassageView Scene
 
 **File:** res://scenes/PassageView/PassageView.tscn
@@ -276,8 +311,8 @@ Library (Node2D)
 
 | asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
 |---|---|---|---|---|---|---|---|---|---|
-| parchment_tile | TextureRect (tile mode) | 64x64 | fills 60% width | top-left | static | no | structural | M1 | #F5E6C8 parchment |
-| wood_tile | TextureRect (tile mode) | 64x64 | fills 40% width | top-right | static | no | structural | M1 | #4A2E1A surface |
+| bg_passage_library | TextureRect | 480x270 | fills viewport | full-rect | static | no | structural | M1 final | #2C1A0E background (solid in M0) |
+| parchment_tile | TextureRect (tile mode) | 64x64 | centered, ~68% width | center | static | no | structural | M1 | #F5E6C8 parchment |
 
 ### Passage Panel (left, 60%)
 
@@ -286,6 +321,13 @@ Library (Node2D)
 | interactive_passage_text | Control (token renderer) | -- | fills panel - padding | top-left | normal / hovered / found / hinted | no | structural | M0 | -- (text, not image) |
 | book_illustration | TextureRect | variable | max 30% panel height | top-center | static | no | decorative | M2 | #6B4226 surface_light |
 | passage_title | Label | -- | top of panel | top-left | static | no | decorative | M0 | -- (text) |
+| page_corner_turn | TextureRect | 16×16 | idle (invisible) / inviting (corner lifted) | fade-in 0.5 sec | M1 | #F5E6C8 parchment shadow |
+
+> **Page corner behavior:** Pixel art parchment corner with subtle shadow.
+> Appears bottom-right of ParchmentPanel, 1 sec after Completion Beat completes.
+> Fade-in 0.5 sec. Tap target 96×96. On tap: page turn animation (0.5–0.8 sec).
+> Not shown on last passage of book.
+> M0 placeholder: triangular ColorRect (#D8C6A3).
 
 ### Bottom Bar (shared between passage and puzzle)
 
@@ -300,22 +342,42 @@ Library (Node2D)
 > the door during the hold. Release before 1 second = no action.
 > On activation: saves partial progress before transitioning.
 >
-> **Owlorumo as hint button:** there is no separate `btn_hint` asset.
-> The child taps Owlorumo directly. See §2 Implementation notes.
+> **Crystal as hint access:** there is no Owlorumo sprite in PassageView and no
+> separate `btn_hint` asset. The child taps the crystal icon (pixel art, bottom-right).
+> The crystal IS Owlorumo's presence in this scene. See §4 Crystal Icon.
 
-### Puzzle Panel (right, 40%)
-
-The puzzle panel is an empty container. The active puzzle is dynamically instantiated inside it. See s5-s9 for the assets of each puzzle type.
+### Crystal Icon (Owlorumo's presence)
 
 | asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
 |---|---|---|---|---|---|---|---|---|---|
-| puzzle_container | MarginContainer | -- | fills 40% | top-right | -- | -- | structural | M0 | -- (empty container) |
-| owl_thinking | (see s2) | -- | 192x192 | top-right corner | -- | -- | decorative | M2 | -- |
+| crystal_icon | TextureRect | 12×12 | 48×48 (4×) | bottom-right, 16px margin | idle / hint_available / hint_exhausted | pulse 0.8Hz (engine glow, not sprite) | interactive | M0 | #7B4FBE magic_glow |
+| crystal_tap_area | Button (invisible) | — | 64×64 | covers crystal_icon | — | — | interactive | M0 | — (transparent) |
 
-Note on Owlorumo in PassageView: Owlorumo is displayed at state_0 (cracked crystal)
-during the Onboarding. In regular gameplay, the active owlorumo_state from the save
-profile determines which atlas is used. PassageView always scales Owlorumo at
-Vector2(3, 3) -> 192x192 display.
+> **Pixel art rules apply.** The crystal is rendered with `image-rendering: pixelated`
+> (Nearest filter in Godot). It follows Art Guide §5 shape/shadow rules: 1px outline
+> using `magic_glow` shadow variant, flat color blocks, upper-left light direction.
+> The glow aura is an engine effect (shader or modulate), not part of the sprite.
+>
+> **Replaces:** `btn_hint`, `icon_hint`, `owl_thinking` in PassageView, and the entire
+> puzzle_container visual panel. PuzzleContainer still exists as an invisible node
+> for IPuzzle instantiation and signal routing.
+
+### WordToken (InteractivePassageText child)
+
+WordToken is not a traditional art asset — it is a UI component with programmatic visuals.
+
+| element | implementation | colors | notes |
+|---|---|---|---|
+| Label | Andika font, text_primary color | #2C1A0E on parchment | Size determined by display profile |
+| OverlayRect (normal) | Invisible | — | Default state |
+| OverlayRect (target_pending) | Visible, low alpha | #D4A017 at 15% | Subtle gold presence |
+| OverlayRect (shimmer) | Tween alpha 40% → 15% over 0.5 sec | #D4A017 | One-shot after TTS |
+| OverlayRect (tap_highlight) | Tween alpha 30% → 0% over 0.5 sec | #F5E6C8 | Tap-to-Hear feedback |
+| OverlayRect (found) | Visible, constant | #D4A017 at 20% | Permanent gold glow |
+| OverlayRect (hinted) | Tween alpha 30% → 0% over 1.0 sec | #7B4FBE | Crystal color pulse |
+
+> No pixel art assets required. All visuals are ColorRect + Tween.
+> Minimum tap target: 96×96 per Art Guide. Set via `custom_minimum_size`.
 
 ### Suggested node tree
 
@@ -368,15 +430,14 @@ patch_margin_bottom: 4
 
 ### Word Bank Slots -- anonymous targets
 
-| asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
-|---|---|---|---|---|---|---|---|---|---|
-| slot_word_empty | NinePatchRect | 16x8 | min 64x32 | center | -- | pulse loop | decorative | M1 | #2C1A0E background |
-| slot_word_filled | NinePatchRect | 16x8 | min 64x32 | center | -- | no | decorative | M1 | #4CAF50 correct |
-| slot_word_hint | NinePatchRect | 16x8 | min 64x32 | center | -- | glow pulse | decorative | M2 | #7B4FBE magic_glow |
+### Word Bank Slots — REMOVED
 
-slot_word_empty -- anonymous slot. Shows count of words to find but not which words.
-Visible only in conservative and standard display profiles.
-Hidden in advanced profile -- AnonymousSlots container is hidden entirely.
+Word bank slots are no longer part of the standard PassageView layout.
+Target progress is visible directly in the passage text (found words retain gold glow).
+
+> **Future M2+ consideration:** The conservative display profile may optionally
+> restore anonymous slot indicators for children who need explicit progress cues.
+> If reintroduced, the slot spec from the previous version of this document applies.
 
 ### Owlorumo proximity glow
 
@@ -615,21 +676,48 @@ entirely to them.
 
 ---
 
-## 11. Journal Scene
+### Journal Assets
 
-**File:** res://scenes/Journal/Journal.tscn
-**Function:** The child's journal -- earned stickers, saved words, progress.
-**Milestone:** M2 (does not block M1).
+| asset_id | node_type | draw_size | display_size | location | states | milestone |
+|---|---|---|---|---|---|---|
+| journal_book_cover | TextureButton | 24×32 px | 96×128 | Library scene, near Owlorumo | closed / open (hover) | M1 final |
+| journal_page_bg | TextureRect | full screen | full screen | Journal scene | — | M2 |
+| journal_nav_arrow | TextureButton | 16×16 px | 64×64 | Journal scene | left / right | M2 |
+| journal_save_word_icon | TextureButton | 16×16 px | 64×64 | PassageView (post-completion) | normal / pressed | M2 |
 
-| asset_id | node_type | draw_size | display_size | anchor | states | animates | layout_role | priority | placeholder_color |
-|---|---|---|---|---|---|---|---|---|---|
-| journal_bg | TextureRect | 480x270 | 1920x1080 | fill | static | no | structural | M2 | #F5E6C8 parchment |
-| journal_cover | TextureRect | 64x80 | 256x320 | center | static | no | decorative | M2 | #4A2E1A surface |
-| sticker_slot_empty | TextureRect | 24x24 | 96x96 | center in grid | static | no | decorative | M2 | #E8D4A8 parchment_shadow |
-| sticker_slot_filled | TextureRect | 24x24 | 96x96 | center in grid | static | no | decorative | M2 | #D4A017 accent |
-| saved_word_card | NinePatchRect | 32x8 | 128x32 | left-align in list | static | no | interactive | M2 | #F5E6C8 parchment |
-| btn_back | TextureButton | 24x24 | 96x96 | top-left | normal / pressed | no | interactive | M2 | #6B4226 surface_light |
-| owl_reading | (see s2) | -- | 192x192 | bottom-right | -- | -- | decorative | M3 | -- |
+### Sticker Assets
+
+| asset_id | node_type | draw_size | display_size | location | milestone |
+|---|---|---|---|---|---|
+| sticker_template_book | TextureRect | 24×24 px | 96×96 | Journal sticker grid | M2 |
+| sticker_template_library | TextureRect | 24×24 px | 96×96 | Journal sticker grid | M2 |
+
+Book souvenir stickers are provided by BookPack authors in their pack's `stickers/` directory. Library milestone stickers (~6) are engine assets.
+
+### Hidden Book Assets
+
+| asset_id | node_type | draw_size | display_size | location | milestone |
+|---|---|---|---|---|---|
+| hidden_book_sprite | TextureRect | 16×24 px | 64×96 | Library resting shelves | M1 final |
+| resting_shelf_texture | TextureRect | varies | varies | Library scene (2–3 shelves) | M1 final |
+
+3–5 variants of hidden book sprite (ancient, mysterious, distinct from regular BookPack books).
+
+### Settings Screen Assets
+
+| asset_id | node_type | draw_size | display_size | milestone |
+|---|---|---|---|---|
+| flag_en | TextureRect | 32×24 px | 64×48 | M1 |
+| flag_es | TextureRect | 32×24 px | 64×48 | M1 |
+| icon_music | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_sfx | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_voice | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_speaker | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_speaker_muted | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_gear | TextureRect | 16×16 px | 64×64 | M1 |
+| icon_back_arrow | TextureRect | 16×16 px | 64×64 | M1 |
+| font_size_preview (×4) | TextureButton | 24×24 px | 96×96 | M1 |
+| colorblind_swatch (×4) | TextureRect | 16×16 px | 64×64 | M2 |
 
 ---
 

@@ -196,7 +196,17 @@ These are different assets with different purposes. Do not conflate them.
 | Letter placed (Scramble) | Gentle pop. | 0.2 sec | GDD §10 |
 | Navigation back | Gentle page turn. | 0.3 sec | — |
 | Hover/pre-select | Very subtle paper rustle. | 0.1 sec | — |
-| `owl_excited` vocalization | Very brief warm exhale with avian quality. Not a full hoot — a gesture. | 0.3 sec | Contract #7c |
+| `owl_excited` vocalization | being revised | 0.3 sec | Contract #7c |
+| Resonance awakened (library entry) | No sound. The change is visual only. Silence IS the design. | — | — |
+| Owlorumo first-time gesture (resonance) | Crystal pulse variant — slightly different timbre from idle pulse. Barely perceptible. | 0.3 sec | M2 |
+| Hidden Book appears | Soft displacement of air — book placed on shelf by unseen hand. | 0.5 sec | M2 |
+| Hidden Book withdraws | Nothing. Absence has no sound. The child notices visually or not at all. | — | — |
+| Crystal tap (hint) | Crystal resonance — intensity matches owlorumo_state | 0.5–1 sec | M1 |
+| Crystal tap (reading, no function) | Barely perceptible crystal murmur | 0.2 sec | M1 |
+| Book tap (awakened) | Soft, warm page-turn start — book responding | 0.3 sec | M1 |
+| Book tap (dormant) | Dull, muted thud — wood, not paper. Book does not respond. | 0.15 sec | M1 |
+| Page corner turn (advance) | Full page turn — paper, satisfying | 0.5 sec | M1 |
+| Intermediate puzzle complete (multi-puzzle passage) | Same fragment arrival sound but shorter bloom. Half duration of full beat. | 1 sec | M1 |
 
 #### Deferred SFX (M2+)
 

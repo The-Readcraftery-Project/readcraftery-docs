@@ -188,30 +188,98 @@ Profile A and C are real audiences, but the game is validated against Profile B 
 
 7. **Restoration & Continuity** — New passage access, book awakening, or quiet library changes may occur through restoration milestones. The player returns to the library or continues reading.
 
+### Library Book Interaction — ✅ CLOSED
 
-**UI State Separation (Anti Pattern-Matching Design)****UI State Separation (Anti Pattern-Matching Design)**
+Books in the library have four visual states on the shelf:
 
-To prevent children from solving puzzles through visual pattern recognition
-instead of reading, the interface separates the reading phase from the search phase.
+| State | Light | Physical mark | Touch response |
+|---|---|---|---|
+| Dormant | None — grey, muted | None | Micro-push (book shifts slightly and returns). Does not open. |
+| Awakened (unread) | Golden shimmer, breathes softly | None | One tap → opens directly to first passage. |
+| In-progress | Soft constant glow, no pulse, does not compete with awakened | None | One tap → opens, resumes where the child left off. |
+| Completed | Warm constant glow, serene, no pulse | Small golden seal on spine (like a library stamp) | One tap → opens for re-reading. |
 
-**READING_STATE**
-The story sentence is visible.
-The Owl may narrate the sentence using TTS.
-Puzzle grid is hidden.
+**Selection model:**
+- One tap to open. No preview screen, no confirmation.
+- No TTS in book selection — visual only. The child picks books by color, glow, and position.
+- The golden seal on completed books is an object of the world — it could be a rune fragment,
+  a crystal mark, or a library stamp. The exact symbol is art direction, not architecture.
+  It must be recognizable at shelf scale (book spine is ~16×48 draw size).
 
-The player presses a button to start the puzzle.
+**Dormant book feedback:** The micro-push is a 0.2 sec animation — the book shifts 2px toward
+the child and springs back. No sound, no Owlorumo reaction. The child learns quickly:
+books that glow respond, books that don't glow don't. The absence of response is the feedback.
 
-**SEARCH_STATE**
-The story text disappears or collapses.
-The puzzle grid becomes visible.
+> **Portadas / covers as collectibles:** BookPack `cover_image` is displayed when the book
+> opens. Covers as Journal collectibles are a possible M2+ feature — not committed.
 
-The player must recall the words from working memory.
+### Re-reading and End of Content
 
-Optional Hint Button
-A hint temporarily reveals the sentence again,
-but interrupts puzzle solving for a moment.
+**Completed passages are available for re-reading.** A child who returns to a completed
+book can re-read any passage. The passage displays with all target words in permanent
+`found` state (gold glow). The crystal is visible but non-functional — passive pulse only,
+no hint on tap. Tap-to-Hear remains active on all words. The page corner (pass page) is
+available from the start — no Completion Beat replays.
+ 
+The re-reading experience is a calm, already-illuminated passage. The child sees what
+they accomplished and can listen to any word. No puzzle, no challenge, no feedback loop.
+ 
+> **M2 review:** Testing may reveal that children benefit from re-playing puzzles on
+> completed passages (spaced repetition). If so, a "replay puzzle" option can be added
+> without changing the default re-reading behavior. The default remains read-only.
 
-This design encourages phonological decoding rather than geometric scanning.
+
+### PassageView — Unified Reading Surface — ✅ CLOSED
+
+PassageView is a single continuous reading surface. There is no visible transition
+between reading and puzzle. The child discovers the puzzle through touch.
+
+**Background:** The library is visible but dimmed — shelves, window, warm light points —
+all subdued. The parchment floats within this space. The child feels they are reading
+inside the library, not in a separate screen.
+
+**During reading (TTS active):**
+The passage appears and TTS reads it automatically. No start button. All words are
+tappable for Tap-to-Hear (unchanged). The crystal pulses softly in the bottom-right
+corner — Owlorumo's presence, not a functional button.
+
+**Puzzle activation (after TTS finishes first read):**
+Target words shimmer briefly in gold (0.5 sec) — contextual instruction, not explicit
+command. A subtle gold underline persists on targets. The child is never told "find
+the words" — they discover that some words respond differently to touch.
+
+> **TTS fallback:** When TTS is unavailable (device without voices, unsupported browser),
+> the shimmer triggers after a configurable delay instead of waiting for TTS completion.
+> Default: 3 seconds after passage text appears. The delay gives the child time to read
+> silently before targets are revealed. The value is configurable in Settings (adult-facing)
+> and stored in `settings.tts_fallback_delay_sec` in the save profile.
+>
+> The same fallback applies to Camino B if adopted: `_targets_active` becomes true
+> after the delay instead of after TTS completion.
+
+**During puzzle:**
+- Tap a target word → gold glow fills the word, crystal micro-pulse. Word found.
+- Tap a non-target word → Tap-to-Hear (TTS says the word, brief highlight).
+- Tap the crystal → hint action on the text (same scaffolding as before).
+- Tap the crystal during reading → subtle pulse, no function.
+
+**No word bank. No counter. No separate puzzle panel.**
+The only elements on screen are the passage text and the crystal.
+
+**State machine:** `INTRO → ACTIVE → COMPLETE`.
+INTRO: passage loading/appearing. ACTIVE: reading + puzzle coexist on one surface.
+COMPLETE: Completion Beat in-place (already defined).
+
+> **Targets active by default (Camino A).** All words respond to touch from the
+> moment the text appears, including during TTS. If testing with real children shows
+> "hunting without reading," switch to Camino B: targets respond only after TTS
+> completes the first read. This is a single boolean change with zero architectural
+> impact. Both paths share identical scene structure and layout.
+
+> **Puzzle type exceptions remain.** WordGlow and Scramble operate on the visible
+> passage (reading-visible). WordHunt, FillPassage, and RhymeFinder may use a
+> separate search/support flow where appropriate — but even those types now use
+> the same dimmed-library background rather than a separate screen.
 
 > **WordGlow and Scramble exception:** Both puzzles operate during READING_STATE,
 > not SEARCH_STATE. WordGlow requires the passage visible because the child taps
@@ -221,6 +289,48 @@ This design encourages phonological decoding rather than geometric scanning.
 > All other puzzle types (WordHunt, FillPassage, RhymeFinder) operate in
 > SEARCH_STATE as defined above.
 
+### Tap-to-Hear — ✅ CLOSED
+
+During READING_STATE, the child can tap any word in the passage and Owlorumo says it aloud via TTS.
+
+**Rules:**
+- Any word is tappable, not only target words. Target words are not visually distinguished during READING_STATE.
+- TTS speaks the single word in the passage's language. No additional phrase, no sentence context.
+- While Owlorumo is speaking a word, additional taps are ignored. No queue, no interruption, no cacophony. The tapped word may show a brief visual highlight (subtle underline, 0.5 sec) as acknowledgement even if TTS is busy.
+- Not counted as a hint. Does not affect completion tier.
+- Also available during re-reading of completed passages.
+- Crystal micro-pulse (barely perceptible) when a word is spoken — reinforces the connection between reading and the crystal's life.
+
+**Implementation:** `RichTextLabel` with `meta_clicked` signal. Each word wrapped in a meta tag. Guard: `if DisplayServer.tts_is_speaking(): return`.
+
+**Milestone:** M1.
+
+
+### Passage Transitions
+
+**Between passages (Next →):** Page turn animation (0.5–0.8 sec). The parchment animates as if turning a physical page. Reinforces that the child is reading a book, not using an app.
+
+**Return to Library:** Soft fade or book-closing animation. Different from page turn — this is leaving the book, not turning a page.
+
+**M0 placeholder:** Direct cut (instantaneous). Page turn animation is M1 final polish.
+
+### First-Run Flow — ✅ CLOSED
+
+**Language selector → Library with single awakened BookPack → Owlorumo gesture on inactivity.**
+
+On first launch (no profiles exist), the flow is:
+
+1. **Language selector** — Two large buttons (EN / ES) with flag icons. No other UI. The selection sets `settings.language` in the new profile and is used for all TTS and locale resolution.
+
+2. **Library appears** — The Sleeping Library in its initial state. One BookPack is pre-awakened (the onboarding pack, marked `is_onboarding: true` in its metadata). All other books are dormant and do not respond.
+
+3. **Owlorumo invitation** — If the child does not interact within 10 seconds, Owlorumo looks toward the glowing book (gesture, no speech). If inactivity continues beyond 20 seconds, Owlorumo speaks a short TTS prompt adapted to `reading_stage` of the onboarding pack.
+
+There is no tutorial overlay, no text instructions, no blocking modal. The invitation IS the book.
+
+**Introductory scene (optional):** An optional narrative opening beat (crystal awakening, Owlorumo's first words) is accessible from the title screen as a standalone scene. It is not part of the main game flow — the child can always skip directly to the Library. This scene is M1 final scope and requires art + audio polish.
+
+> **Reference:** Architecture Contract §3.1 (`is_onboarding` field), §5 (boot sequence).
 
 ### Profile Selection
 
@@ -242,13 +352,16 @@ lab deployment where each student needs their own profile on a shared device.
 ## 5. Puzzle Mechanics
 
 ### Puzzle Type 1: Word Glow (Ages 5–7, Difficulty 1/3)
-**Core Mechanic:** The full passage is displayed. A target word appears in the word bank at the bottom. The player must tap/click the same word when they spot it in the passage.
+**Core Mechanic:** The full passage is displayed on parchment within the dimmed library.
+After TTS reads the passage, target words shimmer briefly in gold and retain a subtle
+gold underline. The child taps a target word directly in the text to find it.
 
-- Words in the passage highlight faintly when hovered.
-- The target word is shown with a picture icon alongside it.
-- Audio reads the target word aloud.
+- All words are tappable. Non-targets trigger Tap-to-Hear. Targets glow gold when found.
+- No word bank. No separate puzzle panel. The passage IS the puzzle surface.
 - No time limit. No fail state — only encouragement.
-- On success: the word physically "flies" from the passage into the word bank slot with sparkles.
+- On success: the word illuminates with gold glow in place. Crystal micro-pulse.
+- Hint: child taps the crystal (bottom-right corner). Crystal responds with resonance
+  + hint action in the text (highlight area, read phoneme, etc.).
 
 **Skill Reinforced:** Word recognition, sight words, left-to-right scanning.
 
@@ -264,6 +377,9 @@ lab deployment where each student needs their own profile on a shared device.
 
 **Skill Reinforced:** Letter ordering, spelling patterns, phonics.
 
+> **PassageView layout:** TextZone shows the passage with the target word blurred.
+> SupportZone (below text) holds the draggable letter tiles. Parchment adapts.
+
 ---
 
 ### Puzzle Type 3: Word Hunt Grid (Ages 6–9, Difficulty 2/3 to 3/3)
@@ -274,6 +390,11 @@ lab deployment where each student needs their own profile on a shared device.
 - Word list is shown with small icons.
 
 **Skill Reinforced:** Spelling, vocabulary, pattern recognition.
+
+> **PassageView layout:** WordHunt takes over the full parchment. TextZone displays
+> the letter grid instead of the passage text. SupportZone holds the word list.
+> The passage is not visible during WordHunt — this is the only puzzle type where
+> the pedagogical invariant (text hidden during search) applies.
 
 ---
 
@@ -286,6 +407,9 @@ lab deployment where each student needs their own profile on a shared device.
 
 **Skill Reinforced:** Reading comprehension, vocabulary in context, grammar awareness.
 
+> **PassageView layout:** TextZone shows the passage with blanks replacing target words.
+> SupportZone holds the candidate word tiles for drag-and-drop into blanks.
+
 ---
 
 ### Puzzle Type 5: Rhyme Finder (Ages 4–7, Difficulty 2/3)
@@ -296,15 +420,121 @@ lab deployment where each student needs their own profile on a shared device.
 
 **Skill Reinforced:** Phonemic awareness, rhyme recognition.
 
+> **PassageView layout:** TextZone shows the passage with the source word highlighted.
+> SupportZone holds rhyme candidates if they are not in the text itself.
+> If candidates are in the text, SupportZone is collapsed — the child taps
+> the rhyming word directly in the passage (similar to WordGlow interaction).
+
+### Future: Composable puzzle parameters (M3)
+
+Each puzzle type will declare an `allowed_config` schema:
+
+```gdscript
+# Future addition to PuzzleTypeConfig
+"word_glow": {
+    "scene": "res://scenes/Puzzles/WordGlow/WordGlow.tscn",
+    "passage_visible": true,
+    "passage_interactive": true,
+    "uses_support_zone": false,
+    "replaces_text_zone": false,
+    "allowed_config": {
+        "selection_order": {"type": "String", "values": ["any", "sequential"], "default": "any"},
+        "distractor_words": {"type": "int", "min": 0, "max": 10, "default": 0},
+        "hint_type": {"type": "String", "values": ["highlight_area", "read_phoneme", "show_first_letter"], "default": "highlight_area"},
+        "reveal_mode": {"type": "String", "values": ["all_at_once", "one_by_one"], "default": "all_at_once"},
+    }
+}
+```
+
+BookPack modders write `auto_config` in their passage JSON. ModLoader validates
+against the schema at pack-load time. IPuzzle reads validated parameters from
+`definition.auto_config` in `initialize()`.
+
+This is not implemented in M0–M2. The architecture supports it without changes
+because `auto_config` already exists as a Dictionary field in PuzzleDefinition
+and is already passed to IPuzzle. The only addition is the validation schema.
+
+### Puzzle Type Extensibility — ✅ CLOSED (architecture)
+
+Puzzle types are not hardcoded in PassageView. They are registered in a centralized
+config that declares how each type interacts with the reading surface.
+
+**Current (M0–M2):** Five built-in types. Adding a new type requires creating a scene
+and adding one config entry. PassageView never changes — it reads behavior flags
+from the config.
+
+**M3 — Composable variants:** BookPack modders can configure existing puzzle types
+through `auto_config` parameters in their passage JSON. A WordGlow with
+`"selection_order": "sequential"` and `"hint_type": "read_phoneme"` feels like a
+different puzzle without requiring new code. The engine validates parameters against
+a schema per puzzle type. No executable code in mods — only JSON.
+
+**Future — Curated puzzle authoring:** If community demand warrants, approved authors
+can submit new puzzle types as signed bundles. These pass through review before
+distribution. This is curated modding, not open modding. ModLoader only loads
+signed puzzle types.
+
+**Design principle:** At every level of extensibility, the same rules apply:
+- The puzzle implements IPuzzle.
+- PassageView mediates between text and puzzle via signals.
+- The Owl never evaluates — it models.
+- No puzzle type can introduce timers, fail states, or punitive feedback.
+  These constraints are architectural, not advisory.
+
+### Multiple Puzzles per Passage — ✅ CLOSED
+ 
+A passage can contain more than one puzzle in its `puzzles` array. The puzzles execute
+sequentially — the child completes the first, then the second, and so on.
+ 
+**Flow:**
+ 
+```
+Passage appears → TTS reads → Shimmer (first puzzle targets) → Child solves puzzle 1
+  → Intermediate Completion Beat (shorter: 1 sec resolve + Owlorumo response)
+  → Parchment reconfigures for puzzle 2 (SupportZone changes, new shimmer)
+  → Child solves puzzle 2
+  → ... repeat for each puzzle ...
+  → Final Completion Beat (full: resolve + Owlorumo + settling + page corner)
+```
+ 
+**Intermediate Completion Beat:** Same structure as the final beat but shorter. Resolve
+(0.5 sec) + Owlorumo response (1 sec). No settling phase. No page corner. The parchment
+transitions smoothly to the next puzzle — found words from puzzle 1 remain in `found`
+state while puzzle 2 targets shimmer.
+ 
+**Use case — classroom:** A teacher can author a passage with WordGlow first (word
+recognition) followed by RhymeFinder (phonemic awareness) on the same text. The child
+engages with the same passage from two different angles without leaving the reading
+surface.
+ 
+**Pergamino behavior between puzzles:** If puzzle 1 is WordGlow (no SupportZone) and
+puzzle 2 is Scramble (uses SupportZone), the parchment adapts between puzzles. TextZone
+may resize. The transition is a simple reconfiguration, not a scene change.
+ 
+**State machine expansion:**
+ 
+```
+INTRO → ACTIVE_PUZZLE_1 → INTERMEDIATE_BEAT → ACTIVE_PUZZLE_2 → ... → COMPLETE
+```
+ 
+PassageView tracks `_current_puzzle_index` and advances through the array.
+ 
+**Single puzzle remains the common case.** Most passages have one puzzle. The multi-puzzle
+flow is opt-in per passage, not a new default. A passage with `"puzzles": [single_puzzle]`
+behaves exactly as designed — no intermediate beat, no reconfiguration.
 
 #### WordGlow — UI behavior details
 
 **Tile found behavior:**
-When a target word is found, the tile remains visible in the word bank
-in `found` state — grey, no glow, not interactive. Simultaneously, a copy
-of the tile flies to the anonymous slot and arrives with a gold pulse.
-The child retains the full word inventory visible at all times while
-receiving the motion feedback of the word reaching its destination.
+
+**Target progress is visible in the text itself.** Found words retain their gold glow
+permanently in the passage. The child sees their progress directly in the reading —
+the passage gradually illuminates as they find more words. No external counter, no
+word bank, no slot system.
+
+> **Display profile exception (future M2+):** The conservative display profile may
+> optionally show anonymous slot indicators below the passage for children who need
+> explicit progress cues. This is not part of the standard or advanced profiles.
 
 **Anonymous slots:**
 Slots communicate "something belongs here" before any word arrives.
@@ -312,8 +542,10 @@ Visual: grey `#9E9E9E` at 60% opacity. No label, no animation in rest state.
 The count of slots equals the count of target words — the child knows
 how many words to find without being told which ones.
 
-**Hint behavior — Owlorumo as hint button:**
-There is no separate hint button. The child taps Owlorumo directly.
+**Hint behavior — Crystal as hint access:**
+There is no separate hint button. The child taps the crystal (Owlorumo's presence
+in PassageView) directly. The crystal is pixel art (12×12 native, 48×48 display at 4×),
+positioned in the bottom-right corner with a 64×64 tap target.
 
 | Situation | Behavior |
 |---|---|
@@ -338,6 +570,170 @@ staff crystal.
 Fragments are immediate feedback — fugitive flashes absorbed by the crystal.
 They are visually distinct from the crystal's permanent state base level.
 Permanent progression belongs to book and arc milestones, not individual puzzles.
+
+### Completion Beat — In-Place Transformation — ✅ CLOSED
+
+Puzzle completion transforms PassageView in place. There is no detached reward screen.
+
+**Timeline:**
+
+1. **Resolve (0–1 sec):** Last word found. Fragments of light fly from found words to Owlorumo's crystal. `sfx_puzzle_complete` + `sfx_fragment_arrival`.
+2. **Owlorumo responds (1–3 sec):** Eyes closed, slight smile. TTS phrase adapted to `reading_stage`. Crystal pulses per completion tier.
+3. **Settling (3–5 sec):** Owlorumo returns to idle. Found words remain highlighted in the passage with a soft permanent glow.
+4. **Child's moment (5+ sec):** The bottom-right corner of the parchment lifts subtly,
+   inviting a page turn. Appears after 1 second delay + 0.5 second fade-in.
+   The child taps the lifted corner to advance. Page turn animation (0.5–0.8 sec).
+   
+   The corner is diegetic — the child is turning a page in a book, not pressing a button.
+   Tap target: 96×96 minimum. Asset: pixel art page corner, 16×16 native.
+   
+   **Last passage of a book:** The page corner does not appear. The transition back to
+   the Library triggers after the Completion Beat via the standard reverse transition
+   (parchment fade-out → overlay clears → library returns).
+**Last passage of a book — slightly more intense:**
+
+- Crystal flash breve. Owlorumo's eyes gain soft glow.
+- TTS phrase about the book, not the word: adapted to `reading_stage`.
+- "Next →" returns to the Library, not to another passage.
+- A subtle pulse of warm light crosses the screen — something elsewhere responded.
+- No confetti. No score. No "Book Complete!" banner.
+
+**What the completion beat never does:**
+
+- Show score, points, visible stars, or percentages
+- Compare with previous attempts
+- Say "Perfect!" or "You can do better!"
+- Block the child with a mandatory animation
+- Auto-advance on a timer
+
+### Owlorumo Reaction States — Revised — ✅ CLOSED
+
+| Moment | Owlorumo response | What changes |
+|---|---|---|
+| Puzzle completed (normal) | Eyes closed, slight smile. Quiet satisfaction. | Facial expression only. Crystal does its normal fragment pulse. |
+| Last passage of a book | Eyes open with soft glow. Crystal flash. Looks at the child. | Eyes illuminate. It is something that *happens to him*, not an action he takes. |
+| `celebrate` (2–3 times in the entire game) | Eyes glow sustained. Crystal stays lit, not pulsing. Looks at the child without looking away. Silence. | No physical gesture. The celebration is total presence. The most powerful moment has the least movement. |
+
+`celebrate` is reserved for: crystal ignition (state_0 → state_2), completing a full arc, state_4 transition. It occurs 2–3 times per save file.
+
+### Owlorumo Behavior Controller — ✅ CLOSED (architecture)
+
+Owlorumo can receive multiple triggers simultaneously (puzzle completion + resonance +
+Hidden Book). His gestures are managed by a priority queue.
+
+**Queue rules:**
+- One gesture at a time. Next begins when previous completes.
+- 0.5 sec pause between consecutive gestures.
+- The queue pauses when the child interacts (opens a book, taps a word).
+  Interrupted gestures are NOT discarded — they remain in the queue and
+  resume when Owlorumo returns to idle.
+- `owl_signaled` is marked `true` only when a gesture **completes**, not when it enters the queue.
+
+**Priority order:**
+
+| Priority | Gesture | Category |
+|---|---|---|
+| 1 (highest) | Completion Beat / celebrate | Uninterruptible |
+| 2 | Crystal ignition (state change) | Uninterruptible |
+| 3 | Hidden Book appears | Interruptible — pause and retry |
+| 4 | Resonance new | Interruptible — pause and retry |
+| 5 (lowest) | Idle / ambient activity | Interruptible — always yields |
+
+**Uninterruptible gestures — input is absorbed, not processed:**
+
+| Gesture | Max duration | Occurrence |
+|---|---|---|
+| Crystal ignition | 3 sec | Once per save file |
+| `celebrate` | 4 sec | 2–3 times per save file |
+| Completion Beat (resolve + response) | 2 sec | Every puzzle completed |
+
+During uninterruptible gestures, the child can touch anything — nothing responds
+until the gesture completes. This is not a UI freeze; the touch simply has no effect.
+Maximum absolute duration in the system: 4 seconds (`celebrate`).
+
+**Interruptible gestures:** If the child interacts mid-gesture, the gesture stops cleanly,
+is NOT marked as signaled, and returns to the front of the queue for the next idle opportunity.
+
+> **Artist note:** "Draw Owlorumo as if he just remembered who he is."
+
+### Library Resonances — ✅ CLOSED (architecture)
+
+The library contains resonance points — visual elements that change state as the
+child accumulates reading. Resonances are never announced. The child discovers them
+by returning to the library and noticing that something is different.
+
+**Trigger types:**
+- **Accumulation:** activated when ProgressManager crosses internal milestones
+  (passages completed, books completed, `owlorumo_state`, hidden books read).
+- **Content-specific:** activated when a specific book is completed. The trigger
+  is defined by the engine/theme, not by the BookPack — the BookPack does not know
+  it activates anything.
+
+**Owlorumo's role:** The first time a resonance awakens and the child returns to
+the library, Owlorumo reacts once — a glance toward the change, a different crystal
+pulse, a moment of stillness. This is his only signal. He does not name or explain
+the change. After the first signal, the resonance simply exists.
+
+**Resonance points are defined by the theme, not by content.** A BookPack never
+declares, references, or activates a resonance. The engine evaluates milestones
+and the theme defines what visual changes correspond to each threshold. This
+preserves P1: content is data, not code.
+
+**Examples** (illustrative, not committed — exact points defined later):
+
+| Point | Dormant | Awakened | Possible trigger |
+|---|---|---|---|
+| Window | Rain, fogged glass | Starry sky, moonlight enters | books_completed ≥ 3 |
+| Wall clock | Stopped | Pendulum swings, hands move | passages_completed ≥ 15 |
+| Candelabra | One candle lit | All candles lit, warm light | owlorumo_state ≥ 2 |
+| Distant shelf | Grey, dusty | Spines show color, one glows | hidden_books_read ≥ 1 |
+| Ink well on table | Dry | Fresh ink, quill resting | books_completed ≥ 5 |
+
+**Milestone:** Architecture defined now. Schema in save at M1 technical. 1–2 visible
+resonances at M1 final. Full system at M2+.
+
+### Silent Consequences — Design Directive — ✅ CLOSED
+
+**Rule:** No change in the library produced by the child's reading is announced with
+UI, pop-up, notification, achievement sound, or explanatory text. The change exists.
+If the child notices, it is theirs. If not, it waits.
+
+**Owlorumo first-time signal:** The single exception. The first time the child returns
+to the library after a new change, Owlorumo reacts once with a corporeal gesture —
+glance, crystal pulse, stillness. Never speech. Never text. After that one signal,
+the change is simply part of the world.
+
+**This rule applies to:** resonance awakenings, Hidden Book appearances, Hidden Book
+withdrawals, library state name transitions (Sleeping → Reawakened → Beginnings),
+and any future ambient change.
+
+**This rule does NOT apply to:** Completion Beat in PassageView (which is immediate
+puzzle feedback, not a library change).
+
+
+#### Hidden Books — Archaeology Principles — ✅ CLOSED
+
+**Fixed positions.** Each Hidden Book appears at a specific, memorable location in
+the library (shelf, row, slot). The position is not random. A Hidden Book that
+withdraws and later reappears may return to the same position or a different one,
+but always to a defined slot — never scattered arbitrarily. The child can remember
+where they found something.
+
+**Residue.** When a Hidden Book withdraws, its position retains a subtle visual
+trace — a space slightly cleaner than the surrounding dust, a faint mark in the
+wood, a texture difference only visible to someone who looks. The residue is
+permanent: once a Hidden Book occupied a place, that place remembers. This
+transforms the library into a space with visible memory.
+
+**Seed fragments.** `owlorumo_memory` is the canonical fragment kind for content
+that opens narrative questions beyond Readcraftery. These fragments may contain
+names Owlorumo does not recognize, references to places that are not this library,
+or images that suggest a larger world. The child of 6 reads a beautiful story.
+The child of 9 senses there is more. A future project answers.
+
+Seed fragments are authored content, not a technical feature. No special engine
+support is needed — only a design directive that `owlorumo_memory` content is
+written with deliberate unanswered questions.
 
 ---
 
@@ -639,11 +1035,22 @@ the individual child's demonstrated ability, not their age.
 conservative → standard → advanced
 ```
 
-| Display profile | Passage shown | Owlorumo glow | Slots |
-|---|---|---|---|
-| `conservative` | Relevant sentence only | Active, full radius | Anonymous |
-| `standard` | Full paragraph | Active, reduced radius | Anonymous |
-| `advanced` | Full passage | Disabled | No slots |
+| Display profile | Text visible | Visual focus | Glow radius | Slots |
+|---|---|---|---|---|
+| `conservative` | Full passage | Relevant sentence highlighted (warm bg or rest at 70% opacity) | Full | Optional anonymous (M2+) |
+| `standard` | Full passage | None — uniform presentation | Reduced | Optional anonymous (M2+) |
+| `advanced` | Full passage | None | Disabled | None |
+
+> **M2 testing note:** The conservative highlight behavior (Option B) is provisional.
+> Real testing with early emergent readers (5–6 years) may reveal that full-passage
+> display with highlight is insufficient for reducing cognitive load. Alternative
+> approaches (sentence isolation, enlarged font, progressive reveal) are reserved
+> for M2 evaluation. The architecture supports changing conservative's visual
+> behavior without affecting the profile system, save schema, or advancement rules.
+>
+> For early_emergent passages (1–2 sentences), conservative and standard produce
+> nearly identical results — the distinction matters primarily for developing-stage
+> passages with 3+ sentences.
 
 #### Conditions to advance — all three must be met
 
@@ -680,29 +1087,6 @@ The Celebration is not a separate screen. It is a **transformation
 of the current screen** — the world reacts to the child's achievement
 without removing them from the world.
 
-#### Sequence (6–8 seconds if child does not interact)
-
-1. **Puzzle complete**
-   — Found tiles pulse gold simultaneously
-   — Passage above glows softly
-
-2. **Owlorumo reacts** (`owl_excited` → `owl_celebrate`)
-   — Staff crystal explodes in particles
-   — Duration: 2–3 seconds
-
-3. **Fragments of light emerge from the staff crystal**
-   — One by one, each with a small sound
-   — Duration: 1.5 seconds
-
-4. **The Discovery moment**
-   — Something small and unexpected happens in the background
-   — A book floats briefly out of the shelf
-   — Profile C: a word from the next passage glows in the crystal
-   — Duration: 1–2 seconds
-
-5. **Continue button appears**
-   — Not urgent — child can stay and watch
-   — Owlorumo returns to `owl_idle` after 3 seconds
 
 #### The Discovery word (Profile C / advanced)
 
@@ -771,26 +1155,69 @@ The only difference is that `GameManager` loads it before any
 other book on first run, and Owlorumo starts in `state_0`.
 No special scene, no special code path.
 
+### The Reading Journal — ✅ CLOSED
 
-### Sticker Collection
-Each book completed adds stickers to the player's "Reading Journal" — an in-game scrapbook. Stickers are themed around the book's content (animals, objects, characters).
+The Journal is the child's personal space inside the library. If the Library is Owlorumo's place, the Journal is the child's. It is where the child keeps things they want to remember — not things the system decides to show them.
 
-### Reading Journal
-A persistent, visual record of:
-- Books read and % completion
-- Favorite words collected (the player can "keep" any word they love)
-- Restoration milestones discovered across books and the library-world
-- Meaningful reading memories and collection-style badges (e.g., "Found 100 words!", "Night Owl Reader!", "First Book Completed")
+**Physical presence:** A small book in the Library scene near Owlorumo. The child's `display_name` is on the cover. Always visible. Tap to open.
 
-### Achievement Badges
-| Badge | Trigger |
-|---|---|
-| First Word! | Find first word ever |
-| Bookworm | Complete first book |
-| Library Awakener | Help reawaken 5 books |
-| Word Collector | Save 50 words to the journal |
-| Night Owl Reader | Complete 10 reading sessions |
-| Second Language Reader | Complete a puzzle in a second language |
+**Visual tone:** Parchment (#F5E6C8) pages. The Journal is an object of the world, not a UI screen. Pages are turned with swipe or buttons.
+
+#### Page 1: My Words
+
+Words the child chose to save. Not all words found — only those the child decided matter.
+
+Each saved word shows:
+- The word itself
+- Which book it comes from
+- A TTS button to hear it again
+
+No definitions, no translations, no phonetic classification. This is a personal album, not a dictionary.
+
+**How words are saved:** After puzzle completion, found words glow in the passage. The child can tap any found word. A small "save" icon appears (open book). If tapped, the word is saved to the Journal with subtle feedback. If not tapped, nothing happens. Not obligatory. Not blocking.
+
+#### Page 2+: My Books
+
+A personal bookshelf — smaller and more intimate than the Library. Only completed books appear. Each can be opened for re-reading. No progress bars, no percentages, no counters.
+
+#### Page 3+: Stickers
+
+A grid of earned stickers. Two sources:
+- **Book souvenirs** (`source: "book"`) — declared by BookPack authors in `metadata.json`. Earned on book completion.
+- **Library milestones** (`source: "library"`) — earned through restoration milestones (see Library Milestone Stickers table above).
+
+Both follow the sticker contract: objects that could exist inside an ancient library.
+
+#### What the Journal does NOT contain
+
+- Achievement badges with numeric triggers
+- Percentages of anything
+- Counters of anything
+- Rankings of anything
+- Anything that tells the child "you need X more to get Y"
+
+**Milestone:** M2. Save schema reserved now. BookPack sticker field reserved now.
+
+> **Save schema:** See Architecture Contract §3.4 — `journal.saved_words` (Array[Dictionary]) and `journal.stickers` (Array[Dictionary]).
+
+### Library Milestone Stickers — ✅ CLOSED
+
+Milestones are not badges, trophies, or score indicators. They are objects that could exist inside an ancient library — discovered, not awarded. They appear in the Journal without announcement.
+
+| Sticker | Trigger | Visual identity |
+|---|---|---|
+| First Light | First word found in the entire game | A tiny crystal fragment |
+| The First Book | First book completed | A dry leaf between the pages |
+| Crystal Awakening | Crystal ignition (state_0 → state_2) | An illuminated rune |
+| The Library Answers | Transition to Reawakened state | An ancient ink mark that wasn't there before |
+| A Memory Returns | First Hidden Book discovered | An owl feather |
+| New Continuity | First book read in a second language | A wax seal with two moons |
+
+**Extensibility:** Future engine versions may add milestones. BookPack authors may declare book-specific souvenir stickers in `metadata.json`. All stickers must follow the sticker contract (see below).
+
+**Sticker contract:** A sticker is an object that could exist inside an ancient library. It is never a badge, a trophy, a medal, or a score indicator. It does not display numbers, percentages, or rankings. It is discovered, not awarded. Modders who declare stickers in their BookPack must follow this rule.
+
+> **Save schema:** Stickers are stored in `journal.stickers` as `Array[Dictionary]`. See Architecture Contract §3.4.
 
 
 ###  — BookPack Theme Family
@@ -812,6 +1239,22 @@ No semantic analysis required — this is a creative declaration, not computatio
 
 Status: 🔴 INTENT — schema, asset pipeline, and fallback behavior not specified.
 Earliest milestone: M2.
+
+### Engagement Strategy
+
+Readcraftery's retention mechanism is narrative restoration, not mechanical variety. The child returns because the library responds to reading as a real force — not because of points, leaderboards, or unlockable cosmetics.
+
+To support this:
+
+1. **BookPacks should vary puzzle types across passages.** A book with 5 passages should not use WordGlow for all 5. Mixing WordGlow, Scramble, and RhymeFinder across passages prevents mechanical fatigue and keeps the child uncertain about what comes next.
+
+2. **Owlorumo's response phrases must have variety.** Minimum 5 variants per event per `reading_stage`. A child who hears "You found 'seed'!" three times in a row stops hearing it. Variants are content in locale files, not code.
+
+3. **Completed books remain visible as living objects.** The book on the shelf — glowing, breathing, with its own spine color — is the reward. The child collects read books. Not badges. Books.
+
+4. **The Journal (M2) provides a space of ownership.** Stickers, saved words, a personal space the child fills. This is Readcraftery's answer to avatar customization without betraying the literary tone.
+
+
 
 ---
 
@@ -1030,38 +1473,69 @@ The system evaluates reading, not pointing accuracy.
 
 ## 10. Audio Design
 
-### Music
-- **Library Theme:** Soft, looping ambient music. Piano + soft strings. Calm but inviting.
-- **Puzzle Theme:** Upbeat, light, non-distracting. Tempo slightly faster to encourage engagement. Loops seamlessly.
-- **Celebration Sting:** Short (3–5 sec) triumphant melody on puzzle complete.
-- All music should have a child-friendly, warm tone — avoid anything tense or competitive.
+The full audio specification is in **READCRAFTERY_AUDIO_STRATEGY v3.1** (companion document). This section summarizes key decisions.
+
+### Sound Identity
+
+Four words: **Warm, Present, Breathing, Nostalgic.**
+
+Acoustic instruments only — piano, soft strings, woodwinds, harp, cello. No chiptune, no synthetic UI, no competitive audio, no harsh error sounds. The sound comes from the library, not from a console.
+
+References: Studio Ghibli (quieter moments), Ori and the Blind Forest (early sections), Journey (cello as solitary hope), Hollow Knight (diminished kingdom).
+
+### Music — Evolves with Restoration
+
+A single musical identity with variants by restoration state and scene context. Sleeping Library: solo fragments, long silences. Reawakened: melody connects, duo/trio. Library of Beginnings: complete theme, fulfilled.
+
+M1 minimum: Sleeping state only. Reawakened/Beginnings as reduced arrangements, not new compositions.
+
+### Reading Protection Rule
+
+1. No melodic hooks during active reading.
+2. No strong transients during target search.
+3. No sound may imply failure or urgency.
+4. Puzzle music must never compete with word recognition.
+5. Silence is preferred over decorative audio when in doubt.
 
 ### Sound Effects
-| Event | Sound |
-|---|---|
-| Word found | Soft chime + sparkle whoosh |
-| Letter placed correctly | Gentle pop |
-| Scaffolding cue | Soft ambient tone — signals Owl is about to help. Not associated with error. |
-| Owl hint | Soft hoot |
-| Book awakening | Page turn + brief warm reveal |
-| Sticker earned | Satisfying sticky-paper sound |
-| Button tap | Soft click / thump |
 
-### Text-to-Speech (TTS) System
-- All passage text must be readable by TTS engine or pre-recorded audio.
-- **Fallback order for passages:** Pre-recorded audio → Platform TTS (OS-native) → in-engine TTS library.
-- **Owlorumo's adaptive lines:** runtime TTS only.
-- TTS speed should be adjustable (0.75x, 1x, 1.25x) — important for early readers.
-- Word highlight synced to TTS playback (karaoke-style word highlighting during read-aloud).
-  **Scope:** karaoke highlighting is available only when using runtime TTS (OS-native).
-  Pre-recorded `.ogg` audio does not carry word-level timing data — when a pack uses
-  pre-recorded audio, the full passage illuminates as a block during playback,
-  not word by word. Timestamp-based sync files are not required from modders.
+| Event | Sound | Bus |
+|---|---|---|
+| `word_found` | Soft crystalline chime — fragment of light returning | SFX |
+| `puzzle_completed` | Warm bloom + fragment flight to crystal | SFX |
+| Scaffolding cue | Soft ambient tone — "I'm here." Not error. | SFX |
+| Book awakening | Soft resonance — the book exhales | SFX |
+| Crystal ignition (state_0→2) | Unique sound, plays once per save. Designed from scratch. | SFX |
+| Button tap | Soft wooden thump | SFX |
+| Incorrect word | **No sound.** Owl reads both words via TTS. | — |
+
+### Text-to-Speech
+
+- Fallback order: Pre-recorded audio → Platform TTS (OS-native).
+- Owlorumo's lines: runtime TTS only — never pre-recorded.
+- TTS speed adjustable (0.75x, 1x, 1.25x).
+- Karaoke word highlighting when using runtime TTS. Pre-recorded `.ogg` illuminates full passage.
+- Music ducks aggressively during TTS. Initial default: ~20% volume. Validate on hardware.
+- Technical: `DisplayServer.tts_speak()` does not route through Godot AudioServer. Ducking is timing-based.
+
+### Designed Silence
+
+| Moment | Why |
+|---|---|
+| Crystal ignition (2 sec) | "The child understands — without anyone explaining — that they did this." |
+| Owl slow blink | Trust signal. Sound would break it. |
+| Dormant book touched | It does not respond. No sound confirms this. |
+| Incorrect word | No error sound. Owl reads via TTS only. |
+| `celebrate` moment | Total presence. Silence IS the celebration. |
 
 ### Audio Accessibility
-- All audio is independently volume-controllable: Music, SFX, Voice/TTS.
-- Option to mute music only (for classroom use).
+
+- Independent volume: Music, SFX, Voice/TTS.
+- Single-tap mute all.
+- Classroom defaults: Music OFF, SFX low, TTS 100%.
 - Subtitles/captions for all spoken dialogue.
+
+> **Full specification:** see `READCRAFTERY_AUDIO_STRATEGY.md` v3.1.
 
 ---
 
@@ -1113,7 +1587,37 @@ Optional discovery layers must never block the passage, the puzzle, or core prog
 - Optional content may be revisited later from the library once discovered
 - The experience should reward curiosity without punishing short sessions
 
-> **Scope note:** teacher dashboards, student management, classroom codes, and upload flows are future-facing ideas and are not part of the closed technical contract for the current milestone set.
+### Direct Access — Classroom Entry Point
+
+A teacher may need all students to open the same book at the same passage. The standard Library → Book Selection flow adds friction in a timed classroom session.
+
+**Design:** The game accepts an optional direct-access parameter that bypasses the Library and loads a specific book and passage directly.
+
+- **HTML5 (school Chromebooks):** URL parameter. The teacher shares a link: `?book=little_seed_01&passage=2`. The game loads directly into that passage. On completion, the child can continue the book or return to the Library.
+- **App (Android/iOS):** A simple text field in the Settings Book (adult-facing) where a book_id can be entered. Alternatively, a QR code scan.
+
+This is not a teacher dashboard. It is a single entry point — one parameter, one destination. No student management, no analytics, no class codes.
+
+**Milestone:** Design closed. Implementation M1 (URL parameter) and M2 (in-app field).
+
+
+### Error Presentation — ✅ CLOSED
+
+**The child never sees an error.** Owlorumo never breaks. The library never fails visibly.
+
+| Error | What the child sees | What the adult sees |
+|---|---|---|
+| BookPack corrupted/rejected | The book simply does not exist in the Library. | `push_error()` in console. |
+| TTS unavailable for language | TTS speaks in fallback language. | Deferred notice in Settings. |
+| Save fails | Nothing. Game continues. Retry on next opportunity. | `push_error()` in console. |
+| Passage file missing | Book has fewer pages. Child doesn't know how many "should" exist. | `push_error()` with context. |
+
+**Rule:** If the world cannot respond, the world stays asleep. Errors are dormant books.
+
+**Report a Problem (M3):** A button in the Settings Book (adult screen) generates a local text file with recent session errors. The adult can email it manually. No automatic transmission. Compatible with zero-data-collection policy.
+
+> **Scope note:** Teacher dashboards, student management, classroom codes, upload flows, and student data collection are out of scope. See Architecture Contract §1 (Teacher Edition — removed).
+
 
 ---
 
@@ -1437,7 +1941,7 @@ Adding a new profile is always visible and immediate from the selection screen.
         "last_played": "2026-03-09T15:30:00Z"
       }
     },
-    "achievements": ["first_word", "bookworm"]
+    "achievements": []
   },
   "journal": {
     "stickers": ["seed_sticker", "owl_hat"],
@@ -1605,6 +2109,9 @@ This interface makes it trivial to add new puzzle types without modifying core s
 - [ ] Settings screen (audio, language, accessibility basics)
 - [ ] Export to Web (HTML5) and test on itch.io
 - [ ] **Internal Preview Tool (dev-only)** — `[Text Area] → [Generate] → [Preview Panel]` — used to validate built-in book content and catch PuzzleGenerator bugs before they reach playtesters. Not distributed publicly yet; public release moves to M3.
+- [ ] **M1 content gate:** At least 1 BookPack with 5+ passages, `reading_stage: early_emergent`, original text, 2+ puzzle types represented. Language: `es`. This pack is the integration test for the full pipeline. If it doesn't feel like a complete reading session for a 6-year-old, M1 is not done.
+- [ ] **1 functional Hidden Book** (`world_tale`) appears after completing onboarding book.
+- [ ] Comprehension questions deferred — schema exists, UI design deferred to M2 when `developing`-stage content arrives.
 
 ### Milestone 2 — Alpha (Month 5–6)
 - [ ] Full built-in book library (5 books)
